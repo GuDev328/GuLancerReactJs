@@ -23,15 +23,12 @@ class AuthServices {
         return response;
     }
     async logout() {
-        axiosIns.post(
-            "/users/logout",
-            { refreshToken: Cookies.get("refreshToken") },
-            () => {
-                Cookies.remove("accessToken");
-                Cookies.remove("refreshToken");
-                Cookies.remove("user");
-            }
-        );
+        await axiosIns.post("/users/logout", {
+            refreshToken: Cookies.get("refreshToken"),
+        });
+        Cookies.remove("accessToken");
+        Cookies.remove("refreshToken");
+        Cookies.remove("user");
     }
 
     async forgotPassword(email) {

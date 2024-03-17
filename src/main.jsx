@@ -6,9 +6,7 @@ import './index.css'
 import { ThemeProvider } from "@material-tailwind/react";
 
 ReactDOM.createRoot(document.getElementById('rooot')).render(
-  <React.StrictMode>
   <ThemeProvider>
     <App />
   </ThemeProvider>
-  </React.StrictMode>,
 )

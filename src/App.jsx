@@ -17,6 +17,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home/>} />
+        
         <Route path="/login" element={<Login/>} />
         <Route path="/forgot-password" element={<ForgotPassword/>} />
         <Route path="/forgot-password-success" element={<ForgotPasswordSuccess/>} />

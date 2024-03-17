@@ -4,7 +4,7 @@ import logo from "/logo.png";
 import authServices from "../../services/authServices";
 import { useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
-import { Button, Input } from '@material-tailwind/react';
+import { Button, Input, Select, Option } from '@material-tailwind/react';
 import userServices from '../../services/userServices';
 
 function Register() {
@@ -15,10 +15,11 @@ function Register() {
     const [phone_number, setPhone_number] = useState("");
     const [location, setLocation] = useState("");
     const [chooseRole, setChooseRole] = useState("");
+    const [gender, setGender] = useState("");
     const navigateTo = useNavigate();
 
     const handleRegister = async () => {
-        if (!email || !name ||!username ||!date_of_birth ||!phone_number ||!location) {
+        if (!email || !name ||!username ||!date_of_birth ||!phone_number ||!location ||!gender ) {
             toast.error("Không được để trống các trường");
             return
         }
@@ -45,6 +46,7 @@ function Register() {
             date_of_birth: new Date(date_of_birth).toISOString() ,
             phone_number,
             location,
+            gender,
             role: chooseRole==='freelancer'? 0 : 1
         }
 
@@ -58,8 +60,7 @@ function Register() {
             toast.error(res);
         }
     }
-    userServices.getMe()
-
+    console.log(gender)
     return (
         <div className="flex w-full h-full justify-center items-center">
             <div className="container mx-auto p-3 my-5">
@@ -89,7 +90,7 @@ function Register() {
                                 id="email"
                             />
                         </div>
-                        <div className="flex flex-wrap mb-2">
+                        <div className="flex  mb-2">
                             <div className="w-full md:w-1/2 pr-2 mb-2">
                                 <Input
                                     label='Họ và tên'
@@ -110,7 +111,7 @@ function Register() {
                                 />
                             </div>
                         </div>
-                        <div className="flex flex-wrap mb-2">
+                        <div className="flex mb-2">
                             <div className="w-full md:w-1/2 pr-2 mb-2">
                                 <Input
                                     label='Tên người dùng'
@@ -130,14 +131,22 @@ function Register() {
                                 />
                             </div>
                         </div> 
-                        <div className="mb-3">
+                        <div className=" flex mb-3">
                             <Input
+                                className='w-3/5'
                                 value={location}
                                 onChange={(e) => setLocation(e.target.value)}
                                 type="text"
                                 label='Địa chỉ'
                                 id="location"
                             />
+                            <div className='w-2/5 pl-4'>
+                            <Select label="Giới tính" id="gender" value={gender} onChange={(val)=>setGender(val)}>
+                                <Option value='0'>Nam</Option>
+                                <Option value='1'>Nữ</Option>                              
+                            </Select>
+                            </div>
+                            
                         </div>
                         <div className="flex justify-around items-center mb-4">
                             <Button className='p-5 focus:outline-none border-0' style={{backgroundColor: chooseRole==='freelancer'? '#6c7ee1':'#333'}}

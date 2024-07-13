@@ -11,13 +11,13 @@ export default withMT({
                 "dark-gray": "#adb5bd",
                 white: "#ffffff",
                 black: "#000000",
-                "main-color": "#6c7ee1",
+                main: "#2881E2",
             },
             fontFamily: {
                 sans: ["Nunito", "sans-serif"],
             },
             backgroundColor: {
-                main: "#6c7ee1",
+                main: "#2881E2",
             },
         },
     },

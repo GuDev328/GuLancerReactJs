@@ -32,7 +32,7 @@ const Filter = () => {
         setShowMoreField(!showMoreField);
     };
     return (
-        <div className="my-5 mx-8">
+        <div className="hidden md:block my-5 mx-8 w-[230px]">
             <div className="rounded-3xl bg-white min-w-[230px] w-[15%] my-3 p-5">
                 <p className="text-[23px] font-bold">Kiểu dự án</p>
                 <div className="ml-3">

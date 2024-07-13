@@ -5,22 +5,25 @@ import Register from "./pages/Auth/Register";
 import RegisterSuccess from "./pages/Auth/RegisterSuccess";
 import Home from "./pages/Home/Home";
 import { useEffect, useState } from "react";
-import Cookies from "js-cookie";
-import userServices from "./services/authServices";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setIsMobile } from "./stores/slice/screen.slice";
+
 import "./App.css";
 function App() {
-    // const [userInfo, setUserInfo] = useState(JSON.parse(Cookies.get("user")? Cookies.get("user") : null));
-    // const accessToken = Cookies.get("accessToken");
-    // useEffect(() => {
-    //     const token = Cookies.get("accessToken");
-    //     if (token && !userInfo) {
-    //         userServices.getMe()
-    //     }
-    //     if(!userInfo && Cookies.get("user")){
-    //         setUserInfo(JSON.parse(Cookies.get("user")))
-    //     }
-    // },[])
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const handleResize = () => {
+            dispatch(setIsMobile(window.innerWidth <= 768));
+        };
+
+        handleResize();
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, [dispatch]);
+
     return (
         <Router>
             <Routes>

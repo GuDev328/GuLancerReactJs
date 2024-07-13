@@ -6,7 +6,7 @@ function ControlCommunity() {
     const [keySeachGroup, setKeySeachGroup] = useState("");
     return (
         <>
-            <div className="h-full  hidden md:block w-[37%] lg:w-[350px]">
+            <div className="hidden md:block w-[37%] lg:w-[350px]">
                 <div className="controlCard bg-white m-3 flex flex-col items-center rounded-lg">
                     <div className="flex w-[100%] justify-between items-center p-5 pb-2">
                         <p className="text-[23px]  font-bold">Cộng đồng</p>

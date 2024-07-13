@@ -7,7 +7,7 @@ import authServices from "../../../services/authServices";
 import Cookies from "js-cookie";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import userServices from "../../../services/userServices";
-import { Routes, Route } from "react-router-dom";
+
 import {
     Badge,
     Button,
@@ -21,10 +21,6 @@ import {
     DialogFooter,
     Avatar,
 } from "@material-tailwind/react";
-import FindJob from "../../FindJob/FindJob";
-import Community from "../../Community/Community";
-import MyProjects from "../../Projects/Projects";
-import FindFreelancer from "../../FindFreelancer/FindFreelancer";
 
 function Header() {
     const [userInfo, setUserInfo] = useState(
@@ -431,12 +427,6 @@ function Header() {
                     </NavLink>
                 )}
             </div>
-            <Routes>
-                <Route path="/find-jobs" element={<FindJob />} />
-                <Route path="/find-freelancers" element={<FindFreelancer />} />
-                <Route path="/community" element={<Community />} />
-                <Route path="/projects" element={<MyProjects />} />
-            </Routes>
 
             <Dialog
                 open={openDialogLogout}

@@ -1,6 +1,8 @@
 import "react-toastify/dist/ReactToastify.css";
 import { Button, Chip, Input, Option, Select } from "@material-tailwind/react";
 import ChartTopTech from "./components/ChartTopTech";
+import Filter from "./components/Filter";
+import { Fragment } from "react";
 
 function FindJob() {
     return (
@@ -78,6 +80,7 @@ function FindJob() {
                     </div>
                 </div>
             </div>
+            <Filter />
         </>
     );
 }

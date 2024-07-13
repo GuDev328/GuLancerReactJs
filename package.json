@@ -13,6 +13,7 @@
         "@canvasjs/charts": "^3.8.11",
         "@canvasjs/react-charts": "^1.0.2",
         "@material-tailwind/react": "^2.1.9",
+        "antd": "^5.19.1",
         "axios": "^1.6.7",
         "js-cookie": "^3.0.5",
         "jwt-decode": "^4.0.0",

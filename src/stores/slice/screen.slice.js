@@ -5,13 +5,17 @@ const screenSlice = createSlice({
     name: "screen",
     initialState: {
         isMobile: false,
+        isLgScreen: false,
     },
     reducers: {
         setIsMobile: (state, action) => {
             state.isMobile = action.payload;
         },
+        setIsLgScreen: (state, action) => {
+            state.isLgScreen = action.payload;
+        },
     },
 });
 
-export const { setIsMobile } = screenSlice.actions;
+export const { setIsMobile, setIsLgScreen } = screenSlice.actions;
 export default screenSlice.reducer;

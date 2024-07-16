@@ -7,7 +7,7 @@ import Home from "./pages/Home/Home";
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setIsMobile } from "./stores/slice/screen.slice";
+import { setIsMobile, setIsLgScreen } from "./stores/slice/screen.slice";
 
 import "./App.css";
 function App() {
@@ -16,6 +16,7 @@ function App() {
     useEffect(() => {
         const handleResize = () => {
             dispatch(setIsMobile(window.innerWidth <= 768));
+            dispatch(setIsLgScreen(window.innerWidth > 768));
         };
 
         handleResize();

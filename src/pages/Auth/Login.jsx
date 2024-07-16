@@ -37,7 +37,7 @@ function Login() {
 
     return (
         <div
-            className="flex w-full h-full justify-center items-center"
+            className="flex w-full h-[100vh] justify-center items-center"
             style={{ backgroundColor: "#e6e6e6" }}
         >
             <div className="container mx-auto p-3 my-5">

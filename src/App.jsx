@@ -36,7 +36,7 @@ function App() {
                 />
                 <Route path="/register" element={<Register />} />
                 <Route path="/register-success" element={<RegisterSuccess />} />
-                <Route path="/home/*" element={<Home />} />
+                <Route path="/*" element={<Home />} />
                 <Route path="/" element={<Home />} />
             </Routes>
         </Router>

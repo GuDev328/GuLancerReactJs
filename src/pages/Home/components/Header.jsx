@@ -36,10 +36,9 @@ function Header() {
         if (!userInfo && Cookies.get("user")) {
             setUserInfo(JSON.parse(Cookies.get("user")));
         }
-        if (!userInfo) navigate("/home/find-jobs");
-        if (userInfo && userInfo.role === "0") navigate("/home/find-jobs");
-        if (userInfo && userInfo.role === "1")
-            navigate("/home/find-freelancers");
+        if (!userInfo) navigate("/find-jobs");
+        if (userInfo && userInfo.role === "0") navigate("/find-jobs");
+        if (userInfo && userInfo.role === "1") navigate("/find-freelancers");
     }, []);
 
     const onClickLogout = () => {
@@ -65,7 +64,7 @@ function Header() {
                         {!userInfo && (
                             <div className="abc hidden lg:flex">
                                 <NavLink
-                                    to={"/home/find-jobs"}
+                                    to={"/find-jobs"}
                                     className={({ isActive }) =>
                                         ` flex items-center item  ${
                                             isActive ? "item-active" : ""
@@ -88,7 +87,7 @@ function Header() {
                                     )}
                                 </NavLink>
                                 <NavLink
-                                    to={"/home/find-freelancers"}
+                                    to={"/find-freelancers"}
                                     className={({ isActive }) =>
                                         `flex item items-center ${
                                             isActive ? "item-active" : ""
@@ -114,7 +113,7 @@ function Header() {
                         )}
                         {userInfo && userInfo.role === "0" ? (
                             <NavLink
-                                to={"/home/find-jobs"}
+                                to={"/find-jobs"}
                                 className={({ isActive }) =>
                                     ` flex items-center item  ${
                                         isActive ? "item-active" : ""
@@ -142,7 +141,7 @@ function Header() {
 
                         {userInfo && userInfo.role === "1" ? (
                             <NavLink
-                                to={"/home/find-freelancers"}
+                                to={"/find-freelancers"}
                                 className={({ isActive }) =>
                                     `flex item items-center ${
                                         isActive ? "item-active" : ""
@@ -170,7 +169,7 @@ function Header() {
 
                         {userInfo && (
                             <NavLink
-                                to={"/home/community"}
+                                to={"/community"}
                                 className={({ isActive }) =>
                                     `  flex item items-center  ${
                                         isActive ? "item-active" : ""
@@ -195,7 +194,7 @@ function Header() {
                         )}
                         {userInfo && (
                             <NavLink
-                                to={"/home/projects"}
+                                to={"/projects"}
                                 className={({ isActive }) =>
                                     `  flex item items-center  ${
                                         isActive ? "item-active" : ""
@@ -277,7 +276,7 @@ function Header() {
                 {!userInfo && (
                     <div className="flex">
                         <NavLink
-                            to={"/home/find-jobs"}
+                            to={"/find-jobs"}
                             className={({ isActive }) =>
                                 ` flex items-center item  ${
                                     isActive ? "item-active" : ""
@@ -300,7 +299,7 @@ function Header() {
                             )}
                         </NavLink>
                         <NavLink
-                            to={"/home/find-freelancers"}
+                            to={"/find-freelancers"}
                             className={({ isActive }) =>
                                 `flex item items-center ${
                                     isActive ? "item-active" : ""
@@ -326,7 +325,7 @@ function Header() {
                 )}
                 {userInfo && userInfo.role === "0" ? (
                     <NavLink
-                        to={"/home/find-jobs"}
+                        to={"/find-jobs"}
                         className={({ isActive }) =>
                             ` flex items-center item  ${
                                 isActive ? "item-active" : ""
@@ -354,7 +353,7 @@ function Header() {
 
                 {userInfo && userInfo.role === "1" ? (
                     <NavLink
-                        to={"/home/find-freelancers"}
+                        to={"/find-freelancers"}
                         className={({ isActive }) =>
                             `flex item items-center ${
                                 isActive ? "item-active" : ""
@@ -382,7 +381,7 @@ function Header() {
 
                 {userInfo && (
                     <NavLink
-                        to={"/home/community"}
+                        to={"/community"}
                         className={({ isActive }) =>
                             `  flex item items-center  ${
                                 isActive ? "item-active" : ""
@@ -405,7 +404,7 @@ function Header() {
                 )}
                 {userInfo && (
                     <NavLink
-                        to={"/home/projects"}
+                        to={"/projects"}
                         className={({ isActive }) =>
                             `  flex item items-center  ${
                                 isActive ? "item-active" : ""

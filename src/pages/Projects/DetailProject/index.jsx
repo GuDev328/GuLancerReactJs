@@ -1,6 +1,7 @@
 import React from "react";
 import { Avatar, Tabs } from "antd";
 import OverviewProject from "./Overview";
+import Members from "./Members";
 
 const ProjectTabs = [
     {
@@ -12,7 +13,7 @@ const ProjectTabs = [
     {
         key: "member",
         label: "Thành viên",
-        children: "",
+        children: <Members />,
         icon: <i className=" fa-regular fa-people-group"></i>,
     },
     {

@@ -83,8 +83,8 @@ const Filter = () => {
             </div>
             <div className="rounded-3xl bg-white min-w-[230px] w-[15%] my-3 p-5">
                 <p className="text-[23px] font-bold">Mức lương</p>
-                <div className="ml-3">
-                    <div className="flex items-center mb-2">
+                <div className="ml-3 text-[14px]">
+                    <div className="flex items-center mb-2 ">
                         <p className=" block w-[38px]">Từ: </p>
                         <Input />
                     </div>

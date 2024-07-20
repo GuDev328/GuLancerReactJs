@@ -3,7 +3,7 @@ import ForgotPassword from "./pages/Auth/ForgotPassword";
 import ForgotPasswordSuccess from "./pages/Auth/ForgotPasswordSuccess";
 import Register from "./pages/Auth/Register";
 import RegisterSuccess from "./pages/Auth/RegisterSuccess";
-import Home from "./pages/Home/Home";
+import Home from "./pages/Home";
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";

@@ -14,10 +14,11 @@ export default withMT({
                 main: "#2881E2",
             },
             fontFamily: {
-                sans: ["Nunito", "sans-serif"],
+                sans: ["Roboto Condensed"],
             },
             backgroundColor: {
                 main: "#2881E2",
+                shadow: "#E5F1FC",
             },
         },
     },

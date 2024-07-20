@@ -60,13 +60,13 @@ const Banner = () => {
                             <i className="text-[23px] fa-solid fa-chart-waterfall mr-2"></i>
                             <p>Nhu cầu tuyển dụng theo</p>
                         </div>
-                        <div className="w-[200px] text-white">
+                        <div className="w-[200px] text-white ">
                             <Select
-                                color="#fff"
-                                size="lg"
-                                label="Select Version"
+                                className="text-[14px] text-white font-sans"
+                                variant="static"
+                                value={0}
                             >
-                                <Option>Theo công nghệ</Option>
+                                <Option value={0}>Theo công nghệ</Option>
                                 <Option>Theo lĩnh vực</Option>
                             </Select>
                         </div>

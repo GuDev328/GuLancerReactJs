@@ -1,10 +1,10 @@
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import { Routes, Route } from "react-router-dom";
-import FindJob from "../../pages/FindJob/FindJob";
-import Community from "../../pages/Community/Community";
-import MyProjects from "../../pages/Projects/Projects";
-import FindFreelancer from "../../pages/FindFreelancer/FindFreelancer";
+import FindJob from "../FindJob";
+import Community from "../Community";
+import MyProjects from "../Projects";
+import FindFreelancer from "../FindFreelancer";
 function Home() {
     return (
         <>

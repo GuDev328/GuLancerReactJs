@@ -99,8 +99,8 @@ function Header() {
                                             <i
                                                 className={`nav-icon ${
                                                     isActive
-                                                        ? "fa-duotone fa-magnifying-glass-waveform"
-                                                        : "fa-regular fa-magnifying-glass"
+                                                        ? "fa-solid fa-user-magnifying-glass"
+                                                        : "fa-regular fa-user-magnifying-glass"
                                                 }`}
                                             ></i>
                                             <p className="font-bold whitespace-nowrap">
@@ -111,60 +111,57 @@ function Header() {
                                 </NavLink>
                             </div>
                         )}
-                        {userInfo && userInfo.role === "0" ? (
-                            <NavLink
-                                to={"/find-jobs"}
-                                className={({ isActive }) =>
-                                    ` flex items-center item  ${
-                                        isActive ? "item-active" : ""
-                                    }`
-                                }
-                            >
-                                {({ isActive }) => (
-                                    <>
-                                        <i
-                                            className={`nav-icon ${
-                                                isActive
-                                                    ? "fa-duotone fa-magnifying-glass-waveform"
-                                                    : "fa-regular fa-magnifying-glass"
-                                            }`}
-                                        ></i>
-                                        <p className="font-bold whitespace-nowrap">
-                                            Tìm Job
-                                        </p>
-                                    </>
-                                )}
-                            </NavLink>
+                        {userInfo ? (
+                            <>
+                                <NavLink
+                                    to={"/find-jobs"}
+                                    className={({ isActive }) =>
+                                        ` flex items-center item  ${
+                                            isActive ? "item-active" : ""
+                                        }`
+                                    }
+                                >
+                                    {({ isActive }) => (
+                                        <>
+                                            <i
+                                                className={`nav-icon ${
+                                                    isActive
+                                                        ? "fa-duotone fa-magnifying-glass-waveform"
+                                                        : "fa-regular fa-magnifying-glass"
+                                                }`}
+                                            ></i>
+                                            <p className="font-bold whitespace-nowrap">
+                                                Tìm Job
+                                            </p>
+                                        </>
+                                    )}
+                                </NavLink>
+                                <NavLink
+                                    to={"/find-freelancers"}
+                                    className={({ isActive }) =>
+                                        `flex item items-center ${
+                                            isActive ? "item-active" : ""
+                                        }`
+                                    }
+                                >
+                                    {({ isActive }) => (
+                                        <>
+                                            <i
+                                                className={`nav-icon ${
+                                                    isActive
+                                                        ? "fa-solid fa-user-magnifying-glass"
+                                                        : "fa-regular fa-user-magnifying-glass"
+                                                }`}
+                                            ></i>
+                                            <p className="font-bold whitespace-nowrap">
+                                                Tìm Freelancer
+                                            </p>
+                                        </>
+                                    )}
+                                </NavLink>
+                            </>
                         ) : (
-                            <div></div>
-                        )}
-
-                        {userInfo && userInfo.role === "1" ? (
-                            <NavLink
-                                to={"/find-freelancers"}
-                                className={({ isActive }) =>
-                                    `flex item items-center ${
-                                        isActive ? "item-active" : ""
-                                    }`
-                                }
-                            >
-                                {({ isActive }) => (
-                                    <>
-                                        <i
-                                            className={`nav-icon ${
-                                                isActive
-                                                    ? "fa-duotone fa-magnifying-glass-waveform"
-                                                    : "fa-regular fa-magnifying-glass"
-                                            }`}
-                                        ></i>
-                                        <p className="font-bold whitespace-nowrap">
-                                            Tìm Freelancer
-                                        </p>
-                                    </>
-                                )}
-                            </NavLink>
-                        ) : (
-                            <div></div>
+                            <></>
                         )}
 
                         {userInfo && (
@@ -274,7 +271,7 @@ function Header() {
             <div className="h-[50px]"></div>
             <div className="abcd lg:hidden flex  justify-around bg-white items-center ">
                 {!userInfo && (
-                    <div className="flex">
+                    <div className="flex justify-between">
                         <NavLink
                             to={"/find-jobs"}
                             className={({ isActive }) =>
@@ -311,8 +308,8 @@ function Header() {
                                     <i
                                         className={`nav-icon ${
                                             isActive
-                                                ? "fa-duotone fa-magnifying-glass-waveform"
-                                                : "fa-regular fa-magnifying-glass"
+                                                ? "fa-solid fa-user-magnifying-glass"
+                                                : "fa-regular fa-user-magnifying-glass"
                                         }`}
                                     ></i>
                                     <p className="font-bold whitespace-nowrap">
@@ -323,58 +320,63 @@ function Header() {
                         </NavLink>
                     </div>
                 )}
-                {userInfo && userInfo.role === "0" ? (
-                    <NavLink
-                        to={"/find-jobs"}
-                        className={({ isActive }) =>
-                            ` flex items-center item  ${
-                                isActive ? "item-active" : ""
-                            }`
-                        }
-                    >
-                        {({ isActive }) => (
-                            <>
-                                <i
-                                    className={`nav-icon ${
-                                        isActive
-                                            ? "fa-duotone fa-magnifying-glass-waveform"
-                                            : "fa-regular fa-magnifying-glass"
-                                    }`}
-                                ></i>
-                                <p className="font-bold whitespace-nowrap">
-                                    Tìm Job
-                                </p>
-                            </>
-                        )}
-                    </NavLink>
-                ) : (
-                    <></>
-                )}
-
-                {userInfo && userInfo.role === "1" ? (
-                    <NavLink
-                        to={"/find-freelancers"}
-                        className={({ isActive }) =>
-                            `flex item items-center ${
-                                isActive ? "item-active" : ""
-                            }`
-                        }
-                    >
-                        {({ isActive }) => (
-                            <>
-                                <i
-                                    className={`nav-icon ${
-                                        isActive
-                                            ? "fa-duotone fa-magnifying-glass-waveform"
-                                            : "fa-regular fa-magnifying-glass"
-                                    }`}
-                                ></i>
-                                <p className="font-bold whitespace-nowrap">
-                                    Tìm Freelancer
-                                </p>
-                            </>
-                        )}
-                    </NavLink>
+                {userInfo ? (
+                    <>
+                        <NavLink
+                            to={"/find-jobs"}
+                            className={({ isActive }) =>
+                                ` flex items-center item  ${
+                                    isActive ? "item-active" : ""
+                                }`
+                            }
+                        >
+                            {({ isActive }) => (
+                                <>
+                                    <i
+                                        className={`nav-icon ${
+                                            isActive
+                                                ? "fa-duotone fa-magnifying-glass-waveform"
+                                                : "fa-regular fa-magnifying-glass"
+                                        }`}
+                                    ></i>
+                                    <p
+                                        className={`${
+                                            isActive ? "inline-block" : "hidden"
+                                        } font-bold whitespace-nowrap`}
+                                    >
+                                        Tìm Job
+                                    </p>
+                                </>
+                            )}
+                        </NavLink>
+                        <NavLink
+                            to={"/find-freelancers"}
+                            className={({ isActive }) =>
+                                `flex item items-center ${
+                                    isActive ? "item-active" : ""
+                                }`
+                            }
+                        >
+                            {({ isActive }) => (
+                                <>
+                                    <i
+                                        className={`nav-icon ${
+                                            isActive
+                                                ? "fa-solid fa-user-magnifying-glass"
+                                                : "fa-regular fa-user-magnifying-glass"
+                                        }`}
+                                    ></i>
+                                    <p
+                                        className={`${
+                                            isActive ? "inline-block" : "hidden"
+                                        } font-bold whitespace-nowrap`}
+                                    >
+                                        Tìm Freelancer
+                                    </p>
+                                </>
+                            )}
+                        </NavLink>
+                    </>
                 ) : (
                     <></>
                 )}
@@ -395,7 +397,11 @@ function Header() {
                                         isActive ? "fa-solid" : "fa-light"
                                     }`}
                                 ></i>
-                                <p className="font-bold whitespace-nowrap">
+                                <p
+                                    className={`${
+                                        isActive ? "inline-block" : "hidden"
+                                    } font-bold whitespace-nowrap`}
+                                >
                                     Cộng đồng
                                 </p>
                             </>
@@ -418,7 +424,11 @@ function Header() {
                                         isActive ? "fa-solid" : "fa-regular"
                                     }`}
                                 ></i>
-                                <p className="font-bold whitespace-nowrap">
+                                <p
+                                    className={`${
+                                        isActive ? "inline-block" : "hidden"
+                                    } font-bold whitespace-nowrap`}
+                                >
                                     Các dự án
                                 </p>
                             </>

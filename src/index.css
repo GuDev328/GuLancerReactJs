@@ -79,3 +79,7 @@ html {
 .ant-image-mask {
     display: none !important;
 }
+:where(.css-dev-only-do-not-override-98ntnt).ant-rate
+    .ant-rate-star:not(:last-child) {
+    margin-inline-end: 0px !important;
+}

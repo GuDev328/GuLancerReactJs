@@ -1,11 +1,24 @@
 import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
 import { Avatar, Button, Chip, Input } from "@material-tailwind/react";
+import { useQuery } from "@tanstack/react-query";
+
+import { ToastContainer, toast } from "react-toastify";
+
+import { fetchAuth } from "../../../utils/swr";
+import { Spin } from "antd";
+import groupServices from "../../../services/groupServices";
 
 function ControlCommunity() {
     const [keySeachGroup, setKeySeachGroup] = useState("");
+    const getGroups = useQuery({
+        queryKey: ["getListGroup"],
+        queryFn: groupServices.getGroups,
+    });
+
     return (
         <>
+            <ToastContainer stacked />
             <div className="">
                 <div className="controlCard bg-white m-3 flex flex-col items-center rounded-lg">
                     <div className="flex w-[100%] justify-between items-center p-5 pb-2">
@@ -47,25 +60,26 @@ function ControlCommunity() {
                             Cộng đồng bạn quản lý
                         </p>
                     </div>
+                    <Spin spinning={getGroups.isLoading} />
+                    {getGroups.data?.result?.map((group) => {
+                        if (group.isAdmin) {
+                            return (
+                                <div
+                                    key={group._id}
+                                    className="w-[90%] m-2 mt-0 rounded-md h-12 py-2 bg-[#F0F2F5] flex items-center"
+                                >
+                                    <Avatar
+                                        src={group.cover_photo}
+                                        className=" mr-3 w-[45px] h-[45px]"
+                                        alt="avatar"
+                                        variant="rounded"
+                                    />
+                                    <p className="font-medium">{group.name}</p>
+                                </div>
+                            );
+                        }
+                    })}
 
-                    <div className="w-[90%] m-2 mt-0 rounded-md h-12 py-2 bg-[#F0F2F5] flex items-center">
-                        <Avatar
-                            src="https://docs.material-tailwind.com/img/face-2.jpg"
-                            className=" mr-3 w-[45px] h-[45px]"
-                            alt="avatar"
-                            variant="rounded"
-                        />
-                        <p className="font-medium">Anh em Website Hà Nội</p>
-                    </div>
-                    <div className="w-[90%] m-2 mt-0 rounded-md h-12 py-2 bg-[#F0F2F5] flex items-center">
-                        <Avatar
-                            src="https://docs.material-tailwind.com/img/face-2.jpg"
-                            className=" mr-3 w-[45px] h-[45px]"
-                            alt="avatar"
-                            variant="rounded"
-                        />
-                        <p className=" font-medium">IT Tám Chuyện</p>
-                    </div>
                     <Button className="bg-main mb-2 w-[250px]" size="sm">
                         Tạo mới cộng đồng
                     </Button>
@@ -77,25 +91,25 @@ function ControlCommunity() {
                             Cộng đồng đã tham gia
                         </p>
                     </div>
-
-                    <div className="w-[90%] m-2 mt-0 rounded-md h-12 py-2 bg-[#F0F2F5] flex items-center">
-                        <Avatar
-                            src="https://docs.material-tailwind.com/img/face-2.jpg"
-                            className=" mr-3 w-[45px] h-[45px]"
-                            alt="avatar"
-                            variant="rounded"
-                        />
-                        <p className="font-medium">Anh em Website Hà Nội</p>
-                    </div>
-                    <div className="w-[90%] m-2 mt-0 rounded-md h-12 py-2 bg-[#F0F2F5] flex items-center">
-                        <Avatar
-                            src="https://docs.material-tailwind.com/img/face-2.jpg"
-                            className=" mr-3 w-[45px] h-[45px]"
-                            alt="avatar"
-                            variant="rounded"
-                        />
-                        <p className=" font-medium">IT Tám Chuyện</p>
-                    </div>
+                    <Spin spinning={getGroups.isLoading} />
+                    {getGroups.data?.result?.map((group) => {
+                        if (!group.isAdmin) {
+                            return (
+                                <div
+                                    key={group._id}
+                                    className="w-[90%] m-2 mt-0 rounded-md h-12 py-2 bg-[#F0F2F5] flex items-center"
+                                >
+                                    <Avatar
+                                        src={group.cover_photo}
+                                        className=" mr-3 w-[45px] h-[45px]"
+                                        alt="avatar"
+                                        variant="rounded"
+                                    />
+                                    <p className="font-medium">{group.name}</p>
+                                </div>
+                            );
+                        }
+                    })}
                 </div>
             </div>
         </>

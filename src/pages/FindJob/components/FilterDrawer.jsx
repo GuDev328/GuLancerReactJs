@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Drawer } from "antd";
 import { Checkbox, Button, Typography, Form, Input } from "antd";
 import PropTypes from "prop-types";
@@ -51,10 +51,10 @@ const FilterDrawer = ({ open, setOpen }) => {
                             {fields
                                 .slice(0, showMoreField ? fields.length : 5)
                                 .map((item, index) => (
-                                    <>
+                                    <Fragment key={index}>
                                         <Checkbox key={index}>{item}</Checkbox>
                                         <br />
-                                    </>
+                                    </Fragment>
                                 ))}
                             <Button
                                 onClick={handleShowMoreFiled}
@@ -72,10 +72,10 @@ const FilterDrawer = ({ open, setOpen }) => {
                             {techs
                                 .slice(0, showMoreTech ? techs.length : 5)
                                 .map((item, index) => (
-                                    <>
+                                    <Fragment key={index}>
                                         <Checkbox key={index}>{item}</Checkbox>
                                         <br />
-                                    </>
+                                    </Fragment>
                                 ))}
                             <Button
                                 onClick={handleShowMoreTech}

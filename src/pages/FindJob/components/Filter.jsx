@@ -46,10 +46,10 @@ const Filter = () => {
                     {fields
                         .slice(0, showMoreField ? fields.length : 5)
                         .map((item, index) => (
-                            <>
+                            <div key={index}>
                                 <Checkbox key={index}>{item}</Checkbox>
                                 <br />
-                            </>
+                            </div>
                         ))}
                     <Button
                         onClick={handleShowMoreFiled}
@@ -67,10 +67,10 @@ const Filter = () => {
                     {techs
                         .slice(0, showMoreTech ? techs.length : 5)
                         .map((item, index) => (
-                            <>
+                            <div key={index}>
                                 <Checkbox key={index}>{item}</Checkbox>
                                 <br />
-                            </>
+                            </div>
                         ))}
                     <Button
                         onClick={handleShowMoreTech}

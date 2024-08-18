@@ -2,6 +2,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Header.css";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import logo from "/logo.png";
 import authServices from "../../../services/authServices";
 import Cookies from "js-cookie";
@@ -24,21 +25,22 @@ import {
 
 function Header() {
     const [userInfo, setUserInfo] = useState(
-        JSON.parse(Cookies.get("user") ? Cookies.get("user") : null)
+        JSON.parse(
+            localStorage.getItem("user") ? localStorage.getItem("user") : null
+        )
     );
+    const location = useLocation();
     const [openDialogLogout, setOpenDialogLogout] = useState(false);
     const navigate = useNavigate();
     useEffect(() => {
-        const token = Cookies.get("accessToken");
-        if (token && !userInfo) {
-            userServices.getMe();
+        if (location.pathname === "/") {
+            const token = localStorage.getItem("accessToken");
+            const userInfoo = JSON.parse(localStorage.getItem("user"));
+            if (!token) navigate("/find-jobs");
+            if (userInfoo && userInfoo.role === "0") navigate("/find-jobs");
+            if (userInfoo && userInfoo.role === "1")
+                navigate("/find-freelancers");
         }
-        if (!userInfo && Cookies.get("user")) {
-            setUserInfo(JSON.parse(Cookies.get("user")));
-        }
-        if (!userInfo) navigate("/find-jobs");
-        if (userInfo && userInfo.role === "0") navigate("/find-jobs");
-        if (userInfo && userInfo.role === "1") navigate("/find-freelancers");
     }, []);
 
     const onClickLogout = () => {

@@ -12,7 +12,7 @@ const axiosN = axios.create({
 
 axiosN.interceptors.request.use(
     (config) => {
-        config.headers["Authorization"] = `Bearer ${Cookies.get(
+        config.headers["Authorization"] = `Bearer ${localStorage.getItem(
             "accessToken"
         )}`;
         return config;
@@ -25,7 +25,7 @@ axiosN.interceptors.request.use(
 export const refreshTokenFunc = async (refreshToken) => {
     try {
         const res = await axiosN.post("/users/refresh-token", { refreshToken });
-        Cookies.set("accessToken", res.data.result.accessToken);
+        localStorage.setItem("accessToken", res.data.result.accessToken);
         Cookies.set("refreshToken", res.data.result.refreshToken);
         return res.data.result.accessToken;
     } catch (error) {
@@ -34,7 +34,7 @@ export const refreshTokenFunc = async (refreshToken) => {
 };
 
 const checkToken = async () => {
-    const accessToken = Cookies.get("accessToken");
+    const accessToken = localStorage.getItem("accessToken");
     const refreshToken = Cookies.get("refreshToken");
     if (accessToken && refreshToken) {
         const decodedToken = jwtDecode.jwtDecode(accessToken);

@@ -6,7 +6,7 @@ class UserServices {
     async getMe() {
         const response = await axiosIns.getAuth("/users/get-me", (res) => {
             const user = res.data.result;
-            Cookies.set("user", JSON.stringify(user));
+            localStorage.setItem("user", JSON.stringify(user));
         });
         return response;
     }

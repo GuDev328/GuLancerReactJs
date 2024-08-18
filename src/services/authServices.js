@@ -5,16 +5,17 @@ import userServices from "./userServices";
 
 class AuthServices {
     async login(email, password) {
-        const response = await axiosIns.post(
-            "/users/login",
-            { email, password },
-            async (res) => {
-                const { accessToken, refreshToken } = res.data.result;
-                Cookies.set("accessToken", accessToken);
-                Cookies.set("refreshToken", refreshToken, { expires: 7 });
-                await userServices.getMe();
-            }
-        );
+        const response = await axiosIns.post("/users/login", {
+            email,
+            password,
+        });
+
+        const { accessToken, refreshToken } = response.data.result;
+        localStorage.setItem("accessToken", accessToken);
+        Cookies.set("refreshToken", refreshToken, {
+            expires: 7,
+        });
+        await userServices.getMe();
 
         return response;
     }
@@ -27,9 +28,9 @@ class AuthServices {
         await axiosIns.post("/users/logout", {
             refreshToken: Cookies.get("refreshToken"),
         });
-        Cookies.remove("accessToken");
+        localStorage.setItem("accessToken", "");
         Cookies.remove("refreshToken");
-        Cookies.remove("user");
+        localStorage.setItem("user", "");
     }
 
     async forgotPassword(email) {

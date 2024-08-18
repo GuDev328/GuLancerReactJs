@@ -5,12 +5,13 @@ import { useQuery } from "@tanstack/react-query";
 
 import { ToastContainer, toast } from "react-toastify";
 
-import { fetchAuth } from "../../../utils/swr";
 import { Spin } from "antd";
 import groupServices from "../../../services/groupServices";
+import CreateGroupModal from "./CreateGroupModal";
 
 function ControlCommunity() {
     const [keySeachGroup, setKeySeachGroup] = useState("");
+    const [openCreateGroupModal, setOpenCreateGroupModal] = useState(false);
     const getGroups = useQuery({
         queryKey: ["getListGroup"],
         queryFn: groupServices.getGroups,
@@ -80,7 +81,11 @@ function ControlCommunity() {
                         }
                     })}
 
-                    <Button className="bg-main mb-2 w-[250px]" size="sm">
+                    <Button
+                        onClick={() => setOpenCreateGroupModal(true)}
+                        className="bg-main mb-2 w-[250px]"
+                        size="sm"
+                    >
                         Tạo mới cộng đồng
                     </Button>
                 </div>
@@ -112,6 +117,10 @@ function ControlCommunity() {
                     })}
                 </div>
             </div>
+            <CreateGroupModal
+                open={openCreateGroupModal}
+                setOpen={setOpenCreateGroupModal}
+            />
         </>
     );
 }

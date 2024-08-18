@@ -28,10 +28,8 @@ function Login() {
             return;
         }
         const res = await authServices.login(email, password);
-        if (res.status === 200) {
+        if (res) {
             navigateTo("/");
-        } else {
-            toast.error(res);
         }
     };
 

@@ -1,6 +1,8 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import * as jwtDecode from "jwt-decode";
+import { message } from "antd";
+import { toast } from "react-toastify";
 
 const BASE_URL = "http://localhost:3030";
 
@@ -58,7 +60,8 @@ class Axios {
                 }
             })
             .catch((err) => {
-                return err.response.data.message;
+                toast.error(err.response.data.message);
+                return null;
             });
         return response;
     }
@@ -76,7 +79,8 @@ class Axios {
                 }
             })
             .catch((err) => {
-                return err.response.data?.message;
+                toast.error(err.response.data.message);
+                return null;
             });
         return response;
     }
@@ -93,7 +97,8 @@ class Axios {
                 }
             })
             .catch((err) => {
-                return err.response.data.message;
+                toast.error(err.response.data.message);
+                return null;
             });
         return response;
     }
@@ -111,7 +116,8 @@ class Axios {
                 }
             })
             .catch((err) => {
-                return err.response.data?.message;
+                toast.error(err.response.data.message);
+                return null;
             });
         return response;
     }

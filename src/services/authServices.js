@@ -12,9 +12,10 @@ class AuthServices {
                 const { accessToken, refreshToken } = res.data.result;
                 Cookies.set("accessToken", accessToken);
                 Cookies.set("refreshToken", refreshToken, { expires: 7 });
+                await userServices.getMe();
             }
         );
-        await userServices.getMe();
+
         return response;
     }
 

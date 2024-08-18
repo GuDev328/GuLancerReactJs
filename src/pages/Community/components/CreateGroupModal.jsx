@@ -13,10 +13,22 @@ import PropTypes from "prop-types";
 import TextArea from "antd/es/input/TextArea";
 import { PlusOutlined } from "@ant-design/icons";
 import mediaServices from "../../../services/mediaServices";
+import groupServices from "../../../services/groupServices";
+
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 
 const CreateGroupModal = ({ open, setOpen }) => {
-    const { form } = Form.useForm();
+    const [form] = Form.useForm();
     const [fileList, setFileList] = React.useState([]);
+    const [loading, setLoading] = React.useState(false);
+    const queryClient = useQueryClient();
+
+    const createGroupM = useMutation({
+        mutationFn: groupServices.createGroup,
+        onSuccess: () => {
+            queryClient.invalidateQueries(["getListGroup"]);
+        },
+    });
 
     const handleCancel = () => {
         form.resetFields();
@@ -28,10 +40,22 @@ const CreateGroupModal = ({ open, setOpen }) => {
     };
 
     const handleCreate = async () => {
-        const upImage = await mediaServices.uploadImage(
-            fileList[0].poriginFileObj
-        );
-        console.log(upImage);
+        await form.validateFields();
+        setLoading(true);
+        const values = await form.getFieldsValue();
+        const data = {
+            ...values,
+            cover_photo: "",
+        };
+        if (fileList[0]) {
+            const upImage = await mediaServices.uploadImage(
+                fileList[0].originFileObj
+            );
+            data.cover_photo = upImage.result[0].url;
+        }
+        await createGroupM.mutate(data);
+        setLoading(false);
+        handleCancel();
     };
 
     return (
@@ -50,6 +74,7 @@ const CreateGroupModal = ({ open, setOpen }) => {
                         Hủy
                     </Button>
                     <Button
+                        loading={loading}
                         className="ml-2 text-white bg-main"
                         size="sm"
                         onClick={handleCreate}
@@ -76,7 +101,12 @@ const CreateGroupModal = ({ open, setOpen }) => {
                         )}
                     </Upload>
                 </Form.Item>
-                <Form.Item required name="name" label="Tên nhóm">
+                <Form.Item
+                    required
+                    name="name"
+                    rules={[{ required: true, message: "Nhập tên cộng đồng" }]}
+                    label="Tên nhóm"
+                >
                     <Input />
                 </Form.Item>
 
@@ -100,6 +130,7 @@ const CreateGroupModal = ({ open, setOpen }) => {
 CreateGroupModal.propTypes = {
     open: PropTypes.bool.isRequired,
     setOpen: PropTypes.func.isRequired,
+    setUpdateGroups: PropTypes.func.isRequired,
 };
 
 export default CreateGroupModal;

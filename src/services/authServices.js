@@ -12,9 +12,7 @@ class AuthServices {
 
         const { accessToken, refreshToken } = response.data.result;
         localStorage.setItem("accessToken", accessToken);
-        Cookies.set("refreshToken", refreshToken, {
-            expires: 7,
-        });
+        localStorage.setItem("refreshToken", refreshToken);
         await userServices.getMe();
 
         return response;
@@ -26,10 +24,10 @@ class AuthServices {
     }
     async logout() {
         await axiosIns.post("/users/logout", {
-            refreshToken: Cookies.get("refreshToken"),
+            refreshToken: localStorage.getItem("refreshToken"),
         });
         localStorage.setItem("accessToken", "");
-        Cookies.remove("refreshToken");
+        localStorage.setItem("refreshToken", "");
         localStorage.setItem("user", "");
     }
 

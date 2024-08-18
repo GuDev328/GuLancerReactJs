@@ -1,5 +1,5 @@
 import "react-toastify/dist/ReactToastify.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Avatar, Button, Chip, Input } from "@material-tailwind/react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -12,10 +12,12 @@ import CreateGroupModal from "./CreateGroupModal";
 function ControlCommunity() {
     const [keySeachGroup, setKeySeachGroup] = useState("");
     const [openCreateGroupModal, setOpenCreateGroupModal] = useState(false);
+    const [updateGroups, setUpdateGroups] = useState(false);
     const getGroups = useQuery({
         queryKey: ["getListGroup"],
         queryFn: groupServices.getGroups,
     });
+    useEffect(() => {}, [updateGroups]);
 
     return (
         <>
@@ -120,6 +122,7 @@ function ControlCommunity() {
             <CreateGroupModal
                 open={openCreateGroupModal}
                 setOpen={setOpenCreateGroupModal}
+                setUpdateGroups={setUpdateGroups}
             />
         </>
     );

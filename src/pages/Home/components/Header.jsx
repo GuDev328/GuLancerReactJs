@@ -35,8 +35,10 @@ function Header() {
     useEffect(() => {
         if (location.pathname === "/") {
             const token = localStorage.getItem("accessToken");
-            const userInfoo = JSON.parse(localStorage.getItem("user"));
             if (!token) navigate("/find-jobs");
+            const userInfoo =
+                localStorage.getItem("user") &&
+                JSON.parse(localStorage.getItem("user"));
             if (userInfoo && userInfoo.role === "0") navigate("/find-jobs");
             if (userInfoo && userInfoo.role === "1")
                 navigate("/find-freelancers");

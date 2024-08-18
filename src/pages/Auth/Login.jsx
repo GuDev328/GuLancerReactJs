@@ -1,10 +1,10 @@
 import "./Login.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import logo from "/logo.png";
 import authServices from "../../services/authServices";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 import { Button, Input } from "@material-tailwind/react";
 
 function Login() {
@@ -12,6 +12,13 @@ function Login() {
     const [email, setEmail] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const navigateTo = useNavigate();
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    useEffect(() => {
+        const jwt = queryParams.get("jwt");
+        if (jwt === "out")
+            toast.info("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại");
+    }, []);
 
     const handleTogglePassword = () => {
         setShowPassword(!showPassword);

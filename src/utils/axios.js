@@ -26,7 +26,7 @@ export const refreshTokenFunc = async (refreshToken) => {
     try {
         const res = await axiosN.post("/users/refresh-token", { refreshToken });
         localStorage.setItem("accessToken", res.data.result.accessToken);
-        Cookies.set("refreshToken", res.data.result.refreshToken);
+        localStorage.setItem("refreshToken", res.data.result.refreshToken);
         return res.data.result.accessToken;
     } catch (error) {
         console.log(error);
@@ -35,14 +35,20 @@ export const refreshTokenFunc = async (refreshToken) => {
 
 const checkToken = async () => {
     const accessToken = localStorage.getItem("accessToken");
-    const refreshToken = Cookies.get("refreshToken");
+    const refreshToken = localStorage.getItem("refreshToken");
     if (accessToken && refreshToken) {
         const decodedToken = jwtDecode.jwtDecode(accessToken);
+        const decodedRFToken = jwtDecode.jwtDecode(refreshToken);
         let date = new Date();
+        if (decodedRFToken.exp < date.getTime() / 1000) {
+            window.location.href = "/login?jwt=out";
+        }
         if (decodedToken.exp < date.getTime() / 1000) {
             await refreshTokenFunc(refreshToken);
         }
+        return true;
     } else {
+        window.location.href = "/login?jwt=out";
         return false;
     }
 };

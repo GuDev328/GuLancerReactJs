@@ -2,7 +2,8 @@ import "react-toastify/dist/ReactToastify.css";
 import ControlCommunity from "./components/ControlCommunity";
 import Posts from "./components/Posts";
 import { useSelector } from "react-redux";
-
+import { Routes, Route } from "react-router-dom";
+import Group from "./Group";
 function Community() {
     const isMobile = useSelector((state) => state.screen.isMobile);
     const isLgScreen = useSelector((state) => state.screen.isLgScreen);
@@ -17,7 +18,10 @@ function Community() {
                     className="flex justify-center w-[100vw] md:w-[63vw]"
                     style={isLgScreen ? { width: "calc(100vw - 320px)" } : {}}
                 >
-                    <Posts />
+                    <Routes>
+                        <Route path="/" element={<Posts />} />
+                        <Route path="/:id" element={<Group />} />
+                    </Routes>
                 </div>
             </div>
         </>

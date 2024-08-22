@@ -10,6 +10,10 @@ class GroupServices {
         const response = await axiosIns.postAuth("/groups/create", data);
         return response.data;
     }
+    async getGroupById(id) {
+        const response = await axiosIns.getAuth(`/groups/${id}`);
+        return response.data;
+    }
 }
 
 const groupServices = new GroupServices();

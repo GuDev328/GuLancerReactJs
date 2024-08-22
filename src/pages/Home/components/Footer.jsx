@@ -2,7 +2,7 @@ import React from "react";
 
 function Footer(props) {
     return (
-        <div className="px-5 md:px-24 py-5 bg-main bg-opacity-80 text-white">
+        <div className="px-5  md:px-24 py-5 bg-main bg-opacity-80 text-white">
             <div className=" flex flex-wrap md:flex-row justify-between   ">
                 <div className="flex flex-col items-center">
                     <img className="w-[160px]" src="/logo-white.png" alt="" />

@@ -5,6 +5,7 @@ import FindJob from "../FindJob";
 import Community from "../Community";
 import MyProjects from "../Projects";
 import FindFreelancer from "../FindFreelancer";
+import Group from "../Community/Group";
 function Home() {
     return (
         <>
@@ -12,8 +13,9 @@ function Home() {
             <Routes>
                 <Route path="/find-jobs" element={<FindJob />} />
                 <Route path="/find-freelancers" element={<FindFreelancer />} />
-                <Route path="/community" element={<Community />} />
+                <Route path="/community/*" element={<Community />} />
                 <Route path="/projects" element={<MyProjects />} />
+                <Route path="/group" element={<Group />} />
             </Routes>
             <Footer />
         </>

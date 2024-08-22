@@ -3,6 +3,7 @@ import ForgotPassword from "./pages/Auth/ForgotPassword";
 import ForgotPasswordSuccess from "./pages/Auth/ForgotPasswordSuccess";
 import Register from "./pages/Auth/Register";
 import RegisterSuccess from "./pages/Auth/RegisterSuccess";
+import Group from "./pages/Community/Group";
 import Home from "./pages/Home";
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -10,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { setIsMobile, setIsLgScreen } from "./stores/slice/screen.slice";
 
 import "./App.css";
+
 function App() {
     const dispatch = useDispatch();
 
@@ -34,6 +36,7 @@ function App() {
                     path="/forgot-password-success"
                     element={<ForgotPasswordSuccess />}
                 />
+
                 <Route path="/register" element={<Register />} />
                 <Route path="/register-success" element={<RegisterSuccess />} />
                 <Route path="/*" element={<Home />} />

@@ -45,7 +45,8 @@ const CreateGroupModal = ({ open, setOpen }) => {
         const values = await form.getFieldsValue();
         const data = {
             ...values,
-            cover_photo: "",
+            cover_photo:
+                "https://gulancer.s3.ap-southeast-1.amazonaws.com/images/168b01bba582d1916e257f100.png",
         };
         if (fileList[0]) {
             const upImage = await mediaServices.uploadImage(

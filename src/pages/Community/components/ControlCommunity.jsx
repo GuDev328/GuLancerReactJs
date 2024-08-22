@@ -2,7 +2,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
 import { Avatar, Button, Chip, Input } from "@material-tailwind/react";
 import { useQuery } from "@tanstack/react-query";
-
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 import { Spin } from "antd";
@@ -17,6 +17,7 @@ function ControlCommunity() {
         queryKey: ["getListGroup"],
         queryFn: groupServices.getGroups,
     });
+    const navigateTo = useNavigate();
     useEffect(() => {}, [updateGroups]);
 
     return (
@@ -69,7 +70,10 @@ function ControlCommunity() {
                             return (
                                 <div
                                     key={group._id}
-                                    className="w-[90%] m-2 mt-0 rounded-md h-12 py-2 bg-[#F0F2F5] flex items-center"
+                                    onClick={() =>
+                                        navigateTo(`/community/${group._id}`)
+                                    }
+                                    className="w-[90%] cursor-pointer m-2 mt-0 rounded-md h-12 py-2 bg-[#F0F2F5] flex items-center"
                                 >
                                     <Avatar
                                         src={group.cover_photo}

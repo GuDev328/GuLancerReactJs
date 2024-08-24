@@ -47,7 +47,10 @@ function ControlCommunity() {
                         </Button>
                     </div>
 
-                    <div className="w-[90%] m-2 rounded-md h-12 bg-[#F0F2F5] flex items-center">
+                    <div
+                        onClick={() => navigateTo(`/community`)}
+                        className="w-[90%]  cursor-pointer m-2 rounded-md h-12 bg-[#F0F2F5] flex items-center"
+                    >
                         <i className="fa-light text-[27px] ml-5 mr-3 fa-newspaper"></i>
                         <p className=" font-bold">Bảng tin</p>
                     </div>

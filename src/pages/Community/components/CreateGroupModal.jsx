@@ -14,6 +14,7 @@ import TextArea from "antd/es/input/TextArea";
 import { PlusOutlined } from "@ant-design/icons";
 import mediaServices from "../../../services/mediaServices";
 import groupServices from "../../../services/groupServices";
+import { Button as Button2 } from "@material-tailwind/react";
 
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 
@@ -71,17 +72,17 @@ const CreateGroupModal = ({ open, setOpen }) => {
             title="Tạo mới cộng đồng"
             footer={
                 <>
-                    <Button size="sm" onClick={handleCancel}>
+                    <Button2 size="sm" onClick={handleCancel}>
                         Hủy
-                    </Button>
-                    <Button
+                    </Button2>
+                    <Button2
                         loading={loading}
                         className="ml-2 text-white bg-main"
                         size="sm"
                         onClick={handleCreate}
                     >
                         Tạo
-                    </Button>
+                    </Button2>
                 </>
             }
         >

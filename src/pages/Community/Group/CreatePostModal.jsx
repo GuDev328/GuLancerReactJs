@@ -7,6 +7,7 @@ import {
     Upload,
     Image,
     message,
+    Tooltip,
 } from "antd";
 import { useState } from "react";
 const { TextArea } = Input;
@@ -15,17 +16,20 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { Button as Button2 } from "@material-tailwind/react";
 import { PlusOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import { TweetType } from "../../../constant/tweet";
+import tweetServices from "../../../services/tweetServices";
 
 const CreatePostModal = ({ open, setOpen, groupId, groupName }) => {
     const userInfo = useSelector((state) => state.user.userInfo);
     const handleCancel = () => {
+        setContent("");
         setMediaList([]);
+        setUploadMedia(false);
         setOpen(false);
     };
     const [mediaList, setMediaList] = useState([]);
-
-    console.log("mediaList", mediaList);
-
+    const [uploadMedia, setUploadMedia] = useState(false);
+    const [content, setContent] = useState("");
     const handleUploadChange = ({ fileList }) => {
         const updatedList = fileList.map((file) => {
             if (file.originFileObj) {
@@ -62,7 +66,6 @@ const CreatePostModal = ({ open, setOpen, groupId, groupName }) => {
         setMediaList(updatedList);
     };
     const customIsImageUrl = (file) => {
-        // Tùy chỉnh logic kiểm tra, ví dụ kiểm tra đuôi file hoặc content-type
         return (
             file.type.startsWith("image/") ||
             /\.(jpg|jpeg|png|gif)$/i.test(file.thumbUrl)
@@ -78,11 +81,33 @@ const CreatePostModal = ({ open, setOpen, groupId, groupName }) => {
             return originNode;
         }
     };
+
+    const handleCreate = async () => {
+        if (!content) {
+            message.error("Vui lòng nhập nội dung bài viết!");
+            return;
+        }
+        const data = {
+            group_id: groupId,
+            content,
+            medias: [],
+            type: TweetType.TWEET,
+            parent_id: null,
+            mentions: [],
+        };
+        const create = await tweetServices.createTweet(data);
+        if (create && create.status === 200) {
+            handleCancel();
+            message.success("Tạo bài viết thành công!");
+        }
+    };
     return (
         <Modal
             open={open}
-            width={"50vw"}
+            width={"90%"}
+            style={{ maxWidth: "900px" }}
             onClose={handleCancel}
+            maskClosable={false}
             onCancel={handleCancel}
             title={<p className="text-center">Tạo bài viết mới</p>}
             centered
@@ -95,7 +120,7 @@ const CreatePostModal = ({ open, setOpen, groupId, groupName }) => {
                         //loading={loading}
                         className="ml-2 text-white bg-main"
                         size="sm"
-                        //onClick={handleCreate}
+                        onClick={handleCreate}
                     >
                         Tạo
                     </Button2>
@@ -110,97 +135,118 @@ const CreatePostModal = ({ open, setOpen, groupId, groupName }) => {
                         <p className="font-semibold">{groupName}</p>
                     </div>
                 </div>
-                <Form>
-                    <Form.Item>
-                        <TextArea
-                            placeholder="Nhập nội dung bài viết..."
-                            className="custom-textarea"
-                            style={{
-                                border: "none",
-                                outline: "none",
-                                boxShadow: "none",
-                            }}
-                            autoSize={{ minRows: 3 }}
-                        ></TextArea>
-                    </Form.Item>
-                </Form>
+
+                <TextArea
+                    placeholder="Nhập nội dung bài viết..."
+                    className="custom-textarea"
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    style={{
+                        border: "none",
+                        fontSize: "16px",
+                        outline: "none",
+                        boxShadow: "none",
+                    }}
+                    autoSize={{ minRows: 3 }}
+                ></TextArea>
             </div>
+            <div className={uploadMedia ? "" : "hidden"}>
+                <Upload
+                    multiple
+                    listType="picture-card"
+                    fileList={mediaList.filter((file) =>
+                        file.type.startsWith("image/")
+                    )}
+                    onChange={handleUploadChange}
+                    itemRender={itemRender}
+                    onRemove={handleRemove}
+                    // itemRender={customItemRender}
 
-            <Upload
-                multiple
-                style={{ width: "100%", height: 200 }}
-                listType="picture-card"
-                fileList={mediaList.filter((file) =>
-                    file.type.startsWith("image/")
-                )}
-                onChange={handleUploadChange}
-                itemRender={itemRender}
-                onRemove={handleRemove}
-                // itemRender={customItemRender}
-
-                isImageUrl={customIsImageUrl}
-                beforeUpload={(file) => {
-                    const isImageOrVideo =
-                        file.type.startsWith("image/") ||
-                        file.type.startsWith("video/");
-                    if (!isImageOrVideo) {
-                        message.error(
-                            "Bạn chỉ có thể upload file ảnh hoặc video!"
-                        );
-                    }
-                    return false;
-                }}
-            >
-                <div>
-                    <PlusOutlined />
-                </div>
-            </Upload>
-            <div className="flex flex-wrap">
-                {mediaList.length > 0 &&
-                    mediaList.map((file) => {
-                        if (file.type.startsWith("video/")) {
-                            return (
-                                <div
-                                    key={file.uid}
-                                    style={{
-                                        position: "relative",
-                                        margin: "10px",
-                                    }}
-                                >
-                                    <video
-                                        width="200px"
-                                        height="100px"
-                                        controls
-                                    >
-                                        <source
-                                            src={file.thumbUrl}
-                                            type={file.type}
-                                        />
-                                        Your browser does not support the video
-                                        tag.
-                                    </video>
-                                    <div
-                                        style={{
-                                            position: "absolute",
-                                            top: 8,
-                                            right: 8,
-                                            display: "flex",
-                                            flexDirection: "column",
-                                        }}
-                                    >
-                                        <Button
-                                            icon={<DeleteOutlined />}
-                                            onClick={() => handleRemove(file)}
-                                            style={{
-                                                background:
-                                                    "rgba(255, 255, 255, 0.8)",
-                                            }}
-                                        />
-                                    </div>
-                                </div>
+                    isImageUrl={customIsImageUrl}
+                    beforeUpload={(file) => {
+                        const isImageOrVideo =
+                            file.type.startsWith("image/") ||
+                            file.type.startsWith("video/");
+                        if (!isImageOrVideo) {
+                            message.error(
+                                "Bạn chỉ có thể upload file ảnh hoặc video!"
                             );
                         }
-                    })}
+                        return false;
+                    }}
+                >
+                    <div>
+                        <PlusOutlined />
+                        <div style={{ marginTop: 8 }}>Tải ảnh/video</div>
+                    </div>
+                </Upload>
+                <div className="flex flex-wrap">
+                    {mediaList.length > 0 &&
+                        mediaList.map((file) => {
+                            if (file.type.startsWith("video/")) {
+                                return (
+                                    <div
+                                        key={file.uid}
+                                        style={{
+                                            position: "relative",
+                                            margin: "10px",
+                                        }}
+                                    >
+                                        <video
+                                            width="200px"
+                                            height="100px"
+                                            controls
+                                        >
+                                            <source
+                                                src={file.thumbUrl}
+                                                type={file.type}
+                                            />
+                                            Your browser does not support the
+                                            video tag.
+                                        </video>
+                                        <div
+                                            style={{
+                                                position: "absolute",
+                                                top: 8,
+                                                right: 8,
+                                                display: "flex",
+                                                flexDirection: "column",
+                                            }}
+                                        >
+                                            <Button
+                                                icon={<DeleteOutlined />}
+                                                onClick={() =>
+                                                    handleRemove(file)
+                                                }
+                                                style={{
+                                                    background:
+                                                        "rgba(255, 255, 255, 0.8)",
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                );
+                            }
+                        })}
+                </div>
+            </div>
+
+            <div className="p-3 border-2 flex items-center justify-between mt-2 rounded-xl">
+                <p className="font-bold">Thêm vào bài viết của bạn</p>
+                <div className="text-[22px]">
+                    <Tooltip title="Ảnh">
+                        <i
+                            onClick={() => setUploadMedia(true)}
+                            className="fad text-[#37944e] fa-image-polaroid"
+                        ></i>
+                    </Tooltip>
+                    <Tooltip title="Video">
+                        <i
+                            onClick={() => setUploadMedia(true)}
+                            className="mx-6 text-[red] fad fa-film-alt"
+                        ></i>
+                    </Tooltip>
+                </div>
             </div>
         </Modal>
     );

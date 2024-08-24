@@ -111,6 +111,9 @@ function ControlCommunity() {
                             return (
                                 <div
                                     key={group._id}
+                                    onClick={() =>
+                                        navigateTo(`/community/${group._id}`)
+                                    }
                                     className="w-[90%] m-2 mt-0 rounded-md h-12 py-2 bg-[#F0F2F5] flex items-center"
                                 >
                                     <Avatar

@@ -4,9 +4,12 @@ import React, { useEffect } from "react";
 import ReadMoreReadLess from "react-read-more-read-less";
 import SliderPost from "./SliderPost";
 import Comment from "./Comment";
-import $ from "jquery";
+import PropTypes from "prop-types";
 
-const Post = () => {
+import $ from "jquery";
+import { formatDateTime, formatNumber } from "../../../utils/common";
+
+const Post = ({ post }) => {
     const [openSlider, setOpenSlider] = React.useState(false);
     const [textComment, setTextComment] = React.useState("");
     const [tym, setTym] = React.useState(false);
@@ -15,18 +18,17 @@ const Post = () => {
         <div className="bg-white p-4 rounded-3xl my-3 w-[90%] max-w-[700px]">
             <div className="flex  items-start justify-between">
                 <div className="flex items-center">
-                    <Avatar size={45} />
+                    <Avatar size={45} src={post?.user?.avatar} />
                     <div className="leading-none ml-2 mt-3">
-                        <p className="text-[16px]">Phạm Tiến Đạt</p>
+                        <p className="text-[16px]">{post?.user?.name}</p>
                         <p className="text-[14px] font-bold">
-                            {" "}
-                            Cộng đồng IT Hà Nội
+                            {post?.group[0]?.name}
                         </p>
                     </div>
                 </div>
                 <div className="flex mt-2 leading-none">
                     <p className="text-[14px] text-gray-500">
-                        18/05/2025 8:45 PM
+                        {formatDateTime(post?.created_at)}
                     </p>
                     <i className="text-[25px] ml-2 fa-solid fa-ellipsis-stroke-vertical"></i>
                 </div>
@@ -42,18 +44,7 @@ const Post = () => {
                         <span style={{ color: "#2881E2" }}>Thu gọn</span>
                     }
                 >
-                    Contrary to popular belief, Lorem Ipsum is not simply random
-                    text. It has roots in a piece of classical Latin literature
-                    from 45 BC, making it over 2000 years old. Richard
-                    McClintock, a Latin professor at Hampden-Sydney College in
-                    Virginia, looked up one of the more obscure Latin words,
-                    consectetur, from a Lorem Ipsum passage, and going through
-                    the cites of the word in classical literature, discovered
-                    the undoubtable source. Lorem mpden-Sydney College in
-                    Virginia, looked up one of the more obscure Latin words,
-                    consectetur, from a Lorem Ipsum passage, and going through
-                    the cites of the word in classical literature, discovered
-                    the undoubtable source. Lorem
+                    {post?.content}
                 </ReadMoreReadLess>
             </div>
 
@@ -97,8 +88,14 @@ const Post = () => {
                 </div>
             </div>
             <div className="text-gray-700 text-[15px] flex justify-between">
-                <p>2,3K lượt thích</p>
-                <p>300 bình luận, 7 lượt chia sẻ</p>
+                <p>
+                    {formatNumber(post?.likes)} lượt thích,{" "}
+                    {formatNumber(post?.views)} lượt xem
+                </p>
+                <p>
+                    {formatNumber(post?.comment)} bình luận,{" "}
+                    {formatNumber(post?.retweet)} lượt chia sẻ
+                </p>
             </div>
             <hr className="mt-1" />
             <div className="flex mt-2 justify-around">
@@ -155,6 +152,10 @@ const Post = () => {
             <SliderPost open={openSlider} setOpen={setOpenSlider} />
         </div>
     );
+};
+
+Post.propTypes = {
+    post: PropTypes.object.isRequired,
 };
 
 export default Post;

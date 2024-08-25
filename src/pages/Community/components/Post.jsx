@@ -25,34 +25,47 @@ const Post = ({ post }) => {
 
         return (
             <div className="grid grid-cols-2 gap-2">
-                {mediaFiles.map((media, index) => (
-                    <div key={index} className="relative  mb-2">
-                        {media.type === 0 ? (
-                            <Image
-                                src={media.url}
-                                alt={`Image ${index}`}
-                                height={"190px"}
-                                width={"100%"}
-                                style={{ objectFit: "cover" }}
-                                preview={true}
-                            />
-                        ) : (
-                            <VideoHLS
-                                src={media.url}
-                                controlType={
-                                    mediaCount > 4 && index === 3
-                                        ? "none"
-                                        : "control"
-                                }
-                            />
-                        )}
-                        {index === 3 && remainingFilesCount > 0 && (
-                            <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 text-white text-xl">
-                                +{remainingFilesCount}
-                            </div>
-                        )}
-                    </div>
-                ))}
+                {mediaFiles.map((media, index) => {
+                    const isSingleInRow =
+                        mediaFiles.length % 2 !== 0 &&
+                        index === mediaFiles.length - 1;
+
+                    return (
+                        <div
+                            key={index}
+                            className={`relative mb-2 ${
+                                isSingleInRow ? "col-span-2" : ""
+                            }`}
+                        >
+                            {media.type === 0 ? (
+                                <div className="h-[187px] rounded-lg overflow-hidden">
+                                    <Image
+                                        src={media.url}
+                                        alt={`Image ${index}`}
+                                        height={"187px"}
+                                        width={"100%"}
+                                        style={{ objectFit: "cover" }}
+                                        preview={true}
+                                    />
+                                </div>
+                            ) : (
+                                <VideoHLS
+                                    src={media.url}
+                                    controlType={
+                                        mediaCount > 4 && index === 3
+                                            ? "none"
+                                            : "control"
+                                    }
+                                />
+                            )}
+                            {index === 3 && remainingFilesCount > 0 && (
+                                <div className="absolute top-0 left-0 w-full h-[187px] flex items-center justify-center bg-black bg-opacity-50 text-white text-xl">
+                                    +{remainingFilesCount}
+                                </div>
+                            )}
+                        </div>
+                    );
+                })}
             </div>
         );
     };

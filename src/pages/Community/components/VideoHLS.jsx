@@ -18,16 +18,12 @@ export default function VideoHLS({ src, controlType = "control" }) {
     return (
         <div style={{ width: "100%", height: "auto" }}>
             <div ref={videoRef} style={{ position: "relative" }}>
-                <MediaPlayer
-                    playsInline
-                    src="http://localhost:3030/medias/video-hls/w2cTffblEhW9RbqReB5Uu/master.m3u8"
-                    controls={false}
-                >
+                <MediaPlayer playsInline src={src} controls={false}>
                     <MediaProvider />
                     {controlType === "control" && (
                         <>
                             <DefaultVideoLayout
-                                thumbnails="https://files.vidstack.io/sprite-fight/thumbnails.vtt"
+                                thumbnails=""
                                 icons={defaultLayoutIcons}
                             />
                         </>

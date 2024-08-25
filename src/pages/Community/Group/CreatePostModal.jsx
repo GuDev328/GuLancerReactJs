@@ -18,6 +18,7 @@ import { Button as Button2 } from "@material-tailwind/react";
 import { PlusOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import { TweetType } from "../../../constant/tweet";
 import tweetServices from "../../../services/tweetServices";
+import mediaServices from "../../../services/mediaServices";
 
 const CreatePostModal = ({ open, setOpen, groupId, groupName }) => {
     const userInfo = useSelector((state) => state.user.userInfo);
@@ -95,6 +96,43 @@ const CreatePostModal = ({ open, setOpen, groupId, groupName }) => {
             parent_id: null,
             mentions: [],
         };
+        if (uploadMedia) {
+            const images = mediaList
+                .filter((item) => isImage(item))
+                .map((item) => item.originFileObj);
+            const videos = mediaList
+                .filter((item) => !isImage(item))
+                .map((item) => item.originFileObj);
+            if (images.length > 0 && videos.length > 0) {
+                const [imagesRes, videosRes] = await Promise.all([
+                    mediaServices.uploadImage(images),
+                    Promise.all(
+                        videos.map((video) =>
+                            mediaServices.uploadVideoHLS(video)
+                        )
+                    ),
+                ]);
+                data.medias = [
+                    ...imagesRes.result.map((item) => item),
+                    ...videosRes.map((item) => item?.result[0]),
+                ];
+            } else if (images.length > 0 || videos.length === 0) {
+                const [imagesRes] = await Promise.all([
+                    mediaServices.uploadImage(images),
+                ]);
+                data.medias = [...imagesRes.result.map((item) => item)];
+            } else if (images.length === 0 && videos.length > 0) {
+                const [videosRes] = await Promise.all([
+                    Promise.all(
+                        videos.map((video) =>
+                            mediaServices.uploadVideoHLS(video)
+                        )
+                    ),
+                ]);
+                data.medias = [...videosRes.map((item) => item?.result[0])];
+            }
+        }
+
         const create = await tweetServices.createTweet(data);
         if (create && create.status === 200) {
             handleCancel();

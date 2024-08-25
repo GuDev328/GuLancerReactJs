@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 #rooot {
     font-family: "Roboto Condensed" !important;
     line-height: 1.5;

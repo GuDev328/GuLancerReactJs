@@ -20,19 +20,19 @@ const SliderPost = ({ open, setOpen }) => {
                         width={"100%"}
                         height={"100%"}
                         src="/3.JPG"
-                        preview={false}
+                        preview={true}
                     />
                     <Image
                         width={"100%"}
                         height={"100%"}
                         src="/3.JPG"
-                        preview={false}
+                        preview={true}
                     />
                     <Image
                         width={"100%"}
                         height={"100%"}
                         src="/3.JPG"
-                        preview={false}
+                        preview={true}
                     />
                 </Carousel>
             </Modal>

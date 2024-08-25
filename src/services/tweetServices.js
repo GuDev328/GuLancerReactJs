@@ -11,6 +11,12 @@ class TweetServices {
         );
         return response.data;
     }
+    async getPostsByGroup(data) {
+        const response = await axiosIns.getAuth(
+            `tweets/group/${data.group_id}?page=${data.page}&limit=${data.limit}`
+        );
+        return response.data;
+    }
 }
 
 const tweetServices = new TweetServices();

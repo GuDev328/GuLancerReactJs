@@ -7,6 +7,7 @@ import { data } from "jquery";
 
 import { useSelector } from "react-redux";
 import CreatePostModal from "./CreatePostModal";
+import PostsGroup from "./GroupPosts";
 
 const Group = () => {
     const userInfo = useSelector((state) => state.user.userInfo);
@@ -42,8 +43,8 @@ const Group = () => {
                     )}
                 </div>
             </div>
-            <div className="flex mt-3 justify-between">
-                <div className="w-full lg:w-[71%]">
+            <div className="flex mt-3 items-start justify-between">
+                <div className="w-full lg:w-[65%]">
                     <div className="w-full rounded-xl p-5  bg-white">
                         <div className="flex w-full ">
                             <Avatar size={50} src={userInfo?.avatar} />
@@ -55,8 +56,10 @@ const Group = () => {
                             </div>
                         </div>
                     </div>
+
+                    <PostsGroup group_id={id} />
                 </div>
-                <div className="rounded-lg p-3 mr-7 hidden lg:block bg-white lg:w-[25%]">
+                <div className="rounded-lg p-3 mr-7 hidden lg:block bg-white lg:w-[30%]">
                     <p className="font-bold text-[19px] mb-2">Giới thiệu</p>
                     <p className="text-[15px] mb-1">
                         {detaiGroup?.description}

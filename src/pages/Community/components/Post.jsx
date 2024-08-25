@@ -15,172 +15,46 @@ const Post = ({ post }) => {
     const [textComment, setTextComment] = React.useState("");
     const [tym, setTym] = React.useState(false);
     const { medias } = post;
-    const imageCount = medias.length;
+    const mediaCount = medias.length;
 
     const renderMedia = () => {
         if (!medias || medias.length === 0) return null;
 
-        const videoMedias = medias.filter((media) => media.type !== 0);
-        const imageMedias = medias.filter((media) => media.type === 0);
+        const mediaFiles = medias.slice(0, 4); // Limit to 4 files
+        const remainingFilesCount = medias.length - 4; // Count of remaining files
 
-        // Only videos
-        if (videoMedias.length > 0 && imageMedias.length === 0) {
-            return (
-                <div className="w-full">
-                    {videoMedias.slice(0, 1).map((media, index) => (
-                        <div key={index} className="w-full mb-2">
-                            <VideoHLS src={media.url} />
-                        </div>
-                    ))}
-                    {videoMedias.length === 2 && (
-                        <div key={videoMedias[1].url} className="w-full mb-2">
-                            <VideoHLS src={videoMedias[1].url} />
-                        </div>
-                    )}
-                    {videoMedias.length > 2 && (
-                        <div className="w-full mb-2 relative">
-                            <VideoHLS
-                                controlType="none"
-                                src={videoMedias[videoMedias.length - 1].url}
+        return (
+            <div className="grid grid-cols-2 gap-2">
+                {mediaFiles.map((media, index) => (
+                    <div key={index} className="relative  mb-2">
+                        {media.type === 0 ? (
+                            <Image
+                                src={media.url}
+                                alt={`Image ${index}`}
+                                height={"190px"}
+                                width={"100%"}
+                                style={{ objectFit: "cover" }}
+                                preview={true}
                             />
+                        ) : (
+                            <VideoHLS
+                                src={media.url}
+                                controlType={
+                                    mediaCount > 4 && index === 3
+                                        ? "none"
+                                        : "control"
+                                }
+                            />
+                        )}
+                        {index === 3 && remainingFilesCount > 0 && (
                             <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 text-white text-xl">
-                                +{videoMedias.length - 2}
-                            </div>
-                        </div>
-                    )}
-                </div>
-            );
-        }
-
-        // Only images
-        if (imageMedias.length > 0 && videoMedias.length === 0) {
-            return (
-                <div className="w-full">
-                    <div
-                        className={`grid ${
-                            imageMedias.length > 4
-                                ? "grid-cols-2 gap-2"
-                                : "grid-cols-2"
-                        }`}
-                    >
-                        {imageMedias.slice(0, 3).map((media, index) => (
-                            <div key={index} className="w-full mb-2 relative">
-                                <Image
-                                    src={media.url}
-                                    alt={`Image ${index}`}
-                                    style={{
-                                        objectFit: "cover",
-                                        width: "100%",
-                                        height: "100%",
-                                    }}
-                                    preview={true}
-                                />
-                            </div>
-                        ))}
-                        {imageMedias.length === 4 && (
-                            <div className="w-full mb-2 relative">
-                                <Image
-                                    src={imageMedias[3].url}
-                                    style={{
-                                        objectFit: "cover",
-                                        width: "100%",
-                                        height: "100%",
-                                    }}
-                                    preview={true}
-                                />
-                            </div>
-                        )}
-                        {imageMedias.length > 4 && (
-                            <div className="w-full mb-2 relative">
-                                <Image
-                                    src={imageMedias[3].url}
-                                    style={{
-                                        objectFit: "cover",
-                                        width: "100%",
-                                        height: "100%",
-                                    }}
-                                    preview={true}
-                                />
-                                <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 text-white text-xl">
-                                    +{imageMedias.length - 4}
-                                </div>
+                                +{remainingFilesCount}
                             </div>
                         )}
                     </div>
-                </div>
-            );
-        }
-
-        // 1 image and 1 video
-        if (imageMedias.length === 1 && videoMedias.length === 1) {
-            return (
-                <div className="w-full">
-                    <div className="w-full mb-2">
-                        <VideoHLS src={videoMedias[0].url} />
-                    </div>
-                    <div className="w-full mb-2">
-                        <Image
-                            src={imageMedias[0].url}
-                            alt="Single Image"
-                            style={{
-                                objectFit: "cover",
-                                width: "100%",
-                                height: "auto",
-                            }}
-                            preview={true}
-                        />
-                    </div>
-                </div>
-            );
-        }
-
-        // Multiple videos and images
-        if (videoMedias.length > 0 && imageMedias.length > 0) {
-            return (
-                <div className="w-full">
-                    <div className="w-full mb-2">
-                        <VideoHLS src={videoMedias[0].url} />
-                    </div>
-                    <div className="grid grid-cols-2 gap-2">
-                        {imageMedias.slice(0, 2).map((media, index) => (
-                            <div key={index} className="w-full mb-2 relative">
-                                <Image
-                                    src={media.url}
-                                    alt={`Image ${index}`}
-                                    style={{
-                                        objectFit: "cover",
-                                        width: "100%",
-                                        height: "100%",
-                                    }}
-                                    preview={true}
-                                />
-                            </div>
-                        ))}
-                        {imageMedias.length > 2 && (
-                            <div className="w-full mb-2 relative">
-                                <Image
-                                    src={
-                                        imageMedias[imageMedias.length - 1].url
-                                    }
-                                    alt={`Image ${imageMedias.length - 1}`}
-                                    style={{
-                                        objectFit: "cover",
-                                        width: "100%",
-                                        height: "100%",
-                                    }}
-                                    preview={true}
-                                />
-                                <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 text-white text-xl">
-                                    +{imageMedias.length - 2}
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            );
-        }
-
-        return null;
+                ))}
+            </div>
+        );
     };
 
     return (

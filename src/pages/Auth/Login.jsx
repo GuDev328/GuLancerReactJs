@@ -6,19 +6,38 @@ import logo from "/logo.png";
 import authServices from "../../services/authServices";
 import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 import { Button, Input } from "@material-tailwind/react";
+import userServices from "../../services/userServices";
+import { Modal } from "antd";
 
 function Login() {
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const navigateTo = useNavigate();
+    const [showModalRole, setShowModalRole] = useState(false);
     const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
+    const [chooseRole, setChooseRole] = useState(2);
+
     useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
         const jwt = queryParams.get("jwt");
-        if (jwt === "out")
+        if (jwt && jwt === "out")
             toast.info("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại");
-    }, []);
+
+        const access_token = queryParams.get("access_token");
+        const refresh_token = queryParams.get("refresh_token");
+        const newUser = queryParams.get("newUser");
+        const fetchMe = async () => {
+            localStorage.setItem("accessToken", access_token);
+            localStorage.setItem("refreshToken", refresh_token);
+            await userServices.getMe();
+            if (newUser === "true") setShowModalRole(true);
+            else navigateTo("/");
+        };
+        if (access_token && refresh_token && newUser) {
+            fetchMe();
+        }
+    }, [navigateTo]);
 
     const handleTogglePassword = () => {
         setShowPassword(!showPassword);
@@ -40,6 +59,34 @@ function Login() {
         }
     };
 
+    const getGoogleAuthUrl = () => {
+        const url = "https://accounts.google.com/o/oauth2/v2/auth";
+        const query = {
+            client_id:
+                "294706840114-t2lg15qp50aq258pob2n3chvvdo7ue9i.apps.googleusercontent.com",
+            redirect_uri: "http://localhost:3030/users/oauth/google",
+            response_type: "code",
+            scope: [
+                "https://www.googleapis.com/auth/userinfo.profile",
+                "https://www.googleapis.com/auth/userinfo.email",
+            ].join(" "),
+            prompt: "consent",
+            access_type: "offline",
+        };
+        const queryString = new URLSearchParams(query).toString();
+        return `${url}?${queryString}`;
+    };
+    const link = getGoogleAuthUrl();
+
+    const handleInitRole = async () => {
+        if (chooseRole === 2) {
+            toast.error("Hãy chọn vai trò của bạn");
+            return;
+        } else {
+            await userServices.initRole({ role: chooseRole });
+            navigateTo("/");
+        }
+    };
     return (
         <div
             className="flex w-full h-[100vh] justify-center items-center"
@@ -121,9 +168,14 @@ function Login() {
                         >
                             Đăng nhập
                         </Button>
+
                         <Button
+                            onClick={() => (window.location.href = link)}
                             className="focus:outline-none mb-2"
-                            style={{ width: "70%", backgroundColor: "#fd2f19" }}
+                            style={{
+                                width: "70%",
+                                backgroundColor: "#fd2f19",
+                            }}
                             type="button"
                             size="sm"
                         >
@@ -138,6 +190,44 @@ function Login() {
                     </div>
                 </div>
             </div>
+            <Modal
+                centered
+                open={showModalRole}
+                title="Lựa chọn VAI TRÒ của bạn"
+                closeIcon={null}
+                footer={
+                    <Button
+                        onClick={handleInitRole}
+                        className="bg-main"
+                        size="sm"
+                    >
+                        Xác nhận
+                    </Button>
+                }
+            >
+                <div className="flex p-5 justify-around items-center mb-4">
+                    <Button
+                        className="p-4 focus:outline-none border-0"
+                        style={{
+                            backgroundColor:
+                                chooseRole === 0 ? "#2881E2" : "#333",
+                        }}
+                        onClick={() => setChooseRole(0)}
+                    >
+                        Tôi là Freelancer
+                    </Button>
+                    <Button
+                        className="p-4 focus:outline-none border-0"
+                        style={{
+                            backgroundColor:
+                                chooseRole === 1 ? "#2881E2" : "#333",
+                        }}
+                        onClick={() => setChooseRole(1)}
+                    >
+                        Tôi là Employer{" "}
+                    </Button>
+                </div>
+            </Modal>
             <ToastContainer stacked />
         </div>
     );

@@ -12,6 +12,19 @@ class UserServices {
         });
         return response;
     }
+
+    async initRole(data) {
+        const response = await axiosIns.postAuth(
+            "/users/init-role",
+            data,
+            (res) => {
+                const user = res.data.result;
+                localStorage.setItem("user", JSON.stringify(user));
+                store.dispatch(setUserInfo(res.data.result));
+            }
+        );
+        return response;
+    }
 }
 
 const userServices = new UserServices();

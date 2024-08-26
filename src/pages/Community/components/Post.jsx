@@ -10,7 +10,7 @@ import $ from "jquery";
 import { formatDateTime, formatNumber } from "../../../utils/common";
 import VideoHLS from "./VideoHLS";
 
-const Post = ({ post }) => {
+const Post = ({ post, isShowGroupName = true }) => {
     const [openSlider, setOpenSlider] = React.useState(false);
     const [textComment, setTextComment] = React.useState("");
     const [tym, setTym] = React.useState(false);
@@ -75,12 +75,20 @@ const Post = ({ post }) => {
             <div className="flex  items-start justify-between">
                 <div className="flex items-center">
                     <Avatar size={45} src={post?.user?.avatar} />
-                    <div className="leading-none ml-2 mt-3">
-                        <p className="text-[16px]">{post?.user?.name}</p>
-                        <p className="text-[14px] font-bold">
-                            {post?.group[0]?.name}
-                        </p>
-                    </div>
+                    {isShowGroupName ? (
+                        <div className="leading-none ml-2 mt-3">
+                            <p className="text-[16px]">{post?.user?.name}</p>
+                            <p className="text-[14px] font-bold">
+                                {post?.group[0]?.name}
+                            </p>
+                        </div>
+                    ) : (
+                        <div className="leading-none ml-2 ">
+                            <p className="text-[16px] font-semibold">
+                                {post?.user?.name}
+                            </p>
+                        </div>
+                    )}
                 </div>
                 <div className="flex mt-2 leading-none">
                     <p className="text-[14px] text-gray-500">
@@ -184,6 +192,7 @@ const Post = ({ post }) => {
 
 Post.propTypes = {
     post: PropTypes.object.isRequired,
+    isShowGroupName: PropTypes.bool,
 };
 
 export default Post;

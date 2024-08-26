@@ -24,7 +24,13 @@ const PostsGroup = ({ group_id }) => {
             <Spin spinning={getPosts.isLoading}></Spin>
             {posts?.map((post) => {
                 if (post.type === TweetType.TWEET)
-                    return <Post key={post._id} post={post} />;
+                    return (
+                        <Post
+                            isShowGroupName={false}
+                            key={post._id}
+                            post={post}
+                        />
+                    );
             })}
         </div>
     );

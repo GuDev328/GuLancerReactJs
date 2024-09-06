@@ -9,13 +9,22 @@ import PropTypes from "prop-types";
 import $ from "jquery";
 import { formatDateTime, formatNumber } from "../../../utils/common";
 import VideoHLS from "./VideoHLS";
+import { useSelector } from "react-redux";
 
 const Post = ({ post, isShowGroupName = true }) => {
     const [openSlider, setOpenSlider] = React.useState(false);
     const [textComment, setTextComment] = React.useState("");
     const [tym, setTym] = React.useState(false);
+    const [mediasPost, setMediasPost] = React.useState([]);
     const { medias } = post;
     const mediaCount = medias.length;
+    const userInfo = useSelector((state) => state.user.userInfo);
+
+    useEffect(() => {
+        if (medias.length > 0) {
+            setMediasPost(medias);
+        }
+    }, [medias]);
 
     const renderMedia = () => {
         if (!medias || medias.length === 0) return null;
@@ -33,16 +42,24 @@ const Post = ({ post, isShowGroupName = true }) => {
                     return (
                         <div
                             key={index}
-                            className={`relative mb-2 ${
+                            className={`relative  ${
                                 isSingleInRow ? "col-span-2" : ""
                             }`}
                         >
                             {media.type === 0 ? (
-                                <div className="h-[187px] rounded-lg overflow-hidden">
+                                <div
+                                    className={`${
+                                        isSingleInRow
+                                            ? "h-[300px]"
+                                            : "h-[187px]"
+                                    } rounded-lg overflow-hidden`}
+                                >
                                     <Image
                                         src={media.url}
                                         alt={`Image ${index}`}
-                                        height={"187px"}
+                                        height={
+                                            isSingleInRow ? "300px" : "187px"
+                                        }
                                         width={"100%"}
                                         style={{ objectFit: "cover" }}
                                         preview={true}
@@ -59,7 +76,10 @@ const Post = ({ post, isShowGroupName = true }) => {
                                 />
                             )}
                             {index === 3 && remainingFilesCount > 0 && (
-                                <div className="absolute top-0 left-0 w-full h-[187px] flex items-center justify-center bg-black bg-opacity-50 text-white text-xl">
+                                <div
+                                    onClick={() => setOpenSlider(true)}
+                                    className="absolute top-0 left-0 w-full h-[187px] flex items-center justify-center bg-black bg-opacity-50 text-white text-xl"
+                                >
                                     +{remainingFilesCount}
                                 </div>
                             )}
@@ -112,17 +132,6 @@ const Post = ({ post, isShowGroupName = true }) => {
                 </ReadMoreReadLess>
             </div>
             {renderMedia()}
-            {/* <div className="flex images-post gap-1 relative flex-wrap ">
-                <div className="w-[49%] relative">
-                    <Image width={"100%"} src="/3.JPG" preview={true} />
-                    <div
-                        onClick={() => setOpenSlider(true)}
-                        className="cursor-pointer absolute text-[50px] content-center text-white text-center top-0 w-full h-full bg-blue-gray-800 opacity-80"
-                    >
-                        +5
-                    </div>
-                </div>
-            </div> */}
             <div className="text-gray-700 text-[15px] flex justify-between">
                 <p>
                     {formatNumber(post?.likes)} thích,{" "}
@@ -159,14 +168,14 @@ const Post = ({ post, isShowGroupName = true }) => {
             <div className="">
                 {/* <Comment /> */}
                 <div className="flex">
-                    <Avatar size={40} className="mr-1" />
+                    <Avatar src={userInfo.avatar} size={40} className="mr-1" />
                     <div className="relative w-full bg-[#eff2f5] rounded-3xl ">
                         <TextArea
                             value={textComment}
                             onChange={(e) => setTextComment(e.target.value)}
                             autoSize={{ minRows: 1, maxRows: 100 }}
                             placeholder="Viết bình luận..."
-                            className={`bg-[#eff2f5] py-2 `}
+                            className={`bg-[#eff2f5] py-2 pr-[100px] `}
                             variant="borderless"
                         />
                         <div className="absolute right-0 top-1 ml-2 media-comment w-[100px]   px-3 text-[20px]">
@@ -185,7 +194,11 @@ const Post = ({ post, isShowGroupName = true }) => {
                     </div>
                 </div>
             </div>
-            <SliderPost open={openSlider} setOpen={setOpenSlider} />
+            <SliderPost
+                media={mediasPost}
+                open={openSlider}
+                setOpen={setOpenSlider}
+            />
         </div>
     );
 };

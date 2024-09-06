@@ -4,6 +4,7 @@ import Posts from "./components/Posts";
 import { useSelector } from "react-redux";
 import { Routes, Route } from "react-router-dom";
 import Group from "./Group";
+import MyGroups from "./MyGroups";
 function Community() {
     const isMobile = useSelector((state) => state.screen.isMobile);
     const isLgScreen = useSelector((state) => state.screen.isLgScreen);
@@ -19,6 +20,7 @@ function Community() {
                     style={isLgScreen ? { width: "calc(100vw - 320px)" } : {}}
                 >
                     <Routes>
+                        <Route path="/my-groups" element={<MyGroups />} />
                         <Route path="/" element={<Posts />} />
                         <Route path="/:id" element={<Group />} />
                     </Routes>

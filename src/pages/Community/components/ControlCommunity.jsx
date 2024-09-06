@@ -55,7 +55,10 @@ function ControlCommunity() {
                         <p className=" font-bold">Bảng tin</p>
                     </div>
 
-                    <div className="w-[90%] m-2 mt-0 rounded-md h-12 bg-[#F0F2F5] flex items-center">
+                    <div
+                        onClick={() => navigateTo("/community/my-groups")}
+                        className="w-[90%] m-2 mt-0 rounded-md h-12 bg-[#F0F2F5] flex items-center"
+                    >
                         <i className="fa-duotone fa-users text-[23px] ml-5 mr-3"></i>
                         <p className=" font-bold">Nhóm của bạn</p>
                     </div>

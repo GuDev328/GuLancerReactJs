@@ -16,7 +16,6 @@ const Posts = () => {
         //refetchInterval: 10000,
     });
     const posts = getNewFeeds?.data?.result;
-    console.log(posts);
     return (
         <div className="w-full flex flex-col items-center">
             <Spin spinning={getNewFeeds.isLoading}></Spin>

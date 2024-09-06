@@ -6,7 +6,6 @@ import VideoHLS from "../../../../components/utils/Media/VideoHLS";
 
 const SliderPost = ({ open, setOpen, media }) => {
     const isLgScreen = useSelector((state) => state.screen.isLgScreen);
-    console.log(media);
     return (
         <div>
             <Modal

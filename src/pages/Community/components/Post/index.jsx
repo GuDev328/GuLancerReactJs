@@ -2,90 +2,15 @@ import { Avatar, Image, Input } from "antd";
 const { TextArea } = Input;
 import React, { useEffect } from "react";
 import ReadMoreReadLess from "react-read-more-read-less";
-import SliderPost from "./SliderPost";
 import PropTypes from "prop-types";
 import { formatDateTime, formatNumber } from "@/utils/common";
-import VideoHLS from "@/components/utils/Media/VideoHLS";
-import { useSelector } from "react-redux";
+
+import MediaPost from "./MediaPost";
+import ModalComment from "./ModalComment";
 
 const Post = ({ post, isShowGroupName = true }) => {
-    const [openSlider, setOpenSlider] = React.useState(false);
-    const [textComment, setTextComment] = React.useState("");
     const [tym, setTym] = React.useState(false);
-    const [mediasPost, setMediasPost] = React.useState([]);
-    const { medias } = post;
-    const mediaCount = medias.length;
-    const userInfo = useSelector((state) => state.user.userInfo);
-
-    useEffect(() => {
-        if (medias.length > 0) {
-            setMediasPost(medias);
-        }
-    }, [medias]);
-
-    const renderMedia = () => {
-        if (!medias || medias.length === 0) return null;
-
-        const mediaFiles = medias.slice(0, 4); // Limit to 4 files
-        const remainingFilesCount = medias.length - 4; // Count of remaining files
-
-        return (
-            <div className="grid grid-cols-2 gap-2">
-                {mediaFiles.map((media, index) => {
-                    const isSingleInRow =
-                        mediaFiles.length % 2 !== 0 &&
-                        index === mediaFiles.length - 1;
-
-                    return (
-                        <div
-                            key={index}
-                            className={`relative  ${
-                                isSingleInRow ? "col-span-2" : ""
-                            }`}
-                        >
-                            {media.type === 0 ? (
-                                <div
-                                    className={`${
-                                        isSingleInRow
-                                            ? "h-[300px]"
-                                            : "h-[187px]"
-                                    } rounded-lg overflow-hidden`}
-                                >
-                                    <Image
-                                        src={media.url}
-                                        alt={`Image ${index}`}
-                                        height={
-                                            isSingleInRow ? "300px" : "187px"
-                                        }
-                                        width={"100%"}
-                                        style={{ objectFit: "cover" }}
-                                        preview={true}
-                                    />
-                                </div>
-                            ) : (
-                                <VideoHLS
-                                    src={media.url}
-                                    controlType={
-                                        mediaCount > 4 && index === 3
-                                            ? "none"
-                                            : "control"
-                                    }
-                                />
-                            )}
-                            {index === 3 && remainingFilesCount > 0 && (
-                                <div
-                                    onClick={() => setOpenSlider(true)}
-                                    className="absolute top-0 left-0 w-full h-[187px] flex items-center justify-center bg-black bg-opacity-50 text-white text-xl"
-                                >
-                                    +{remainingFilesCount}
-                                </div>
-                            )}
-                        </div>
-                    );
-                })}
-            </div>
-        );
-    };
+    const [showComments, setShowComments] = React.useState(false);
 
     return (
         <div className="bg-white p-4 rounded-3xl my-3 w-[90%] max-w-[700px]">
@@ -128,7 +53,7 @@ const Post = ({ post, isShowGroupName = true }) => {
                     {post?.content}
                 </ReadMoreReadLess>
             </div>
-            {renderMedia()}
+            <MediaPost post={post} />
             <div className="text-gray-700 text-[15px] flex justify-between">
                 <p>
                     {formatNumber(post?.likes)} thích,{" "}
@@ -152,7 +77,10 @@ const Post = ({ post, isShowGroupName = true }) => {
                     ></i>
                     <p className={`${tym ? " text-main" : ""} `}>Thích</p>
                 </div>
-                <div className="flex">
+                <div
+                    onClick={() => setShowComments(true)}
+                    className="flex cursor-pointer"
+                >
                     <i className="text-[25px] mr-2 fa-duotone fa-comment-captions"></i>
                     <p>Bình luận</p>
                 </div>
@@ -161,41 +89,13 @@ const Post = ({ post, isShowGroupName = true }) => {
                     <p>Chia sẻ</p>
                 </div>
             </div>
-            <hr className="mt-1" />
-            <div className="">
-                {/* <Comment /> */}
-                <div className="flex">
-                    <Avatar src={userInfo.avatar} size={40} className="mr-1" />
-                    <div className="relative w-full bg-[#eff2f5] rounded-3xl ">
-                        <TextArea
-                            value={textComment}
-                            onChange={(e) => setTextComment(e.target.value)}
-                            autoSize={{ minRows: 1, maxRows: 100 }}
-                            placeholder="Viết bình luận..."
-                            className={`bg-[#eff2f5] py-2 pr-[100px] `}
-                            variant="borderless"
-                        />
-                        <div className="absolute right-0 top-1 ml-2 media-comment w-[100px]   px-3 text-[20px]">
-                            <div className="">
-                                <i className="fa-light  fa-face-smile"></i>
-                                <i className="fa-light fa-image mx-2"></i>
-                                <i
-                                    className={`${
-                                        textComment.length > 0
-                                            ? "text-main"
-                                            : ""
-                                    } fa-duotone fa-paper-plane-top`}
-                                ></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <SliderPost
-                media={mediasPost}
-                open={openSlider}
-                setOpen={setOpenSlider}
-            />
+            {showComments && (
+                <ModalComment
+                    open={showComments}
+                    setOpen={setShowComments}
+                    post={post}
+                />
+            )}
         </div>
     );
 };

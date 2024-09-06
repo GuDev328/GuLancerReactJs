@@ -3,12 +3,9 @@ const { TextArea } = Input;
 import React, { useEffect } from "react";
 import ReadMoreReadLess from "react-read-more-read-less";
 import SliderPost from "./SliderPost";
-import Comment from "./Comment";
 import PropTypes from "prop-types";
-
-import $ from "jquery";
-import { formatDateTime, formatNumber } from "../../../utils/common";
-import VideoHLS from "./VideoHLS";
+import { formatDateTime, formatNumber } from "@/utils/common";
+import VideoHLS from "@/components/utils/Media/VideoHLS";
 import { useSelector } from "react-redux";
 
 const Post = ({ post, isShowGroupName = true }) => {

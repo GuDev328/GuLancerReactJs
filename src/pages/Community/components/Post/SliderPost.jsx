@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, Image, Carousel } from "antd";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import VideoHLS from "./VideoHLS";
+import VideoHLS from "../../../../components/utils/Media/VideoHLS";
 
 const SliderPost = ({ open, setOpen, media }) => {
     const isLgScreen = useSelector((state) => state.screen.isLgScreen);

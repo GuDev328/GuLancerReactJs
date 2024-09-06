@@ -1,6 +1,6 @@
 import "react-toastify/dist/ReactToastify.css";
 import ControlCommunity from "./components/ControlCommunity";
-import Posts from "./components/Posts";
+import Posts from "./NewFeeds";
 import { useSelector } from "react-redux";
 import { Routes, Route } from "react-router-dom";
 import Group from "./Group";

@@ -1,6 +1,6 @@
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import HomeNavbar from "../Home";
+import HomeNavbar from "../Layout";
 import { Button, Chip, Input } from "@material-tailwind/react";
 import { Routes, Route } from "react-router-dom";
 import ProjectSlideBar from "./ProjectSlideBar";

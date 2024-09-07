@@ -5,32 +5,67 @@ import PropTypes from "prop-types";
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import tweetServices from "../../../../../services/tweetServices";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const Comments = ({ postId, listComment, setListComment }) => {
+    const [pagiantion, setPagination] = useState({
+        page: 1,
+        total_page: 0,
+    });
     const comments = useQuery({
-        queryKey: ["getComments", postId, 1, 49],
+        queryKey: ["getComments", postId, 1, 10],
         queryFn: async () => {
             const response = await tweetServices.getComments({
                 postId,
                 page: 1,
-                limit: 49,
+                limit: 10,
             });
             return response;
         },
     });
     useEffect(() => {
         setListComment(comments.data?.result || []);
+        setPagination({
+            total_page: comments?.data?.total_page,
+            page: comments?.data?.page,
+        });
     }, [comments.data]);
 
     if (comments.isLoading) {
-        return <Spin spinning={true} />;
+        return <Spin className="w-full" spinning={true} />;
     }
+
+    const fetchMoreComments = async () => {
+        if (postId && pagiantion.page < pagiantion.total_page) {
+            const res = await tweetServices.getComments({
+                postId,
+                page: pagiantion.page + 1,
+                limit: 10,
+            });
+            setListComment((pre) => [...pre, ...res.result]);
+            setPagination({
+                total_page: res.total_page,
+                page: res.page,
+            });
+        }
+    };
     return (
-        <div className="min-h-[50vh] max-h-[50vh] overflow-scroll overflow-x-hidden">
-            {listComment &&
-                listComment.map((comment) => (
-                    <Comment key={comment._id} comment={comment} />
-                ))}
+        <div className=" ">
+            {listComment && listComment.length > 0 && (
+                <InfiniteScroll
+                    className=""
+                    height={"50vh"}
+                    dataLength={listComment.length}
+                    next={fetchMoreComments}
+                    hasMore={pagiantion.page < pagiantion.total_page}
+                    loader={<Spin className="w-full" spinning={true} />}
+                >
+                    {listComment.map((comment) => (
+                        <Comment key={comment._id} comment={comment} />
+                    ))}
+                </InfiniteScroll>
+            )}
+
             {listComment.length === 0 && (
                 <p className="text-center py-10">Chưa có bình luận nào</p>
             )}

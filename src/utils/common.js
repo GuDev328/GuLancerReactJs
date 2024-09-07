@@ -57,3 +57,30 @@ export function formatNumber(number) {
     }
     return number.toString().replace(".", ",");
 }
+
+export function timeAgo(dateString) {
+    const now = new Date();
+    const past = new Date(dateString);
+
+    // Chuyển thời gian UTC sang múi giờ
+    const pastInVn = new Date(past.getTime() + -7 * 60 * 60 * 1000);
+
+    const diffInSeconds = Math.floor((now - pastInVn) / 1000);
+
+    const seconds = diffInSeconds;
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    if (seconds < 60) {
+        return `${seconds} giây trước`;
+    } else if (minutes < 60) {
+        return `${minutes} phút trước`;
+    } else if (hours < 24) {
+        return `${hours} giờ trước`;
+    } else {
+        return `${days} ngày trước`;
+    }
+}
+
+// Ví dụ sử dụng

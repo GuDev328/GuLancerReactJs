@@ -1,19 +1,48 @@
 import { Avatar, Image, Input } from "antd";
 const { TextArea } = Input;
-import React, { useEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import ReadMoreReadLess from "react-read-more-read-less";
 import PropTypes from "prop-types";
 import { formatDateTime, formatNumber } from "@/utils/common";
 
 import MediaPost from "./MediaPost";
 import ModalComment from "./ModalComment";
+import { timeAgo } from "../../../../utils/common";
+import tweetServices from "../../../../services/tweetServices";
 
 const Post = ({ post, isShowGroupName = true }) => {
     const [tym, setTym] = React.useState(false);
     const [showComments, setShowComments] = React.useState(false);
+    const [tyming, setTyming] = React.useState(false);
+
+    useEffect(() => {
+        setTym(!!post.liked);
+    }, [post]);
+
+    const handleTym = async () => {
+        if (tyming) return;
+
+        setTyming(true);
+
+        try {
+            if (tym) {
+                await tweetServices.unlike(post._id);
+                setTym(false);
+                post.likes--;
+            } else {
+                await tweetServices.like(post._id);
+                setTym(true);
+                post.likes++;
+            }
+        } catch (error) {
+            console.error("Có lỗi xảy ra:", error);
+        } finally {
+            setTyming(false);
+        }
+    };
 
     return (
-        <div className="bg-white p-4 rounded-3xl my-3 w-[90%] max-w-[700px]">
+        <div className="bg-white p-4 rounded-3xl my-1 w-[90%] max-w-[700px]">
             <div className="flex  items-start justify-between">
                 <div className="flex items-center">
                     <Avatar size={45} src={post?.user?.avatar} />
@@ -34,7 +63,7 @@ const Post = ({ post, isShowGroupName = true }) => {
                 </div>
                 <div className="flex mt-2 leading-none">
                     <p className="text-[14px] text-gray-500">
-                        {formatDateTime(post?.created_at)}
+                        {timeAgo(post?.created_at)}
                     </p>
                     <i className="text-[25px] ml-2 fa-solid fa-ellipsis-stroke-vertical"></i>
                 </div>
@@ -68,24 +97,24 @@ const Post = ({ post, isShowGroupName = true }) => {
             <div className="flex mt-2 justify-around">
                 <div
                     className=" flex items-center cursor-pointer"
-                    onClick={() => setTym(!tym)}
+                    onClick={handleTym}
                 >
                     <i
                         className={`${
-                            tym ? "fa-duotone text-main" : "fa-regular"
-                        } fa-thumbs-up text-[25px] mr-2`}
+                            tym ? "fa-duotone text-[red]" : "fa-light"
+                        } fa-circle-heart text-[25px] mr-2`}
                     ></i>
-                    <p className={`${tym ? " text-main" : ""} `}>Thích</p>
+                    <p className={`${tym ? " text-[red]" : ""} `}>Thích</p>
                 </div>
                 <div
                     onClick={() => setShowComments(true)}
                     className="flex cursor-pointer"
                 >
-                    <i className="text-[25px] mr-2 fa-duotone fa-comment-captions"></i>
+                    <i className="text-[24px] mr-2 fa-regular fa-messages"></i>
                     <p>Bình luận</p>
                 </div>
                 <div className="flex">
-                    <i className="text-[25px] mr-2 fa-duotone fa-share-from-square"></i>
+                    <i className="text-[22px] mr-2 fa-light fa-share-from-square"></i>
                     <p>Chia sẻ</p>
                 </div>
             </div>

@@ -24,6 +24,20 @@ class TweetServices {
         );
         return response.data;
     }
+
+    async like(postId) {
+        const response = await axiosIns.postAuth(`tweets/like`, {
+            tweet_id: postId,
+        });
+        return response.data;
+    }
+
+    async unlike(postId) {
+        const response = await axiosIns.postAuth(`tweets/unlike`, {
+            tweet_id: postId,
+        });
+        return response.data;
+    }
 }
 
 const tweetServices = new TweetServices();

@@ -3,7 +3,7 @@ const { TextArea } = Input;
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
-
+import EmojiPicker from "emoji-picker-react";
 import socket from "@/utils/socket";
 import { TweetType } from "@/constant/tweet";
 import tweetServices from "../../../../services/tweetServices";
@@ -11,6 +11,7 @@ import tweetServices from "../../../../services/tweetServices";
 const ControlComment = ({ post, setListComment }) => {
     const [textComment, setTextComment] = React.useState("");
     const userInfo = useSelector((state) => state.user.userInfo);
+    const [isOpenEmojiPicker, setIsOpenEmojiPicker] = React.useState(false);
 
     useEffect(() => {
         if (localStorage.getItem("accessToken")) {
@@ -20,6 +21,7 @@ const ControlComment = ({ post, setListComment }) => {
             socket.connect();
             socket.emit("joinRoomComment", post._id);
             socket.on("commentUpdated", (comment) => {
+                post.comment++;
                 setListComment((pre) => [comment, ...pre]);
             });
             socket.on("disconnect", () => {
@@ -71,9 +73,27 @@ const ControlComment = ({ post, setListComment }) => {
                     className={`bg-[#eff2f5] py-2 pr-[100px] `}
                     variant="borderless"
                 />
+                <div className="absolute bottom-11 right-0">
+                    <EmojiPicker
+                        lazyLoadEmojis={true}
+                        width={300}
+                        height={300}
+                        onEmojiClick={(e) =>
+                            setTextComment((prev) => prev + e.emoji)
+                        }
+                        searchDisabled
+                        skinTonesDisabled
+                        open={isOpenEmojiPicker}
+                    />
+                </div>
                 <div className="absolute right-0 top-1 ml-2 media-comment w-[100px]   px-3 text-[20px]">
                     <div className="">
-                        <i className="fa-light  fa-face-smile"></i>
+                        <i
+                            onClick={() =>
+                                setIsOpenEmojiPicker(!isOpenEmojiPicker)
+                            }
+                            className="fa-light  fa-face-smile"
+                        ></i>
                         <i className="fa-light fa-image mx-2"></i>
                         <i
                             onClick={handlerSendComment}

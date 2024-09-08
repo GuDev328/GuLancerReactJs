@@ -1,6 +1,8 @@
 import React from "react";
-import { Avatar } from "antd";
+import { Avatar, Image } from "antd";
 import PropsType from "prop-types";
+import { MediaType } from "../../../../../constant/tweet";
+import Video from "../../../../../components/utils/Media/Video";
 
 const Comment = ({ comment }) => {
     return (
@@ -15,6 +17,21 @@ const Comment = ({ comment }) => {
                     </span>
                     {comment.content}
                 </div>
+
+                {comment.medias.length > 0 &&
+                    comment.medias[0].type === MediaType.IMAGE && (
+                        <Image
+                            className="mt-1"
+                            src={comment.medias[0].url}
+                            width={300}
+                        ></Image>
+                    )}
+                {comment.medias.length > 0 &&
+                    comment.medias[0].type === MediaType.VIDEO && (
+                        <div className="mt-1 w-[300px]">
+                            <Video src={comment.medias[0].url} />
+                        </div>
+                    )}
 
                 <div className="mr-2 flex font-bold text-gray-600">
                     <p className="mr-5">Thích</p>

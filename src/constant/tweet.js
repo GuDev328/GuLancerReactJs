@@ -3,3 +3,9 @@ export const TweetType = {
     RETWEET: 1,
     COMMENT: 2,
 };
+
+export const MediaType = {
+    IMAGE: 0,
+    VIDEO: 1,
+    VIDEO_HLS: 2,
+};

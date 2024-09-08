@@ -20,6 +20,11 @@ function ControlCommunity() {
     const navigateTo = useNavigate();
     useEffect(() => {}, [updateGroups]);
 
+    const handlerSearchCommunity = () => {
+        if (keySeachGroup.trim() === "") return;
+        navigateTo(`/community/search/${keySeachGroup}`);
+    };
+
     return (
         <>
             <ToastContainer stacked />
@@ -34,11 +39,14 @@ function ControlCommunity() {
                             type="text"
                             label="Tìm cộng đồng"
                             value={keySeachGroup}
-                            onChange={(e) => setKeySeachGroup(e.target.value)}
+                            onChange={(e) =>
+                                setKeySeachGroup(e.target.value.trim())
+                            }
                             className="p-5"
                         />
                         <Button
                             size="sm"
+                            onClick={handlerSearchCommunity}
                             disabled={!keySeachGroup}
                             className="!absolute right-1 top-1 rounded bg-main"
                         >

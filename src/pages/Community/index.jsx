@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { Routes, Route } from "react-router-dom";
 import Group from "./Group";
 import MyGroups from "./MyGroups";
+import SearchCommunity from "./SearchComunity";
 function Community() {
     const isMobile = useSelector((state) => state.screen.isMobile);
     const isLgScreen = useSelector((state) => state.screen.isLgScreen);
@@ -21,6 +22,10 @@ function Community() {
                 >
                     <Routes>
                         <Route path="/my-groups" element={<MyGroups />} />
+                        <Route
+                            path="/search/:keySearch"
+                            element={<SearchCommunity />}
+                        />
                         <Route path="/" element={<Posts />} />
                         <Route path="/:id" element={<Group />} />
                     </Routes>

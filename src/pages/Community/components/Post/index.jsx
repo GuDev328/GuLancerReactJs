@@ -65,7 +65,7 @@ const Post = ({ post, isShowGroupName = true }) => {
                     <p className="text-[14px] text-gray-500">
                         {timeAgo(post?.created_at)}
                     </p>
-                    <i className="text-[25px] ml-2 fa-solid fa-ellipsis-stroke-vertical"></i>
+                    <i className="text-[20px]  ml-2 fa-solid fa-ellipsis-stroke-vertical"></i>
                 </div>
             </div>
 

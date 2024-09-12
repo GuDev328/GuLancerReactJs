@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import searchServices from "../../../services/searchServices";
 import { Spin } from "antd";
 import ResultGroup from "./ResultGroup";
+import ResultUser from "./ResultUser";
 
 const SearchCommunity = () => {
     const { keySearch } = useParams();
@@ -42,13 +43,17 @@ const SearchCommunity = () => {
         {
             label: <p className=" font-bold">Người dùng</p>,
             key: 2,
-            children: `Content of Tab Pane 2`,
+            children: <ResultUser data={users} />,
         },
     ];
 
     return (
         <div className="w-11/12 px-5 bg-white rounded-xl my-3">
-            <Tabs defaultActiveKey="1" centered items={itemTab} />
+            <Tabs
+                defaultActiveKey={groups.resultGroup.length === 0 ? 2 : 1}
+                centered
+                items={itemTab}
+            />
         </div>
     );
 };

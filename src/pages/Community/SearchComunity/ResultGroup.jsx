@@ -10,7 +10,7 @@ import groupServices from "../../../services/groupServices";
 const ResultGroup = ({ data }) => {
     const navigateTo = useNavigate();
     const [render, reRender] = React.useState(false);
-    console.log("hi", data);
+
     const handleJoinGroup = async (group_id, group_type) => {
         await groupServices.joinGroup(group_id);
         if (group_type === GroupType.PUBLIC) {
@@ -98,6 +98,11 @@ const ResultGroup = ({ data }) => {
                     </div>
                 </div>
             ))}
+            {data.resultGroup.length === 0 && (
+                <div className="text-center w-full mt-[20vh]">
+                    Không có cộng đồng khớp với tìm kiếm
+                </div>
+            )}
         </div>
     );
 };

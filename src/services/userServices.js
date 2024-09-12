@@ -25,6 +25,15 @@ class UserServices {
         );
         return response;
     }
+
+    async follow(userId) {
+        const response = await axiosIns.postAuth(`/users/follow`, { userId });
+        return response.data;
+    }
+    async unfollow(userId) {
+        const response = await axiosIns.postAuth(`/users/unfollow`, { userId });
+        return response.data;
+    }
 }
 
 const userServices = new UserServices();

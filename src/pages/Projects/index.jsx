@@ -5,8 +5,11 @@ import { Button, Chip, Input } from "@material-tailwind/react";
 import { Routes, Route } from "react-router-dom";
 import ProjectSlideBar from "./ProjectSlideBar";
 import DetailProject from "./DetailProject";
-
+import { useLocation } from "react-router-dom";
+import CreateProject from "./CreateProject";
 function Projects() {
+    const location = useLocation();
+    if (location.pathname === "/projects/create") return <CreateProject />;
     return (
         <div className="my-4 mx-5 flex justify-around">
             <div className="w-[300px]">

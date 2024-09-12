@@ -14,7 +14,7 @@ function Home() {
                 <Route path="/find-jobs" element={<FindJob />} />
                 <Route path="/find-freelancers" element={<FindFreelancer />} />
                 <Route path="/community/*" element={<Community />} />
-                <Route path="/projects" element={<MyProjects />} />
+                <Route path="/projects/*" element={<MyProjects />} />
                 <Route path="/group" element={<Group />} />
             </Routes>
             <Footer />

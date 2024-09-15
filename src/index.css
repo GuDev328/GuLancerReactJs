@@ -68,6 +68,10 @@ html {
 .ant-checkbox {
     font-family: "Roboto Condensed" !important;
 }
+.custom-preview .wmde-markdown {
+    font-family: "Roboto Condensed" !important;
+    font-size: 15px !important;
+}
 
 .images-post .ant-image-img {
     object-fit: cover !important;

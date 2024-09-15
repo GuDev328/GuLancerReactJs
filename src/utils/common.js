@@ -83,4 +83,6 @@ export function timeAgo(dateString) {
     }
 }
 
-// Ví dụ sử dụng
+export function formatCurrency(value) {
+    return value.toLocaleString("vi-VN") + "đ";
+}

@@ -1,15 +1,18 @@
 import { Avatar, Button } from "@material-tailwind/react";
 import React from "react";
 import { useSelector } from "react-redux";
+import PropTypes from "prop-types";
+import { formatCurrency } from "../../../utils/common";
+import MDEditor from "@uiw/react-md-editor";
 
-const Job = () => {
+const Job = ({ data }) => {
     const isMobile = useSelector((state) => state.screen.isMobile);
     return (
         <div className="relative mb-2 bg-white w-[90%] rounded-3xl p-5">
             <div className="flex justify-between items-start">
                 <div className=" sm:flex items-end">
                     <p className="text-main font-bold text-[20px] ">
-                        Xây dựng Website bán bán quy
+                        {data?.title}
                     </p>
                     <p className="hidden sm:inline-block text-gray-500 ml-2 mb-1 text-[14px]">
                         Hạn ứng tuyển: 10/09/2022
@@ -17,48 +20,63 @@ const Job = () => {
                 </div>
                 <div className="flex flex-col ml-10 items-end leading-none">
                     <div className="text-main font-bold text-[20px]">
-                        20,000,000đ
+                        {formatCurrency(data?.salary)}
                     </div>
                     <div className="text-gray-500    text-[14px]">
-                        Trả theo dự án
+                        {data?.salaryType === 0
+                            ? "Trả theo dự án"
+                            : "Trả theo giờ"}
                     </div>
                 </div>
             </div>
             <div className="text-[15px] ">
                 <div className="flex ">
-                    <div className=" ml-4 w-[100%] min-w-[300px]">
-                        <p>Lĩnh vực: Xây dựng website</p>
+                    <div className=" ml-4 w-[60%] min-w-[300px]">
                         <p>
-                            Công nghệ yêu cầu: HTML, CSS, JavaScript, ReactJS,
-                            MongoDB, SEO
+                            Lĩnh vực:{" "}
+                            <span className="text-main">
+                                {data?.fields_info
+                                    .map((field) => field.name)
+                                    .join(", ")}
+                            </span>
+                        </p>
+                        <p>
+                            Công nghệ yêu cầu:{" "}
+                            <span className="text-main">
+                                {data?.technologies_info
+                                    .map((tech) => tech.name)
+                                    .join(", ")}
+                            </span>
                         </p>
                         <p>Cần tìm 2 Freelancer</p>
                     </div>
-                    <div className="hidden max-h-[85px] overflow-hidden lg:block text-ellipsis">
-                        Im looking for a skilled web developer to re-build my
-                        existing online shop, www.filtrex.ro. Your primary
-                        aesthetics. Im looking for a skilled web developer to
-                        re-product categorization and product page Im looking
-                        for a skilled web developer to re-build my existing
-                        online shop, www.filtrex.ro. Your primary aesthetics. Im
-                        looking for a skilled web developer to re-product
-                        categorization and product page
+                    <div className="hidden  w-full max-h-[85px] overflow-hidden lg:block text-ellipsis">
+                        <MDEditor
+                            className="custom-preview"
+                            hideToolbar={true}
+                            value={data?.description}
+                            preview="preview"
+                        ></MDEditor>
                     </div>
                 </div>
 
                 <div className="hidden sm:block">
                     <div className="flex items-center ">
-                        <Avatar className="bg-black" />
+                        <Avatar
+                            className="bg-main"
+                            src={data?.user[0]?.avatar}
+                        />
                         <div className=" leading-none ml-1 mt-[13px]">
                             <div className=" flex items-end">
-                                <p className="mr-1">Phạm Tiến Đạt</p>
+                                <p className="mr-1">{data?.user[0]?.name}</p>
                                 <i
                                     className=" fa-solid fa-star"
                                     style={{ color: "#FFB800" }}
                                 ></i>
-                                <p>4.9/5.0</p>
+                                <p>{data?.user[0]?.star}/5.0</p>
                                 <p className=" hidden sm:inline-block ml-1 text-[13px] text-gray-500">
-                                    Với 123 dự án đã hoàn thành
+                                    Với {data?.user[0]?.project_done} dự án đã
+                                    hoàn thành
                                 </p>
                             </div>
                             <p
@@ -81,5 +99,7 @@ const Job = () => {
         </div>
     );
 };
-
+Job.propTypes = {
+    data: PropTypes.object.isRequired,
+};
 export default Job;

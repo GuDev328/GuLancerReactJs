@@ -1,7 +1,13 @@
 import React from "react";
 import { Button, Chip, Input, Option, Select } from "@material-tailwind/react";
 import ChartTopTech from "./ChartTopTech";
-const Banner = () => {
+import PropTypes from "prop-types";
+
+const Banner = ({ setDataSearch }) => {
+    const [keySearch, setKeySearch] = React.useState("");
+    const handleSearch = () => {
+        setDataSearch((prev) => ({ ...prev, key: keySearch }));
+    };
     return (
         <div className="flex h-[350px] justify-center  bg-gradient-to-r from-blue-300 to-cyan-300">
             <div className="w-[100%] lg:w-[50%]">
@@ -17,6 +23,8 @@ const Banner = () => {
                 <div className="flex  justify-center ">
                     <div className="min-w-[60%] !relative">
                         <input
+                            value={keySearch}
+                            onChange={(e) => setKeySearch(e.target.value)}
                             className=" border  min-w-[100%] h-12 pl-14 text-[12px] text-medium border-gray-300 rounded-md bg-white  "
                             placeholder="Tìm theo dự án, kỹ năng, ..."
                         />
@@ -27,6 +35,7 @@ const Banner = () => {
                         color="blue"
                         buttonType="filled"
                         className=" w-[125px] ml-2 h-12 font-bold"
+                        onClick={handleSearch}
                     >
                         Tìm kiếm
                     </Button>
@@ -77,6 +86,10 @@ const Banner = () => {
             </div>
         </div>
     );
+};
+
+Banner.propTypes = {
+    setDataSearch: PropTypes.func.isRequired,
 };
 
 export default Banner;

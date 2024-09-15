@@ -15,21 +15,23 @@ function FindJob() {
         salaryType: null,
         salaryFrom: null,
         salaryTo: null,
-        orderBy: null,
+        orderBy: 0,
     });
     const [pageInfo, setPageInfo] = React.useState({
         page: 1,
-        total_page: 1,
+        total_page: 10,
+        limit: 2,
     });
     const fetchAllJobs = async () => {
         const res = await projectServices.getAllProject({
             page: 1,
-            limit: 10,
+            limit: 2,
             ...dataSearch,
         });
         setPageInfo({
             page: res.result.page,
             total_page: res.result.total_page,
+            limit: res.result.limit,
         });
         setPageData(res.result.data);
     };
@@ -42,7 +44,11 @@ function FindJob() {
             <Banner setDataSearch={setDataSearch} />
             <div className="flex">
                 <Filter setDataSearch={setDataSearch} />
-                <Jobs pageData={pageData} pageInfo={pageInfo} />
+                <Jobs
+                    pageData={pageData}
+                    pageInfo={pageInfo}
+                    setDataSearch={setDataSearch}
+                />
             </div>
         </>
     );

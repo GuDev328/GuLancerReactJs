@@ -24,6 +24,20 @@ class ProjectServices {
         const response = await axiosIns.getAuth("/technology/");
         return response.data;
     }
+
+    async getMyProject(data) {
+        const response = await axiosIns.post(
+            `/projects/get-my-projects?page=${data.page}&limit=${data.limit}`,
+            omit(data, ["page", "limit"])
+        );
+        return response.data;
+    }
+    async getDetailProject(id) {
+        const response = await axiosIns.getAuth(
+            `/projects/get-detail-project/${id}`
+        );
+        return response.data;
+    }
 }
 
 const projectServices = new ProjectServices();

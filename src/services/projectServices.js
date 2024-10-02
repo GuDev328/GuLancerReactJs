@@ -38,6 +38,38 @@ class ProjectServices {
         );
         return response.data;
     }
+
+    async applyProject(data) {
+        const response = await axiosIns.postAuth(
+            "/projects//apply-invite",
+            data
+        );
+        return response;
+    }
+
+    async getApplyInvite(data) {
+        const response = await axiosIns.post(
+            `/projects/get-apply-invite`,
+            data
+        );
+        return response.data;
+    }
+
+    async acceptApplyInvite(id) {
+        const response = await axiosIns.postAuth(
+            "/projects/accept-apply-invite",
+            { apply_invite_id: id }
+        );
+        return response;
+    }
+
+    async rejectApplyInvite(id) {
+        const response = await axiosIns.postAuth(
+            "/projects/reject-apply-invite",
+            { apply_invite_id: id }
+        );
+        return response;
+    }
 }
 
 const projectServices = new ProjectServices();

@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import projectServices from "../../../services/projectServices";
 import { useParams } from "react-router-dom";
 import { formatCurrency } from "../../../utils/common";
+import ApplyInviteManagement from "./Apply-Invite";
 
 const DetailProject = () => {
     const { id } = useParams();
@@ -39,6 +40,12 @@ const DetailProject = () => {
             label: "Các vấn đề",
             children: "",
             icon: <i className="far fa-bug"></i>,
+        },
+        {
+            key: "apply-invite",
+            label: "Lời mời, Ứng tuyển",
+            children: <ApplyInviteManagement projectId={detailProject?._id} />,
+            icon: <i className="far fa-envelope"></i>,
         },
     ];
     return (

@@ -4,9 +4,11 @@ import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { formatCurrency } from "../../../utils/common";
 import MDEditor from "@uiw/react-md-editor";
+import { useNavigate } from "react-router-dom";
 
 const Job = ({ data }) => {
     const isMobile = useSelector((state) => state.screen.isMobile);
+    const navigate = useNavigate();
     return (
         <div className="relative mb-2 bg-white w-[90%] rounded-3xl p-5">
             <div className="flex justify-between items-start">
@@ -92,7 +94,11 @@ const Job = ({ data }) => {
                 </div>
             </div>
             <div className="absolute bottom-3 right-5 ">
-                <Button size={isMobile ? "sm" : "md"} className="bg-main">
+                <Button
+                    onClick={() => navigate(`/project/${data?._id}`)}
+                    size={isMobile ? "sm" : "md"}
+                    className="bg-main"
+                >
                     Xem chi tiêt
                 </Button>
             </div>

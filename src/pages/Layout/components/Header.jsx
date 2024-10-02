@@ -20,8 +20,9 @@ import {
     DialogHeader,
     DialogBody,
     DialogFooter,
-    Avatar,
 } from "@material-tailwind/react";
+
+import { Avatar } from "antd";
 
 function Header() {
     const [userInfo, setUserInfo] = useState(
@@ -236,11 +237,13 @@ function Header() {
                             <Menu>
                                 <MenuHandler>
                                     <div className="flex items-center">
-                                        <Avatar
-                                            withBorder={true}
-                                            className="p-0.5 "
-                                            src={userInfo.avatar}
-                                        />
+                                        <div className="h-[40px] w-[40px]">
+                                            <Avatar
+                                                size={40}
+                                                shape="circle"
+                                                src={userInfo.avatar}
+                                            />
+                                        </div>
                                         <p className="py-2 hidden md:block px-2">
                                             {userInfo.name}
                                         </p>

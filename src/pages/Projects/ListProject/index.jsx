@@ -53,17 +53,25 @@ function ListProject() {
                     <Spin spinning={true}></Spin>
                 ) : (
                     <div className="">
-                        {listProject.map((item) => (
-                            <div
-                                key={item._id}
-                                className="cursor-pointer"
-                                onClick={() =>
-                                    naviagteTo(`/projects/detail/${item._id}`)
-                                }
-                            >
-                                <ProjectItem data={item} />
+                        {listProject?.length > 0 ? (
+                            listProject?.map((item) => (
+                                <div
+                                    key={item._id}
+                                    className="cursor-pointer"
+                                    onClick={() =>
+                                        naviagteTo(
+                                            `/projects/detail/${item._id}`
+                                        )
+                                    }
+                                >
+                                    <ProjectItem data={item} />
+                                </div>
+                            ))
+                        ) : (
+                            <div className="text-center place-content-center h-[50vh] text-gray-500">
+                                Chưa có dự án nào
                             </div>
-                        ))}
+                        )}
                     </div>
                 )}
             </div>

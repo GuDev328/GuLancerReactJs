@@ -70,6 +70,11 @@ class ProjectServices {
         );
         return response;
     }
+
+    async getMember(id) {
+        const response = await axiosIns.getAuth(`/projects/get-member/${id}`);
+        return response.data;
+    }
 }
 
 const projectServices = new ProjectServices();

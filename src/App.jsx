@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { setIsMobile, setIsLgScreen } from "./stores/slice/screen.slice";
 
 import "./App.css";
+import Chat from "./pages/Chat";
 
 function App() {
     const dispatch = useDispatch();
@@ -38,6 +39,7 @@ function App() {
 
                 <Route path="/register" element={<Register />} />
                 <Route path="/register-success" element={<RegisterSuccess />} />
+                <Route path="/chat" element={<Chat />} />
                 <Route path="/*" element={<Home />} />
                 <Route path="/" element={<Home />} />
             </Routes>

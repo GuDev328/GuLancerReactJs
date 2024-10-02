@@ -228,7 +228,10 @@ function Header() {
                         </Badge>
                     </div>
                     {userInfo && (
-                        <div>
+                        <div
+                            className="cursor-pointer"
+                            onClick={() => navigate("/chat")}
+                        >
                             <i className="nav-icon fa-solid fa-comments-alt"></i>
                         </div>
                     )}
@@ -443,7 +446,6 @@ function Header() {
                     </NavLink>
                 )}
             </div>
-
             <Dialog
                 open={openDialogLogout}
                 handler={() => {

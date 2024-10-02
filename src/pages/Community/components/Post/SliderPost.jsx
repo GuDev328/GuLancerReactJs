@@ -20,12 +20,13 @@ const SliderPost = ({ open, setOpen, media }) => {
                     {media.map((item, index) => {
                         if (item.type === 0) {
                             return (
-                                <Image
-                                    width={"100%"}
-                                    height={"100%"}
-                                    src={item.url}
-                                    key={index}
-                                />
+                                <div key={index} className="max-h-[80vh]">
+                                    <Image
+                                        width={"100%"}
+                                        height={"100%"}
+                                        src={item.url}
+                                    />
+                                </div>
                             );
                         } else {
                             return <VideoHLS key={index} src={item.url} />;

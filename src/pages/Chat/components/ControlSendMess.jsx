@@ -1,92 +1,73 @@
-import { Avatar, Image, Input, Upload, Button, message } from "antd";
+import { Avatar, Image, Input, Upload, Button, message, Spin } from "antd";
 const { TextArea } = Input;
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import EmojiPicker from "emoji-picker-react";
-import socket from "@/utils/socket";
 import { TweetType } from "@/constant/tweet";
-import tweetServices from "../../../../services/tweetServices";
+
 import { PlusOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 
-import mediaServices from "../../../../services/mediaServices";
+import mediaServices from "@/services/mediaServices";
 
-const ControlComment = ({ post, setListComment }) => {
-    const [textComment, setTextComment] = React.useState("");
+const ControlSendMess = ({ onSubmit }) => {
+    const [value, setValue] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const userInfo = useSelector((state) => state.user.userInfo);
     const [isOpenEmojiPicker, setIsOpenEmojiPicker] = React.useState(false);
-
-    useEffect(() => {
-        if (localStorage.getItem("accessToken")) {
-            socket.auth = {
-                access_token: localStorage.getItem("accessToken"),
-            };
-            socket.connect();
-            socket.emit("joinRoomComment", post._id);
-            socket.on("commentUpdated", (comment) => {
-                post.comment++;
-                setListComment((pre) => [comment, ...pre]);
-            });
-            socket.on("disconnect", () => {
-                //console.log("socket disconnected");
-            });
-            socket.on("connect_error", (err) => {
-                console.log(err);
-            });
-            return () => {
-                socket.emit("leaveRoomComment", post._id);
-                socket.disconnect();
-                //setIsConnectedSocket(false);
-            };
-        } else {
-            alert("Vui lòng đăng nhập để chat");
-            window.location.href = "/";
-        }
-
-        return () => {
-            socket.emit("leaveRoom", post._id);
-        };
-    }, [post._id]);
-
+    const [fileList, setFileList] = useState([]);
     const isImage = (file) => {
         const imageTypes = ["image/jpeg", "image/png", "image/gif"];
         return imageTypes.includes(file.type);
     };
     const handlerSendComment = async () => {
-        if (!textComment && fileList.length === 0) return;
+        if (!value.trim() && fileList.length === 0) return;
 
         const data = {
-            group_id: post.group_id,
-            content: textComment.trim(),
+            content: value.trim(),
             medias: [],
-            type: TweetType.COMMENT,
-            parent_id: post._id,
-            mentions: [],
         };
+        setIsLoading(true);
+        console.log("fileList:", fileList);
 
         if (fileList && fileList.length > 0) {
-            let mediaRes = {};
-            if (isImage(fileList[0])) {
-                mediaRes = await mediaServices.uploadImage(
-                    fileList[0].originFileObj
-                );
-            } else {
-                mediaRes = await mediaServices.uploadVideo(
-                    fileList[0].originFileObj
-                );
+            const images = fileList
+                .filter((item) => isImage(item))
+                .map((item) => item.originFileObj);
+            const videos = fileList
+                .filter((item) => !isImage(item))
+                .map((item) => item.originFileObj);
+            if (images.length > 0 && videos.length > 0) {
+                const [imagesRes, videosRes] = await Promise.all([
+                    mediaServices.uploadImage(images),
+                    Promise.all(
+                        videos.map((video) => mediaServices.uploadVideo(video))
+                    ),
+                ]);
+                data.medias = [
+                    ...imagesRes.result.map((item) => item),
+                    ...videosRes.map((item) => item?.result[0]),
+                ];
+            } else if (images.length > 0 || videos.length === 0) {
+                const [imagesRes] = await Promise.all([
+                    mediaServices.uploadImage(images),
+                ]);
+                data.medias = [...imagesRes.result.map((item) => item)];
+            } else if (images.length === 0 && videos.length > 0) {
+                const [videosRes] = await Promise.all([
+                    Promise.all(
+                        videos.map((video) => mediaServices.uploadVideo(video))
+                    ),
+                ]);
+                data.medias = [...videosRes.map((item) => item?.result[0])];
             }
+        }
 
-            data.medias = [...mediaRes.result.map((item) => item)];
-        }
-        const create = await tweetServices.createTweet(data);
-        if (create && create.status === 200) {
-            setTextComment("");
-            setFileList([]);
-            socket.emit("newComment", post._id, { ...data, user: [userInfo] });
-        }
+        onSubmit(data.content, data.medias);
+        setValue("");
+        setFileList([]);
+        setIsLoading(false);
     };
-
-    const [fileList, setFileList] = useState([]);
 
     const beforeUpload = (file) => {
         const isImageOrVideo =
@@ -99,9 +80,9 @@ const ControlComment = ({ post, setListComment }) => {
     };
 
     const handleChange = ({ fileList }) => {
-        if (fileList.length > 1) {
-            fileList = [fileList[0]];
-        }
+        // if (fileList.length > 1) {
+        //     fileList = [fileList[0]];
+        // }
         const updatedList = fileList.map((file) => {
             if (file.originFileObj) {
                 return {
@@ -112,7 +93,6 @@ const ControlComment = ({ post, setListComment }) => {
             return file;
         });
         setFileList(updatedList);
-        console.log("fileList:", updatedList);
     };
     const handleRemove = (file) => {
         if (file.thumbUrl) {
@@ -127,10 +107,11 @@ const ControlComment = ({ post, setListComment }) => {
             <Avatar src={userInfo.avatar} size={40} className="mr-1" />
             <div className="relative w-full bg-[#eff2f5] rounded-3xl ">
                 <TextArea
-                    value={textComment}
-                    onChange={(e) => setTextComment(e.target.value)}
+                    onPressEnter={handlerSendComment}
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
                     autoSize={{ minRows: 1, maxRows: 100 }}
-                    placeholder="Viết bình luận..."
+                    placeholder="Nhập nội dung..."
                     className={`bg-[#eff2f5] py-2 pr-[100px] `}
                     variant="borderless"
                 />
@@ -195,9 +176,7 @@ const ControlComment = ({ post, setListComment }) => {
                         lazyLoadEmojis={true}
                         width={300}
                         height={300}
-                        onEmojiClick={(e) =>
-                            setTextComment((prev) => prev + e.emoji)
-                        }
+                        onEmojiClick={(e) => setValue((prev) => prev + e.emoji)}
                         searchDisabled
                         skinTonesDisabled
                         open={isOpenEmojiPicker}
@@ -215,7 +194,8 @@ const ControlComment = ({ post, setListComment }) => {
                         <Upload
                             fileList={fileList}
                             beforeUpload={beforeUpload}
-                            maxCount={1}
+                            maxCount={10}
+                            multiple
                             showUploadList={false}
                             onChange={handleChange}
                             accept="image/*,video/*"
@@ -224,12 +204,16 @@ const ControlComment = ({ post, setListComment }) => {
                             <i className="text-[19px] fa-light fa-image mx-2"></i>
                         </Upload>
 
-                        <i
-                            onClick={handlerSendComment}
-                            className={`${
-                                textComment.length > 0 ? "text-main" : ""
-                            } fa-duotone fa-paper-plane-top`}
-                        ></i>
+                        {isLoading ? (
+                            <Spin size="small" spinning={isLoading} />
+                        ) : (
+                            <i
+                                onClick={handlerSendComment}
+                                className={`${
+                                    value.length > 0 ? "text-main" : ""
+                                } fa-duotone fa-paper-plane-top`}
+                            ></i>
+                        )}
                     </div>
                 </div>
             </div>
@@ -237,9 +221,8 @@ const ControlComment = ({ post, setListComment }) => {
     );
 };
 
-ControlComment.propTypes = {
-    post: PropTypes.object.isRequired,
-    setListComment: PropTypes.func.isRequired,
+ControlSendMess.propTypes = {
+    onSubmit: PropTypes.func,
 };
 
-export default ControlComment;
+export default ControlSendMess;

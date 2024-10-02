@@ -26,7 +26,8 @@ const ListChatUser = ({ receiver, setReceiver }) => {
         fetchChatUsers();
     }, [userId, limit, page]);
     return (
-        <div>
+        <div className="bg-white ">
+            <div className="text-xl font-bold">Đoạn chat</div>
             <div className="flex flex-col">
                 {chatUsers.map((user) => (
                     <div
@@ -35,8 +36,8 @@ const ListChatUser = ({ receiver, setReceiver }) => {
                         className={
                             (receiver === user.chat_with
                                 ? "bg-main"
-                                : "bg-white") +
-                            " flex mb-1 items-center p-2 rounded-md w-full justify-between"
+                                : "bg-white hover:bg-gray-100") +
+                            " flex mb-1 items-center  p-2 rounded-md w-full justify-between"
                         }
                     >
                         <div className="flex  items-center">

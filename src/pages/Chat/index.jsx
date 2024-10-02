@@ -5,13 +5,14 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import ListChatUser from "./components/listUser";
 import Header from "../Layout/components/Header";
 import { Button } from "@material-tailwind/react";
-import { Input, Spin } from "antd";
+import { Image, Input, Spin, Upload } from "antd";
 import conversationServices from "../../services/conversationServices";
+import EmojiPicker from "emoji-picker-react";
+import ControlSendMess from "./components/ControlSendMess";
+import Gallery from "./components/Gallery";
 
 export default function Chat() {
-    const [value, setValue] = useState("");
     const [receiver, setReceiver] = useState("");
-    const [userSelected, setUserSelected] = useState("");
     const [messages, setMessages] = useState([]);
     const [isConnectedSocket, setIsConnectedSocket] = useState(false);
     const [pagiantion, setPagination] = useState({
@@ -51,6 +52,7 @@ export default function Chat() {
                         sender_id: data.sender_id,
                         receiver_id: data.receiver_id,
                         content: data.content,
+                        medias: data.medias,
                     },
                     ...messages,
                 ]);
@@ -64,7 +66,7 @@ export default function Chat() {
     const fetchFirstMessage = async () => {
         const info = await conversationServices.getConversation(
             receiver,
-            10,
+            20,
             1
         );
         setMessages(info.result);
@@ -76,12 +78,12 @@ export default function Chat() {
 
     const user = JSON.parse(localStorage.getItem("user"));
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = (value, medias) => {
         socket.emit("chat", {
             sender_id: user._id,
             receiver_id: receiver,
             content: value,
+            medias: medias,
         });
         if (isConnectedSocket) {
             setMessages((messages) => [
@@ -89,18 +91,18 @@ export default function Chat() {
                     sender_id: user._id,
                     receiver_id: receiver,
                     content: value,
+                    medias: medias,
                 },
                 ...messages,
             ]);
         }
-        setValue("");
     };
 
     const fetchMoreMessages = async () => {
         if (receiver && pagiantion.page < pagiantion.total_page) {
             const info = await conversationServices.getConversation(
                 receiver,
-                10,
+                20,
                 pagiantion.page + 1
             );
             setMessages((messages) => [...messages, ...info.result]);
@@ -110,7 +112,6 @@ export default function Chat() {
             });
         }
     };
-    console.log(receiver);
 
     return (
         <>
@@ -121,7 +122,7 @@ export default function Chat() {
             >
                 <div
                     style={{ height: "calc(100vh - 60px)" }}
-                    className="flex   overflow-y-scroll flex-col border-r-2 border-gray-300 w-1/5 h-screen"
+                    className="flex bg-white p-3 overflow-y-scroll flex-col border-r-2 border-gray-300 w-1/5 h-screen"
                 >
                     <ListChatUser
                         receiver={receiver}
@@ -129,74 +130,82 @@ export default function Chat() {
                     />
                 </div>
 
-                <div
-                    style={{ height: "calc(100vh - 60px)" }}
-                    className="flex flex-col bg-white justify-end items-center w-4/5 h-screen"
-                >
+                {receiver && (
                     <div
-                        className=""
-                        id="scrollableDiv"
-                        style={{
-                            width: "98%",
-                            //height: "calc(100vh - 150px)",
-                            overflow: "auto",
-                            display: "flex",
-                            flexDirection: "column-reverse",
-                        }}
+                        style={{ height: "calc(100vh - 60px)" }}
+                        className="flex flex-col bg-white justify-end items-center w-4/5 h-screen"
                     >
-                        {/*Put the scroll bar always on the bottom*/}
-                        <InfiniteScroll
+                        <div
                             className=""
-                            dataLength={messages.length}
-                            next={fetchMoreMessages}
+                            id="scrollableDiv"
                             style={{
+                                width: "98%",
+                                //height: "calc(100vh - 150px)",
+                                overflow: "auto",
                                 display: "flex",
                                 flexDirection: "column-reverse",
                             }}
-                            inverse={pagiantion.page < pagiantion.total_page}
-                            hasMore={true}
-                            loader={<Spin spinning={true} />}
-                            scrollableTarget="scrollableDiv"
                         >
-                            {messages.map((message) => (
-                                <div key={message._id} className="">
-                                    {!(message.sender_id === user._id) ? (
-                                        <div className="w-1/2">
-                                            <div className="bg-blue-500 text-white block p-2 rounded-md float-start m-1">
-                                                <p className="text-sm break-words inline-block">
-                                                    {message.content}
-                                                </p>
+                            {/*Put the scroll bar always on the bottom*/}
+                            <InfiniteScroll
+                                className=""
+                                dataLength={messages.length}
+                                next={fetchMoreMessages}
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "column-reverse",
+                                }}
+                                inverse={
+                                    pagiantion.page < pagiantion.total_page
+                                }
+                                hasMore={true}
+                                loader={<></>}
+                                scrollableTarget="scrollableDiv"
+                            >
+                                {messages.map((message) => (
+                                    <div key={message._id} className="">
+                                        {!(message.sender_id === user._id) ? (
+                                            <div className="w-1/2">
+                                                <div className="bg-blue-500 flex flex-col text-white block p-2 rounded-md float-start m-1">
+                                                    {message.medias.length >
+                                                        0 && (
+                                                        <Gallery
+                                                            medias={
+                                                                message.medias
+                                                            }
+                                                        />
+                                                    )}
+                                                    <p className="text-sm break-words inline-block">
+                                                        {message.content}
+                                                    </p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    ) : (
-                                        <div className="w-1/2 float-end">
-                                            <div className="bg-blue-500 text-white block p-2 rounded-md float-end m-1">
-                                                <p className="text-sm break-words inline-block">
-                                                    {message.content}
-                                                </p>
+                                        ) : (
+                                            <div className="w-1/2 float-end">
+                                                <div className="bg-blue-500 flex flex-col text-white block p-2 rounded-md float-end m-1">
+                                                    {message.medias.length >
+                                                        0 && (
+                                                        <Gallery
+                                                            medias={
+                                                                message.medias
+                                                            }
+                                                        />
+                                                    )}
+                                                    <p className="text-sm break-words inline-block">
+                                                        {message.content}
+                                                    </p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    )}
-                                </div>
-                            ))}
-                        </InfiniteScroll>
-                    </div>
-                    <div className="w-[95%] ">
-                        <div className="flex items-center">
-                            <Input
-                                onPressEnter={handleSubmit}
-                                value={value}
-                                className="border-solid border-2 border-gray-400 rounded-lg p-2 w-full"
-                                type="text"
-                                onChange={(e) => setValue(e.target.value)}
-                            />
-                            <i
-                                onClick={handleSubmit}
-                                className="text-2xl mx-4 fa-solid fa-paper-plane-top"
-                            ></i>
+                                        )}
+                                    </div>
+                                ))}
+                            </InfiniteScroll>
+                        </div>
+                        <div className="w-[95%] ">
+                            <ControlSendMess onSubmit={handleSubmit} />
                         </div>
                     </div>
-                </div>
+                )}
             </div>
         </>
     );

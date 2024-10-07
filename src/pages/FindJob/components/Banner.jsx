@@ -1,13 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Chip, Input, Option, Select } from "@material-tailwind/react";
 import ChartTopTech from "./ChartTopTech";
 import PropTypes from "prop-types";
+import projectServices from "../../../services/projectServices";
 
 const Banner = ({ setDataSearch }) => {
     const [keySearch, setKeySearch] = React.useState("");
+    const [market, setMarket] = React.useState([]);
+    const [dataChart, setDataChart] = React.useState([]);
+
     const handleSearch = () => {
         setDataSearch((prev) => ({ ...prev, key: keySearch }));
     };
+    const fetchMarket = async () => {
+        const res = await projectServices.getMarket();
+        setMarket(res.result);
+        setDataChart(res.result.techResult);
+    };
+    useEffect(() => {
+        fetchMarket();
+    }, []);
     return (
         <div className="flex h-[350px] justify-center  bg-gradient-to-r from-blue-300 to-cyan-300">
             <div className="w-[100%] lg:w-[50%]">
@@ -55,10 +67,10 @@ const Banner = ({ setDataSearch }) => {
                         <p></p>
                         <p></p>
                         <p>Dự án đang tuyển: </p>
-                        <p>1234</p>
+                        <p>{market?.projectResult?.total}</p>
                         <div className="bg-white w-[2px] h-[20px]"></div>
                         <p>Dự án mới hôm nay:</p>
-                        <p>132</p>
+                        <p>{market?.projectResult?.today}</p>
                         <p></p>
                         <p></p>
                     </div>
@@ -73,15 +85,20 @@ const Banner = ({ setDataSearch }) => {
                             <Select
                                 className="text-[14px] text-white font-sans"
                                 variant="static"
+                                onChange={(e) => {
+                                    if (e === 0)
+                                        setDataChart(market.techResult);
+                                    else setDataChart(market.fieldResult);
+                                }}
                                 value={0}
                             >
                                 <Option value={0}>Theo công nghệ</Option>
-                                <Option>Theo lĩnh vực</Option>
+                                <Option value={1}>Theo lĩnh vực</Option>
                             </Select>
                         </div>
                     </div>
 
-                    <ChartTopTech />
+                    <ChartTopTech data={dataChart} />
                 </div>
             </div>
         </div>

@@ -116,6 +116,7 @@ const CreateProject = () => {
                                     }}
                                 >
                                     <Input
+                                        maxLength={30}
                                         onChange={(e) =>
                                             setNewField(e.target.value)
                                         }
@@ -138,7 +139,7 @@ const CreateProject = () => {
                 </Form.Item>
                 <Form.Item
                     required
-                    name="technologys"
+                    name="technologies"
                     rules={[
                         {
                             required: true,
@@ -167,6 +168,7 @@ const CreateProject = () => {
                                             setNewTech(e.target.value)
                                         }
                                         value={newTech}
+                                        maxLength={30}
                                         placeholder="--Nhập--"
                                     />
                                     <MyButton onClick={handleAddTech} size="sm">

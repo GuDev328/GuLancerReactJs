@@ -75,6 +75,11 @@ class ProjectServices {
         const response = await axiosIns.getAuth(`/projects/get-member/${id}`);
         return response.data;
     }
+
+    async getMarket() {
+        const response = await axiosIns.get("/projects/get-market");
+        return response.data;
+    }
 }
 
 const projectServices = new ProjectServices();

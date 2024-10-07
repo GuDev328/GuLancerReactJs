@@ -48,7 +48,7 @@ const FilterDrawer = ({ open, setOpen, setDataSearch }) => {
         setDataSearch((pre) => ({ ...pre, fields: list }));
     };
     const handleOnChangeTechs = (list) => {
-        setDataSearch((pre) => ({ ...pre, technologys: list }));
+        setDataSearch((pre) => ({ ...pre, technologies: list }));
     };
     const onChangeSalaryType = (e) => {
         setDataSearch((pre) => ({ ...pre, salaryType: e.target.value }));

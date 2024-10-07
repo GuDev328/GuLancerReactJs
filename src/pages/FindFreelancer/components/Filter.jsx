@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Checkbox, Typography, Form, Input, Radio } from "antd";
+import { Checkbox, Typography, Form, Input } from "antd";
 import projectServices from "../../../services/projectServices";
-import PropTypes from "prop-types";
+const { Title } = Typography;
 import { Button } from "@material-tailwind/react";
-
-const salaryType = [
-    { label: "Trả lương theo giờ", value: 1 },
-    { label: "Trả lương theo dự án", value: 0 },
-    { label: "Tất cả", value: null },
-];
+import PropTypes from "prop-types";
 const Filter = ({ setDataSearch }) => {
     const [showMoreTech, setShowMoreTech] = useState(false);
     const [showMoreField, setShowMoreField] = useState(false);
@@ -35,21 +30,13 @@ const Filter = ({ setDataSearch }) => {
     useEffect(() => {
         fetchOptions();
     }, []);
-    const handleShowMoreTech = () => {
-        setShowMoreTech(!showMoreTech);
-    };
-    const handleShowMoreFiled = () => {
-        setShowMoreField(!showMoreField);
-    };
     const handleOnChangeFields = (list) => {
         setDataSearch((pre) => ({ ...pre, fields: list }));
     };
     const handleOnChangeTechs = (list) => {
         setDataSearch((pre) => ({ ...pre, technologies: list }));
     };
-    const onChangeSalaryType = (e) => {
-        setDataSearch((pre) => ({ ...pre, salaryType: e.target.value }));
-    };
+
     const handleFilterSalary = () => {
         setDataSearch((pre) => ({
             ...pre,
@@ -57,16 +44,30 @@ const Filter = ({ setDataSearch }) => {
             salaryTo: salaryTo ? Number(salaryTo) : null,
         }));
     };
-
+    const handleShowMoreTech = () => {
+        setShowMoreTech(!showMoreTech);
+    };
+    const handleShowMoreFiled = () => {
+        setShowMoreField(!showMoreField);
+    };
     return (
-        <div className="hidden md:block my-5 mx-8 w-[230px]">
+        <div className="hidden md:block my-5  w-[230px]">
             <div className="rounded-3xl bg-white min-w-[230px] w-[15%] my-3 p-5">
-                <p className="text-[23px] font-bold">Kiểu dự án</p>
+                <p className="text-[23px] font-bold">Xác thực</p>
                 <div className="ml-3">
-                    <Radio.Group
-                        options={salaryType}
-                        onChange={onChangeSalaryType}
-                    ></Radio.Group>
+                    <Checkbox>Tất cả</Checkbox>
+                    <br />
+                    <Checkbox>Đã xác thực</Checkbox>
+                    <Checkbox>Chưa xác thực</Checkbox>
+                </div>
+            </div>
+            <div className="rounded-3xl bg-white min-w-[230px] w-[15%] my-3 p-5">
+                <p className="text-[23px] font-bold">Trạng thái</p>
+                <div className="ml-3">
+                    <Checkbox>Tất cả</Checkbox>
+                    <br />
+                    <Checkbox>Đang Online</Checkbox>
+                    <Checkbox>Đang Offline</Checkbox>
                 </div>
             </div>
             <div className="rounded-3xl bg-white min-w-[230px] w-[15%] my-3 p-5">
@@ -143,7 +144,7 @@ const Filter = ({ setDataSearch }) => {
 };
 
 Filter.propTypes = {
-    setDataSearch: PropTypes.func.isRequired,
+    setDataSearch: PropTypes.func,
 };
 
 export default Filter;

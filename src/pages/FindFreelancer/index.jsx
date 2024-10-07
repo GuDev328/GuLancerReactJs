@@ -1,13 +1,51 @@
-import React from "react";
-import Filter from "./components/Filter";
+import React, { useEffect, useState } from "react";
+import Filter from "./components/Filter.jsx";
 import { Button, Chip, Input, Option, Select } from "@material-tailwind/react";
 import { useSelector } from "react-redux";
-import Freelancers from "./components/Freelancers";
+import Freelancers from "./components/Freelancers.jsx";
+import searchServices from "../../services/searchServices";
 function FindFreelancer(props) {
     const isMobile = useSelector((state) => state.screen.isMobile);
+    const [pageData, setPageData] = React.useState([]);
+    const inputSearch = React.useRef(null);
+    const [dataSearch, setDataSearch] = React.useState({
+        key: "",
+        fields: [],
+        technologies: [],
+        salaryType: null,
+        salaryFrom: null,
+        salaryTo: null,
+        orderBy: 0,
+        page: 1,
+        limit: 10,
+    });
+    const [pageInfo, setPageInfo] = React.useState({
+        page: 1,
+        total_page: 10,
+        limit: 2,
+    });
+    const handleSearch = () => {
+        setDataSearch({
+            ...dataSearch,
+            key: inputSearch.current.value,
+        });
+    };
+
+    const fetchFreelancer = async () => {
+        const res = await searchServices.searchFreelancer(dataSearch);
+        setPageInfo({
+            page: res.result.page,
+            total_page: res.result.total_page,
+            limit: res.result.limit,
+        });
+        setPageData(res.result.data);
+    };
+    useEffect(() => {
+        fetchFreelancer();
+    }, [dataSearch]);
     return (
         <div className="flex justify-around">
-            <Filter />
+            <Filter setDataSearch={setDataSearch} />
             <div
                 className=""
                 style={{ width: isMobile ? "95%" : "calc(95% - 294px)" }}
@@ -19,6 +57,7 @@ function FindFreelancer(props) {
                     <div className="flex  justify-center ">
                         <div className="min-w-[80%] !relative">
                             <input
+                                ref={inputSearch}
                                 className=" border  min-w-[100%] h-12 pl-14 text-[12px] text-medium border-gray-300 rounded-md bg-white  "
                                 placeholder="Tìm theo tên, username hoặc công nghệ, lĩnh vực"
                             />
@@ -27,6 +66,7 @@ function FindFreelancer(props) {
 
                         <Button
                             color="blue"
+                            onClick={handleSearch}
                             buttonType="filled"
                             className=" w-[125px] ml-2 h-12 font-bold"
                         >
@@ -35,7 +75,12 @@ function FindFreelancer(props) {
                     </div>
                 </div>
 
-                <Freelancers />
+                <Freelancers
+                    pageData={pageData}
+                    pageInfo={pageInfo}
+                    setDataSearch={setDataSearch}
+                    setPageInfo={setPageInfo}
+                />
             </div>
         </div>
     );

@@ -11,7 +11,7 @@ function FindJob() {
     const [dataSearch, setDataSearch] = React.useState({
         key: "",
         fields: [],
-        technologys: [],
+        technologies: [],
         salaryType: null,
         salaryFrom: null,
         salaryTo: null,
@@ -24,8 +24,8 @@ function FindJob() {
     });
     const fetchAllJobs = async () => {
         const res = await projectServices.getAllProject({
-            page: 1,
-            limit: 2,
+            page: pageInfo.page,
+            limit: pageInfo.limit,
             ...dataSearch,
         });
         setPageInfo({

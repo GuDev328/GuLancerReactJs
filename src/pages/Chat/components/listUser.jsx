@@ -3,7 +3,7 @@ import conversationServices from "../../../services/conversationServices";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 
-const ListChatUser = ({ receiver, setReceiver }) => {
+const ListChatUser = ({ receiver, setReceiver, setAvatarUserCurrent }) => {
     const [chatUsers, setChatUsers] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(1);
@@ -32,7 +32,10 @@ const ListChatUser = ({ receiver, setReceiver }) => {
                 {chatUsers.map((user) => (
                     <div
                         key={user._id}
-                        onClick={() => setReceiver(user.chat_with)}
+                        onClick={() => {
+                            setReceiver(user.chat_with);
+                            setAvatarUserCurrent(user.user.avatar);
+                        }}
                         className={
                             (receiver === user.chat_with
                                 ? "bg-main"
@@ -67,6 +70,7 @@ const ListChatUser = ({ receiver, setReceiver }) => {
 ListChatUser.propTypes = {
     receiver: PropTypes.string,
     setReceiver: PropTypes.func,
+    setAvatarUserCurrent: PropTypes.func,
 };
 
 export default ListChatUser;

@@ -253,7 +253,11 @@ function Header() {
                                     </div>
                                 </MenuHandler>
                                 <MenuList>
-                                    <MenuItem>
+                                    <MenuItem
+                                        onClick={() =>
+                                            navigate(`/profile/${userInfo._id}`)
+                                        }
+                                    >
                                         <i className="fa-solid fa-id-card mr-2"></i>{" "}
                                         Trang cá nhân
                                     </MenuItem>

@@ -11,6 +11,7 @@ import { setIsMobile, setIsLgScreen } from "./stores/slice/screen.slice";
 
 import "./App.css";
 import Chat from "./pages/Chat";
+import UserWall from "./pages/UserWall";
 
 function App() {
     const dispatch = useDispatch();
@@ -32,6 +33,7 @@ function App() {
             <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
+
                 <Route
                     path="/forgot-password-success"
                     element={<ForgotPasswordSuccess />}

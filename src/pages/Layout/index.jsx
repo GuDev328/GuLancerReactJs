@@ -7,6 +7,8 @@ import MyProjects from "../Projects";
 import FindFreelancer from "../FindFreelancer";
 import Group from "../Community/Group";
 import ViewProject from "../ViewProject";
+import UserWall from "../UserWall";
+import EditMyProfile from "../UserWall/EditMyProfile";
 function Home() {
     return (
         <>
@@ -18,6 +20,8 @@ function Home() {
                 <Route path="/projects/*" element={<MyProjects />} />
                 <Route path="/group" element={<Group />} />
                 <Route path="/project/:id" element={<ViewProject />} />
+                <Route path="/profile/:id" element={<UserWall />} />
+                <Route path="/edit-profile/:id" element={<EditMyProfile />} />
             </Routes>
             <Footer />
         </>

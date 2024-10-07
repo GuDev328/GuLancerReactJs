@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 
 const MarkdownView = ({ data }) => {
     const [height, setHeight] = useState("auto");
-
     const updateHeight = () => {
         const editor = document.querySelector(".wmde-markdown");
         if (editor) {

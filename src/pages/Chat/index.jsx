@@ -5,7 +5,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import ListChatUser from "./components/listUser";
 import Header from "../Layout/components/Header";
 import { Button } from "@material-tailwind/react";
-import { Image, Input, Spin, Upload } from "antd";
+import { Avatar, Image, Input, Spin, Upload } from "antd";
 import conversationServices from "../../services/conversationServices";
 import EmojiPicker from "emoji-picker-react";
 import ControlSendMess from "./components/ControlSendMess";
@@ -14,6 +14,7 @@ import Gallery from "./components/Gallery";
 export default function Chat() {
     const [receiver, setReceiver] = useState("");
     const [messages, setMessages] = useState([]);
+    const [avatarUserCurrent, setAvatarUserCurrent] = useState("");
     const [isConnectedSocket, setIsConnectedSocket] = useState(false);
     const [pagiantion, setPagination] = useState({
         page: 1,
@@ -125,6 +126,7 @@ export default function Chat() {
                     className="flex bg-white p-3 overflow-y-scroll flex-col border-r-2 border-gray-300 w-1/5 h-screen"
                 >
                     <ListChatUser
+                        setAvatarUserCurrent={setAvatarUserCurrent}
                         receiver={receiver}
                         setReceiver={setReceiver}
                     />
@@ -155,17 +157,23 @@ export default function Chat() {
                                     display: "flex",
                                     flexDirection: "column-reverse",
                                 }}
-                                inverse={
+                                inverse={true}
+                                hasMore={
                                     pagiantion.page < pagiantion.total_page
                                 }
-                                hasMore={true}
-                                loader={<></>}
+                                loader={<Spin spinning={true} />}
                                 scrollableTarget="scrollableDiv"
                             >
                                 {messages.map((message) => (
                                     <div key={message._id} className="">
                                         {!(message.sender_id === user._id) ? (
-                                            <div className="w-1/2">
+                                            <div className="w-1/2 flex ">
+                                                <div className="mr-1">
+                                                    <Avatar
+                                                        src={avatarUserCurrent}
+                                                        size={40}
+                                                    />
+                                                </div>
                                                 <div className="bg-blue-500 flex flex-col text-white block p-2 rounded-md float-start m-1">
                                                     {message.medias.length >
                                                         0 && (

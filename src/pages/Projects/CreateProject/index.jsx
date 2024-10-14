@@ -5,46 +5,12 @@ import { Button } from "@material-tailwind/react";
 import MyButton from "../../../components/core/MyButton";
 import projectServices from "../../../services/projectServices";
 import { useNavigate } from "react-router-dom";
+import SelectFields from "../../../components/core/SelectFields";
+import SelectTech from "../../../components/core/SelectTech";
 const CreateProject = () => {
     const [description, setDescription] = React.useState("");
     const [form] = Form.useForm();
-    const [fieldsOptions, setFieldsOptions] = React.useState([]);
-    const [techsOptions, setTechsOptions] = React.useState([]);
-    const [newTech, setNewTech] = React.useState("");
-    const [newField, setNewField] = React.useState("");
     const navigateTo = useNavigate();
-
-    const fetchOptions = async () => {
-        const fields = await projectServices.getAllFields();
-        const techs = await projectServices.getAllTechs();
-        setFieldsOptions(
-            fields.result.map((field) => ({
-                label: field.name,
-                value: field.name,
-            }))
-        );
-        setTechsOptions(
-            techs.result.map((field) => ({
-                label: field.name,
-                value: field.name,
-            }))
-        );
-    };
-    useEffect(() => {
-        fetchOptions();
-    }, []);
-
-    const handleAddTech = () => {
-        setTechsOptions([...techsOptions, { label: newTech, value: newTech }]);
-        setNewTech("");
-    };
-    const handleAddField = () => {
-        setFieldsOptions([
-            ...fieldsOptions,
-            { label: newField, value: newField },
-        ]);
-        setNewField("");
-    };
 
     const handleSubmit = async () => {
         await form.validateFields();
@@ -89,100 +55,8 @@ const CreateProject = () => {
                 >
                     <Input placeholder="--Nhập--" />
                 </Form.Item>
-                <Form.Item
-                    required
-                    name="fields"
-                    rules={[
-                        {
-                            required: true,
-                            message: "Lĩnh lực không được để trống",
-                        },
-                    ]}
-                    label="Lĩnh vực"
-                >
-                    <Select
-                        options={fieldsOptions}
-                        dropdownRender={(menu) => (
-                            <>
-                                {menu}
-                                <Divider
-                                    style={{
-                                        margin: "8px 0",
-                                    }}
-                                />
-                                <Space
-                                    style={{
-                                        padding: "0 8px 4px",
-                                    }}
-                                >
-                                    <Input
-                                        maxLength={30}
-                                        onChange={(e) =>
-                                            setNewField(e.target.value)
-                                        }
-                                        placeholder="--Nhập--"
-                                    />
-                                    <MyButton
-                                        onClick={handleAddField}
-                                        size="sm"
-                                    >
-                                        Thêm lĩnh vực
-                                    </MyButton>
-                                </Space>
-                            </>
-                        )}
-                        showSearch
-                        allowClear
-                        mode="multiple"
-                        placeholder="--Chọn--"
-                    />
-                </Form.Item>
-                <Form.Item
-                    required
-                    name="technologies"
-                    rules={[
-                        {
-                            required: true,
-                            message: "Công nghệ không được để trống",
-                        },
-                    ]}
-                    label="Công nghệ sử dụng"
-                >
-                    <Select
-                        options={techsOptions}
-                        dropdownRender={(menu) => (
-                            <>
-                                {menu}
-                                <Divider
-                                    style={{
-                                        margin: "8px 0",
-                                    }}
-                                />
-                                <Space
-                                    style={{
-                                        padding: "0 8px 4px",
-                                    }}
-                                >
-                                    <Input
-                                        onChange={(e) =>
-                                            setNewTech(e.target.value)
-                                        }
-                                        value={newTech}
-                                        maxLength={30}
-                                        placeholder="--Nhập--"
-                                    />
-                                    <MyButton onClick={handleAddTech} size="sm">
-                                        Thêm Công nghệ
-                                    </MyButton>
-                                </Space>
-                            </>
-                        )}
-                        showSearch
-                        allowClear
-                        mode="multiple"
-                        placeholder="--Chọn--"
-                    />
-                </Form.Item>
+                <SelectFields />
+                <SelectTech />
                 <Row gutter={10}>
                     <Col span={12}>
                         <Form.Item

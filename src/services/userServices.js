@@ -34,6 +34,11 @@ class UserServices {
         const response = await axiosIns.postAuth(`/users/unfollow`, { userId });
         return response.data;
     }
+
+    async getDetailUser(userId) {
+        const response = await axiosIns.getAuth(`/users/profile/${userId}`);
+        return response.data;
+    }
 }
 
 const userServices = new UserServices();

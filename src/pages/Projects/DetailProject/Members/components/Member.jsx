@@ -35,7 +35,7 @@ const Member = ({ member }) => {
                         <p className=" hidden sm:inline-block ml-1 text-[13px] text-main">
                             Với {member.project_done} dự án đã hoàn thành
                         </p>
-                        {member.verified && (
+                        {member.verified === 1 && (
                             <p
                                 className="text-[13px]"
                                 style={{ color: "#31c740" }}

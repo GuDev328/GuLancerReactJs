@@ -23,6 +23,7 @@ import {
 } from "@material-tailwind/react";
 
 import { Avatar } from "antd";
+import { useSelector } from "react-redux";
 
 function Header() {
     const [userInfo, setUserInfo] = useState(
@@ -30,6 +31,10 @@ function Header() {
             localStorage.getItem("user") ? localStorage.getItem("user") : null
         )
     );
+    const { userInfo: userInfoRedux } = useSelector((state) => state.user);
+    useEffect(() => {
+        userInfoRedux && setUserInfo(userInfoRedux);
+    }, [userInfoRedux]);
     const location = useLocation();
     const [openDialogLogout, setOpenDialogLogout] = useState(false);
     const navigate = useNavigate();

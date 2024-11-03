@@ -20,7 +20,7 @@ function FindJob() {
     const [pageInfo, setPageInfo] = React.useState({
         page: 1,
         total_page: 10,
-        limit: 2,
+        limit: 10,
     });
     const fetchAllJobs = async () => {
         const res = await projectServices.getAllProject({

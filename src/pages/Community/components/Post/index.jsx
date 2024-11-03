@@ -4,7 +4,7 @@ import React, { useEffect, useLayoutEffect } from "react";
 import ReadMoreReadLess from "react-read-more-read-less";
 import PropTypes from "prop-types";
 import { formatDateTime, formatNumber } from "@/utils/common";
-
+import UserName from "../../../../components/core/UserName";
 import MediaPost from "./MediaPost";
 import ModalComment from "./ModalComment";
 import { timeAgo } from "../../../../utils/common";
@@ -48,16 +48,14 @@ const Post = ({ post, isShowGroupName = true }) => {
                     <Avatar size={45} src={post?.user?.avatar} />
                     {isShowGroupName ? (
                         <div className="leading-none ml-2 mt-3">
-                            <p className="text-[16px]">{post?.user?.name}</p>
-                            <p className="text-[14px] font-bold">
+                            <UserName data={post?.user} />
+                            <p className="text-[14px] mt-1 font-bold">
                                 {post?.group[0]?.name}
                             </p>
                         </div>
                     ) : (
                         <div className="leading-none ml-2 ">
-                            <p className="text-[16px] font-semibold">
-                                {post?.user?.name}
-                            </p>
+                            <UserName data={post?.user} />
                         </div>
                     )}
                 </div>

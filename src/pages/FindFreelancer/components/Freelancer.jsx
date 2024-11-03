@@ -4,6 +4,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import MarkdownView from "../../../components/utils/MarkdownView";
+import UserName from "../../../components/core/UserName";
 const Freelancer = ({ data }) => {
     //const isMobile = useSelector((state) => state.screen.isMobile);
     return (
@@ -13,12 +14,7 @@ const Freelancer = ({ data }) => {
                     <Avatar src={data.avatar} className="" size={55} />
                 </div>
                 <div className="">
-                    <p className="ml-1 text-[16px] mt-2">
-                        {data.name}
-                        <span className="text-[13px] text-gray-500">
-                            @{data.username}
-                        </span>
-                    </p>
+                    <UserName data={data} />
                     <div className="flex items-center">
                         <p className="bg-[#ffb800] px-1 text-[15px] rounded-lg text-white">
                             {data.star}
@@ -37,7 +33,7 @@ const Freelancer = ({ data }) => {
                         </p>
                     </div>
 
-                    {data.verified && (
+                    {data.verified === 1 && (
                         <p className="text-[13px]" style={{ color: "#31c740" }}>
                             <i className="fa-light mr-1 fa-ballot-check"></i>
                             Đã xác thực

@@ -39,6 +39,11 @@ class UserServices {
         const response = await axiosIns.getAuth(`/users/profile/${userId}`);
         return response.data;
     }
+
+    async updateProfile(data) {
+        const response = await axiosIns.postAuth(`/users/update-me`, data);
+        return response;
+    }
 }
 
 const userServices = new UserServices();

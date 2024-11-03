@@ -3,7 +3,7 @@ import Freelancer from "./Freelancer.jsx";
 import { useSelector } from "react-redux";
 import { Pagination } from "antd";
 import { Button, Chip, Input, Option, Select } from "@material-tailwind/react";
-import FilterDrawer from "./FilterDrawer";
+import FilterDrawer from "./FilterDrawer.jsx";
 import PropTypes from "prop-types";
 
 const orderByOptions = [

@@ -1,13 +1,31 @@
 import { Button, Chip } from "@material-tailwind/react";
-import { Avatar, Image, Rate } from "antd";
+import { Avatar, Image, Rate, Spin } from "antd";
 import React from "react";
 import { useSelector } from "react-redux";
 import MarkdownView from "../../components/utils/MarkdownView";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import userServices from "../../services/userServices";
+import { useQuery } from "@tanstack/react-query";
+import UserName from "../../components/core/UserName";
+import { formatCurrency } from "../../utils/common";
+
 const UserWall = () => {
     const { isMobile } = useSelector((state) => state.screen);
     const { userInfo } = useSelector((state) => state.user);
+    const { id } = useParams();
+    const dataUser = useQuery({
+        queryKey: ["getUser", id],
+        queryFn: async () => await userServices.getDetailUser(id),
+    });
+    const data = dataUser.data?.result;
     const navigate = useNavigate();
+    let isMyProfile = false;
+    if (userInfo._id === id) {
+        isMyProfile = true;
+    }
+
+    if (dataUser.isLoading)
+        return <Spin className="w-full h-full" spinning={true}></Spin>;
 
     return (
         <div className="w-full h-full bg-white">
@@ -16,40 +34,38 @@ const UserWall = () => {
                     width={"100vw"}
                     height={"20vh"}
                     style={{ objectFit: "cover" }}
-                    src="https://hoanghamobile.com/tin-tuc/wp-content/webp-express/webp-images/uploads/2023/07/anh-bia-dep-10.jpg.webp"
+                    src={data?.cover_photo}
                 />
                 <div className="absolute flex items-center gap-3  bottom-[0] translate-y-1/2 left-[20px]">
                     <div className="bg-white rounded-[20px] p-3 ">
                         <Image
                             width={isMobile ? 120 : 200}
                             style={{ objectFit: "cover", borderRadius: "20px" }}
-                            src={userInfo?.avatar}
+                            src={data?.avatar}
                         />
                     </div>
                 </div>
             </div>
             <div className={`${isMobile ? "ml-[175px]" : "ml-[255px]"}`}>
                 <div className="flex flex-wrap text-xl font-bold ">
-                    <p>{userInfo?.name}</p>
-
-                    <span className="text-gray-600">
-                        {" "}
-                        @{userInfo?.username}
-                    </span>
+                    <UserName
+                        nameClassName="text-[20px] mr-2"
+                        usernameClassName="text-[15px] text-gray-500"
+                        data={data}
+                    />
                 </div>
-
                 <p className="text-sm text-gray-500">
-                    {userInfo?.role === 0 ? "Freelancer" : "Employer"}
+                    {data?.role === 0 ? "Freelancer" : "Employer"}
                 </p>
 
-                {userInfo.verified && (
-                    <p className="text-[18px]" style={{ color: "#31c740" }}>
+                {data?.verified === 1 && (
+                    <p className="text-[15px]" style={{ color: "#31c740" }}>
                         <i className="fa-light mr-1 fa-ballot-check"></i>
                         Đã xác thực
                     </p>
                 )}
-                {!userInfo.verified && (
-                    <p className="text-[18px]" style={{ color: "#c78631" }}>
+                {!data.verified && (
+                    <p className="text-[15px]" style={{ color: "#c78631" }}>
                         <i className="fa-light mr-1 fa-ballot-check"></i>
                         Chưa xác thực
                     </p>
@@ -57,30 +73,40 @@ const UserWall = () => {
             </div>
             <div className="flex  flex-wrap ml-[20px] md:ml-[255px] flex-col md:flex-row-reverse justify-between">
                 <div className="flex gap-x-2 justify-end items-center ">
-                    <p className="text-[20px] font-bold">
+                    <p
+                        className={`text-[20px] font-bold ${
+                            isMyProfile ? "mr-5" : ""
+                        }`}
+                    >
                         <i className="fas mx-2 text-main fa-money-bill"></i>
-                        200.000đ/Giờ
+                        {data?.salary && formatCurrency(data?.salary)}đ/Giờ
                     </p>
 
-                    <Button variant="outlined" color={"blue"}>
-                        <i className="fas fa-comment-alt-lines text-[18px]"></i>
-                    </Button>
-                    <Button className="bg-main mr-5 text-white">
-                        <i className="far mr-2 text-[18px] fa-bullseye-pointer"></i>
-                        Thuê ngay
-                    </Button>
+                    {!isMyProfile && (
+                        <Button variant="outlined" color={"blue"}>
+                            <i className="fas fa-comment-alt-lines text-[18px]"></i>
+                        </Button>
+                    )}
+                    {!isMyProfile && (
+                        <Button className="bg-main mr-5 text-white">
+                            <i className="far mr-2 text-[18px] fa-bullseye-pointer"></i>
+                            Thuê ngay
+                        </Button>
+                    )}
                 </div>
                 <div className="justify-start max-w-[650px] ">
                     <div
                         className={`flex flex-col md:flex-row flex-wrap gap-x-3 text-[17px] `}
                     >
                         <div className="flex  items-center gap-2">
-                            <div className="text-xl font-bold">5.0</div>
-                            <Rate value={5} />
+                            <div className="text-xl font-bold">
+                                {data?.star}
+                            </div>
+                            <Rate value={data?.star} />
                         </div>
                         <div className="flex  items-center gap-2">
                             <i className="fas fa-tasks-alt text-xl"></i>
-                            <div>123 dự án đã hoàn thành</div>
+                            <div>{data?.project_done} dự án đã hoàn thành</div>
                         </div>
                         <div className="flex items-center gap-2">
                             <i className="fas fa-comment-alt-lines text-xl"></i>
@@ -105,21 +131,25 @@ const UserWall = () => {
                     </div>
                 </div>
             </div>
-            <div className="flex justify-end mr-[20px]">
-                <Button
-                    onClick={() => navigate(`/edit-profile/${userInfo._id}`)}
-                    variant="outlined"
-                    size="sm"
-                    color={"blue"}
-                >
-                    <i className="fad fa-edit text-[18px]"></i> Chỉnh sửa trang
-                    cá nhân
-                </Button>
-            </div>
+            {isMyProfile && (
+                <div className="flex justify-end mr-[20px]">
+                    <Button
+                        onClick={() =>
+                            navigate(`/edit-profile/${userInfo._id}`)
+                        }
+                        variant="outlined"
+                        size="sm"
+                        color={"blue"}
+                    >
+                        <i className="fad fa-edit text-[18px]"></i> Chỉnh sửa
+                        trang cá nhân
+                    </Button>
+                </div>
+            )}
             <div className="ml-5 mt-2">
-                <div className="flex flex-wrap">
+                <div className="flex flex-wrap items-center">
                     <p className="font-bold m-1">Lĩnh vực công việc: </p>
-                    {userInfo?.fields_info.map((field) => (
+                    {data?.fields_info?.map((field) => (
                         <Chip
                             key={field._id}
                             variant="ghost"
@@ -127,10 +157,13 @@ const UserWall = () => {
                             value={field?.name}
                         />
                     ))}
+                    {data?.fields?.length === 0 && (
+                        <p className="text-gray-500">Chưa có lĩnh vực nào</p>
+                    )}
                 </div>
-                <div className="flex flex-wrap">
+                <div className="flex flex-wrap items-center">
                     <p className="font-bold m-1">Công nghệ sử dụng: </p>
-                    {userInfo?.technologies_info.map((tech) => (
+                    {data?.technologies_info?.map((tech) => (
                         <Chip
                             key={tech._id}
                             variant="ghost"
@@ -138,9 +171,12 @@ const UserWall = () => {
                             value={tech?.name}
                         />
                     ))}
+                    {data?.technologies?.length === 0 && (
+                        <p className="text-gray-500">Chưa có công nghệ nào</p>
+                    )}
                 </div>
             </div>
-            <MarkdownView data={userInfo?.description} />
+            <MarkdownView data={data?.description} />
         </div>
     );
 };

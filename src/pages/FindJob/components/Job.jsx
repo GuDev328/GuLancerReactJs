@@ -13,7 +13,10 @@ const Job = ({ data }) => {
         <div className="relative mb-2 bg-white w-[90%] rounded-3xl p-5">
             <div className="flex justify-between items-start">
                 <div className=" sm:flex items-end">
-                    <p className="text-main font-bold text-[20px] ">
+                    <p
+                        onClick={() => navigate(`/project/${data?._id}`)}
+                        className="text-main font-bold text-[20px] cursor-pointer hover:underline"
+                    >
                         {data?.title}
                     </p>
                     <p className="hidden sm:inline-block text-gray-500 ml-2 mb-1 text-[14px]">

@@ -153,10 +153,13 @@ const UserWall = () => {
                                 <Input />
                             </Form.Item>
                         )}
+                        {userInfo?.role === 0 && (
+                            <>
+                                <SelectFields required={false} />
 
-                        <SelectFields required={false} />
-
-                        <SelectTech required={false} />
+                                <SelectTech required={false} />
+                            </>
+                        )}
 
                         {userInfo.verified === 1 && (
                             <p

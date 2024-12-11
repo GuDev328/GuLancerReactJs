@@ -20,7 +20,7 @@ const Member = ({ member }) => {
                         : "Thành viên"}
                 </p>
                 <div className="flex">
-                    <Avatar className="" size={45} />
+                    <Avatar src={member?.avatar} className="" size={45} />
                     <div className="">
                         <p className="ml-1 text-[18px] mt-2">{member.name}</p>
                         <div className="flex items-center">

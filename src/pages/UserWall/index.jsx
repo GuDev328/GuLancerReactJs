@@ -8,6 +8,7 @@ import userServices from "../../services/userServices";
 import { useQuery } from "@tanstack/react-query";
 import UserName from "../../components/core/UserName";
 import { formatCurrency } from "../../utils/common";
+import { UserRole } from "../../constant/user";
 
 const UserWall = () => {
     const { isMobile } = useSelector((state) => state.screen);
@@ -73,14 +74,16 @@ const UserWall = () => {
             </div>
             <div className="flex  flex-wrap ml-[20px] md:ml-[255px] flex-col md:flex-row-reverse justify-between">
                 <div className="flex gap-x-2 justify-end items-center ">
-                    <p
-                        className={`text-[20px] font-bold ${
-                            isMyProfile ? "mr-5" : ""
-                        }`}
-                    >
-                        <i className="fas mx-2 text-main fa-money-bill"></i>
-                        {data?.salary && formatCurrency(data?.salary)}đ/Giờ
-                    </p>
+                    {data?.role === UserRole.FREELANCER && (
+                        <p
+                            className={`text-[20px] font-bold ${
+                                isMyProfile ? "mr-5" : ""
+                            }`}
+                        >
+                            <i className="fas mx-2 text-main fa-money-bill"></i>
+                            {data?.salary && formatCurrency(data?.salary)}/Giờ
+                        </p>
+                    )}
 
                     {!isMyProfile && (
                         <Button variant="outlined" color={"blue"}>
@@ -113,7 +116,7 @@ const UserWall = () => {
                             <div>123 đánh giá</div>
                         </div>
                     </div>
-                    <div
+                    {/* <div
                         className={`flex flex-col md:flex-row flex-wrap gap-x-3 text-[17px] `}
                     >
                         <div className="flex items-center gap-2">
@@ -128,7 +131,7 @@ const UserWall = () => {
                             <i className="fas fa-vote-yea"></i>
                             <div> 100% Tỉ lệ chấp nhận dự án</div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
             {isMyProfile && (
@@ -146,36 +149,42 @@ const UserWall = () => {
                     </Button>
                 </div>
             )}
-            <div className="ml-5 mt-2">
-                <div className="flex flex-wrap items-center">
-                    <p className="font-bold m-1">Lĩnh vực công việc: </p>
-                    {data?.fields_info?.map((field) => (
-                        <Chip
-                            key={field._id}
-                            variant="ghost"
-                            className="m-1"
-                            value={field?.name}
-                        />
-                    ))}
-                    {data?.fields?.length === 0 && (
-                        <p className="text-gray-500">Chưa có lĩnh vực nào</p>
-                    )}
+            {data?.role === UserRole.FREELANCER && (
+                <div className="ml-5 mt-2">
+                    <div className="flex flex-wrap items-center">
+                        <p className="font-bold m-1">Lĩnh vực công việc: </p>
+                        {data?.fields_info?.map((field) => (
+                            <Chip
+                                key={field._id}
+                                variant="ghost"
+                                className="m-1"
+                                value={field?.name}
+                            />
+                        ))}
+                        {data?.fields?.length === 0 && (
+                            <p className="text-gray-500">
+                                Chưa có lĩnh vực nào
+                            </p>
+                        )}
+                    </div>
+                    <div className="flex flex-wrap items-center">
+                        <p className="font-bold m-1">Công nghệ sử dụng: </p>
+                        {data?.technologies_info?.map((tech) => (
+                            <Chip
+                                key={tech._id}
+                                variant="ghost"
+                                className="m-1"
+                                value={tech?.name}
+                            />
+                        ))}
+                        {data?.technologies?.length === 0 && (
+                            <p className="text-gray-500">
+                                Chưa có công nghệ nào
+                            </p>
+                        )}
+                    </div>
                 </div>
-                <div className="flex flex-wrap items-center">
-                    <p className="font-bold m-1">Công nghệ sử dụng: </p>
-                    {data?.technologies_info?.map((tech) => (
-                        <Chip
-                            key={tech._id}
-                            variant="ghost"
-                            className="m-1"
-                            value={tech?.name}
-                        />
-                    ))}
-                    {data?.technologies?.length === 0 && (
-                        <p className="text-gray-500">Chưa có công nghệ nào</p>
-                    )}
-                </div>
-            </div>
+            )}
             <MarkdownView data={data?.description} />
         </div>
     );

@@ -84,5 +84,5 @@ export function timeAgo(dateString) {
 }
 
 export function formatCurrency(value) {
-    return value.toLocaleString("vi-VN") + "đ";
+    return Number(value).toLocaleString("vi-VN") + "đ";
 }

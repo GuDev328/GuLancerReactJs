@@ -7,13 +7,16 @@ import projectServices from "../../../services/projectServices";
 import { useParams } from "react-router-dom";
 import { formatCurrency } from "../../../utils/common";
 import ApplyInviteManagement from "./Apply-Invite";
-
+import { useSelector } from "react-redux";
+import { UserRole } from "../../../constant/user";
+import Tasks from "./Tasks";
 const DetailProject = () => {
     const { id } = useParams();
     const getDetailProject = useQuery({
         queryKey: ["getDetailProject", id],
         queryFn: () => projectServices.getDetailProject(id),
     });
+    const userInfo = useSelector((state) => state.user.userInfo);
 
     const detailProject = getDetailProject.data?.result[0];
     const ProjectTabs = [
@@ -32,7 +35,7 @@ const DetailProject = () => {
         {
             key: "tasks",
             label: "Các công việc",
-            children: "",
+            children: <Tasks />,
             icon: <i className="fa-regular fa-boxes-stacked"></i>,
         },
         {
@@ -41,7 +44,7 @@ const DetailProject = () => {
             children: "",
             icon: <i className="far fa-bug"></i>,
         },
-        {
+        userInfo?.role === UserRole.EMPLOYER && {
             key: "apply-invite",
             label: "Lời mời, Ứng tuyển",
             children: <ApplyInviteManagement projectId={detailProject?._id} />,

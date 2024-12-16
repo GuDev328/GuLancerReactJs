@@ -10,9 +10,11 @@ const MyModal = ({
     title = "Modal",
     okText = "Xác nhận",
     children,
+    ...props
 }) => {
     return (
         <Modal
+            {...props}
             title={title}
             open={open}
             onCancel={onCancel}

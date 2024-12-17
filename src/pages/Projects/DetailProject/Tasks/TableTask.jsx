@@ -1,12 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
-import { Table } from "antd";
+import { message, Table } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import taskServices from "../../../../services/taskServices";
 import { useParams } from "react-router-dom";
 import { renderJSXTaskStatus } from "../../../../utils/render";
 import Search from "./Search";
-
-const TableTask = () => {
+import DrawerTask from "./DrawerTask";
+import PropTypes from "prop-types";
+const TableTask = ({ reRender, setReRender }) => {
+    const [openDrawer, setOpenDrawer] = useState(false);
+    const [selectedId, setSelectedId] = useState("");
     const [data, setData] = useState([]);
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
@@ -25,7 +28,7 @@ const TableTask = () => {
 
     useEffect(() => {
         fetchData();
-    }, [dataSearch, fetchData]);
+    }, [dataSearch, fetchData, reRender]);
 
     const columns = [
         {
@@ -82,9 +85,31 @@ const TableTask = () => {
     return (
         <div>
             <Search setDataSearch={setDataSearch} />
-            <Table dataSource={data} columns={columns}></Table>
+            <Table
+                scroll={{ x: 1000 }}
+                onRow={(record) => ({
+                    onClick: () => {
+                        setSelectedId(record._id);
+                        setOpenDrawer(true);
+                    },
+                    style: { cursor: "pointer" },
+                })}
+                dataSource={data}
+                columns={columns}
+            ></Table>
+            <DrawerTask
+                setReRender={setReRender}
+                open={openDrawer}
+                onClose={() => setOpenDrawer(false)}
+                id={selectedId}
+            />
         </div>
     );
+};
+
+TableTask.propTypes = {
+    reRender: PropTypes.bool,
+    setReRender: PropTypes.func,
 };
 
 export default TableTask;

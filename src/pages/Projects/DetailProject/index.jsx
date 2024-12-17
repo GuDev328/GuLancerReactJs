@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { UserRole } from "../../../constant/user";
 import Tasks from "./Tasks";
 const DetailProject = () => {
+    const isMobile = useSelector((state) => state.screen.isMobile);
     const { id } = useParams();
     const getDetailProject = useQuery({
         queryKey: ["getDetailProject", id],

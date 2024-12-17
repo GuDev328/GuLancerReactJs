@@ -60,10 +60,13 @@ const Search = ({ setDataSearch }) => {
         setDataSearch(data);
     };
     return (
-        <div>
+        <div className="max-w-[100%] overflow-x-auto">
             <Form className="flex gap-2 " layout="horizontal" form={form}>
                 <Form.Item name="title">
-                    <Input placeholder="Tên công việc" />
+                    <Input
+                        className="min-w-[200px]"
+                        placeholder="Tên công việc"
+                    />
                 </Form.Item>
                 <Form.Item name="status">
                     <Select
@@ -85,12 +88,17 @@ const Search = ({ setDataSearch }) => {
                 </Form.Item>
                 <Form.Item name="deadline">
                     <DatePicker.RangePicker
+                        className="min-w-[250px]"
                         format={"DD/MM/YYYY"}
                         placeholder={["Hạn từ", "đến"]}
                     />
                 </Form.Item>
                 <div>
-                    <MyButton size="sm" onClick={handleSearch}>
+                    <MyButton
+                        className="min-w-[100px]"
+                        size="sm"
+                        onClick={handleSearch}
+                    >
                         <SearchOutlined /> Tìm kiếm
                     </MyButton>
                 </div>

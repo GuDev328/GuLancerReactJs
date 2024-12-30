@@ -1,14 +1,12 @@
-import { Image } from "antd";
 import React, { useEffect } from "react";
-import SliderPost from "@/components/business/SliderPost";
+import SliderPost from "./SliderPost";
 import PropTypes from "prop-types";
-
-import VideoHLS from "@/components/utils/Media/VideoHLS";
-
-const MediaPost = ({ post }) => {
+import { Image } from "antd";
+import Video from "@/components/utils/Media/Video";
+const Gallery = ({ medias }) => {
   const [openSlider, setOpenSlider] = React.useState(false);
   const [mediasPost, setMediasPost] = React.useState([]);
-  const { medias } = post;
+
   const mediaCount = medias.length;
 
   useEffect(() => {
@@ -50,7 +48,7 @@ const MediaPost = ({ post }) => {
                   />
                 </div>
               ) : (
-                <VideoHLS
+                <Video
                   src={media.url}
                   controlType={
                     mediaCount > 4 && index === 3 ? "none" : "control"
@@ -85,8 +83,8 @@ const MediaPost = ({ post }) => {
   );
 };
 
-MediaPost.propTypes = {
-  post: PropTypes.object.isRequired,
+Gallery.propTypes = {
+  medias: PropTypes.array.isRequired,
 };
 
-export default MediaPost;
+export default Gallery;

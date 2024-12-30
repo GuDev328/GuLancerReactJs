@@ -23,6 +23,7 @@ const MarkdownView = ({ data }) => {
             style={{
                 border: "none",
                 boxShadow: "none",
+                
             }}
             preview="preview"
         ></MDEditor>

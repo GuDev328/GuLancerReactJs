@@ -1,4 +1,4 @@
-import { Avatar, Drawer, Flex, Space } from "antd";
+import { Avatar, Drawer, Flex, Popover, Space } from "antd";
 import React from "react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
@@ -6,9 +6,13 @@ import MyButton from "@/components/core/MyButton";
 import taskServices from "../../../../services/taskServices";
 import { useState } from "react";
 import { formatDateTime } from "../../../../utils/common";
-import { renderJSXTaskStatus } from "../../../../utils/render";
+import {
+    renderJSXChangeTaskStatus,
+    renderJSXTaskStatus,
+} from "../../../../utils/render";
 import { EditOutlined } from "@ant-design/icons";
 import ModalCUTask from "./ModalCUTask";
+import { TaskStatus } from "../../../../constant/task";
 const DrawerTask = ({ open, onClose, id, setReRender }) => {
     const [data, setData] = useState(null);
     const [reRenderDetail, setReRenderDetail] = useState(false);
@@ -31,6 +35,16 @@ const DrawerTask = ({ open, onClose, id, setReRender }) => {
     const isMobile = useSelector((state) => state.screen.isMobile);
     const handleClose = () => {
         onClose();
+    };
+
+    const changeStatus = async (status) => {
+        const res = await taskServices.changeStatusTask({
+            _id: id,
+            status,
+        });
+        if (res.status === 200) {
+            setReRenderDetail((pre) => !pre);
+        }
     };
 
     return (
@@ -70,6 +84,18 @@ const DrawerTask = ({ open, onClose, id, setReRender }) => {
                 <Flex align="center" gap={8}>
                     <p>Trạng thái:</p>
                     <p> {renderJSXTaskStatus(data?.status)}</p>
+                    <Popover
+                        placement="bottom"
+                        content={renderJSXChangeTaskStatus(
+                            data?.status,
+                            () => changeStatus(TaskStatus.TODO),
+                            () => changeStatus(TaskStatus.INPROCESSED),
+                            () => changeStatus(TaskStatus.DONE),
+                            () => changeStatus(TaskStatus.CANCEL)
+                        )}
+                    >
+                        <a>Chuyển trạng thái</a>
+                    </Popover>
                 </Flex>
                 <Space className="m-3">{data?.description}</Space>
             </Drawer>

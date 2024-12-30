@@ -12,6 +12,11 @@ class TaskServices {
         return response;
     }
 
+    async changeStatusTask(data) {
+        const response = await axiosIns.postAuth("/tasks/change-status", data);
+        return response;
+    }
+
     async getAllTask(data) {
         const response = await axiosIns.postAuth(
             `/tasks/get-all?page=${data.page}&limit=${data.limit}`,

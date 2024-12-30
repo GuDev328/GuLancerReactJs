@@ -7,6 +7,7 @@ import { renderJSXTaskStatus } from "../../../../utils/render";
 import Search from "./Search";
 import DrawerTask from "./DrawerTask";
 import PropTypes from "prop-types";
+import dayjs from "dayjs";
 const TableTask = ({ reRender, setReRender }) => {
     const [openDrawer, setOpenDrawer] = useState(false);
     const [selectedId, setSelectedId] = useState("");
@@ -24,7 +25,7 @@ const TableTask = ({ reRender, setReRender }) => {
         });
         setData(data.result);
         setPage(data.page);
-    }, [dataSearch, page, limit]);
+    }, [dataSearch, page, limit, id]);
 
     useEffect(() => {
         fetchData();
@@ -69,7 +70,7 @@ const TableTask = ({ reRender, setReRender }) => {
             key: "deadline",
             width: 130,
             render: (text, record) => {
-                return <p>{new Date(record.deadline).toLocaleDateString()}</p>;
+                return <p>{dayjs(record?.deadline).format("DD/MM/YYYY")}</p>;
             },
         },
         {
@@ -86,6 +87,18 @@ const TableTask = ({ reRender, setReRender }) => {
         <div>
             <Search setDataSearch={setDataSearch} />
             <Table
+                pagination={{
+                    current: page,
+                    pageSize: limit,
+                    total: data.length,
+                    showTotal: (total) => `Tổng: ${total} điểm dừng`,
+                    showSizeChanger: true,
+                    locale: { items_per_page: "/trang" },
+                    onChange: (page, size) => {
+                        setPage(page);
+                        setLimit(size);
+                    },
+                }}
                 scroll={{ x: 1000 }}
                 onRow={(record) => ({
                     onClick: () => {

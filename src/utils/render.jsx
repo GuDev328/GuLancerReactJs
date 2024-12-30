@@ -1,5 +1,7 @@
+import { TaskStatus } from "../constant/task";
+
 export const renderJSXTaskStatus = (status) => {
-    if (status == 0) {
+    if (status == TaskStatus.TODO) {
         return (
             <div
                 className="px-2 text-center rounded-xl"
@@ -9,7 +11,7 @@ export const renderJSXTaskStatus = (status) => {
             </div>
         );
     }
-    if (status == 1) {
+    if (status == TaskStatus.INPROCESSED) {
         return (
             <div
                 className="px-2 text-center rounded-xl"
@@ -19,7 +21,7 @@ export const renderJSXTaskStatus = (status) => {
             </div>
         );
     }
-    if (status == 2) {
+    if (status == TaskStatus.DONE) {
         return (
             <div
                 className="px-2 text-center rounded-xl"
@@ -29,13 +31,69 @@ export const renderJSXTaskStatus = (status) => {
             </div>
         );
     }
-    if (status == 3) {
+    if (status == TaskStatus.CANCEL) {
         return (
             <div
                 className="px-2 text-center rounded-xl"
                 style={{ backgroundColor: "#FEE4E2", color: "#B32318" }}
             >
                 Đã huỷ
+            </div>
+        );
+    }
+};
+
+export const renderJSXChangeTaskStatus = (
+    status,
+    toDo,
+    toInprocess,
+    toDone,
+    toCancel
+) => {
+    if (status === TaskStatus.TODO) {
+        return (
+            <div>
+                <div className="cursor-pointer p-2" onClick={toInprocess}>
+                    Thực hiện công việc
+                </div>
+                <div className="cursor-pointer p-2" onClick={toCancel}>
+                    Huỷ bỏ công việc
+                </div>
+            </div>
+        );
+    }
+    if (status === TaskStatus.INPROCESSED) {
+        return (
+            <div>
+                <div className="cursor-pointer p-2" onClick={toDone}>
+                    Hoàn thành công việc
+                </div>
+                <hr />
+                <div className="cursor-pointer p-2" onClick={toDo}>
+                    Đánh dấu chưa thực hiện công việc
+                </div>
+            </div>
+        );
+    }
+    if (status === TaskStatus.DONE) {
+        return (
+            <div>
+                <div className="cursor-pointer p-2" onClick={toInprocess}>
+                    Thực hiện lại công việc
+                </div>
+                <hr />
+                <div className="cursor-pointer p-2" onClick={toDo}>
+                    Đánh dấu chưa thực hiện công việc
+                </div>
+            </div>
+        );
+    }
+    if (status === TaskStatus.CANCEL) {
+        return (
+            <div>
+                <div className="cursor-pointer p-2" onClick={toDo}>
+                    Mở lại công việc
+                </div>
             </div>
         );
     }

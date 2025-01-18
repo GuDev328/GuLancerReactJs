@@ -106,26 +106,19 @@ export default function Chat({ projectId }) {
 
   return (
     <>
-      <div
-      //style={{ height: "calc(100vh - 60px)" }}
-      // className="flex box-border "
-      >
-        <div
-          //style={{ height: "calc(100vh - 60px)" }}
-          className="flex flex-col bg-white justify-end items-center  h-screen"
-        >
+      <div>
+        <div className="flex flex-col bg-white justify-end items-center  h-screen">
           <div
             className=""
             id="scrollableDiv"
             style={{
               width: "98%",
-              //height: "calc(100vh - 150px)",
+
               overflow: "auto",
               display: "flex",
               flexDirection: "column-reverse",
             }}
           >
-            {/*Put the scroll bar always on the bottom*/}
             <InfiniteScroll
               className=""
               dataLength={messages.length}

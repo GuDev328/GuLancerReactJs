@@ -9,23 +9,24 @@ import Group from "../Community/Group";
 import ViewProject from "../ViewProject";
 import UserWall from "../UserWall";
 import EditMyProfile from "../UserWall/EditMyProfile";
+import Chat from "../Chat";
 function Home() {
-    return (
-        <>
-            <Header />
-            <Routes>
-                <Route path="/find-jobs" element={<FindJob />} />
-                <Route path="/find-freelancers" element={<FindFreelancer />} />
-                <Route path="/community/*" element={<Community />} />
-                <Route path="/projects/*" element={<MyProjects />} />
-                <Route path="/group" element={<Group />} />
-                <Route path="/project/:id" element={<ViewProject />} />
-                <Route path="/profile/:id" element={<UserWall />} />
-                <Route path="/edit-profile/:id" element={<EditMyProfile />} />
-            </Routes>
-            <Footer />
-        </>
-    );
+  return (
+    <>
+      <Header />
+      <Routes>
+        <Route path="/find-jobs" element={<FindJob />} />
+        <Route path="/find-freelancers" element={<FindFreelancer />} />
+        <Route path="/community/*" element={<Community />} />
+        <Route path="/projects/*" element={<MyProjects />} />
+        <Route path="/group" element={<Group />} />
+        <Route path="/project/:id" element={<ViewProject />} />
+        <Route path="/profile/:id" element={<UserWall />} />
+        <Route path="/edit-profile/:id" element={<EditMyProfile />} />
+      </Routes>
+      <Footer />
+    </>
+  );
 }
 
 export default Home;

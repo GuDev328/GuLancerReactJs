@@ -11,6 +11,7 @@ import { setIsMobile, setIsLgScreen } from "./stores/slice/screen.slice";
 
 import "./App.css";
 import Chat from "./pages/Client/Chat";
+import AdminLayout from "./pages/Admin/Layout";
 
 function App() {
   const dispatch = useDispatch();
@@ -32,14 +33,15 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-
         <Route
           path="/forgot-password-success"
           element={<ForgotPasswordSuccess />}
         />
-
         <Route path="/register" element={<Register />} />
         <Route path="/register-success" element={<RegisterSuccess />} />
+
+        <Route path="/admin/*" element={<AdminLayout />} />
+
         <Route path="/chat" element={<Chat />} />
         <Route path="/*" element={<Home />} />
         <Route path="/" element={<Home />} />

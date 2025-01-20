@@ -33,6 +33,8 @@ import {
 } from "react-transition-group";
 import { useMediaQuery } from "react-responsive";
 import SideNav from "./SideNav.jsx";
+import authServices from "@/services/authServices";
+import { setUserInfo } from "@/stores/slice/user.slice";
 
 const { Content, Header } = Layout;
 
@@ -64,12 +66,9 @@ const AdminLayout = ({ children }) => {
       label: "Đăng xuất",
       icon: <LogoutOutlined />,
       danger: true,
-      onClick: () => {
-        message.open({
-          type: "loading",
-          content: "Đang đăng xuất...",
-          duration: 0.2,
-        });
+      onClick: async () => {
+        await authServices.logout();
+        setUserInfo(null);
         localStorage.clear();
         setTimeout(() => {
           navigate("/login");

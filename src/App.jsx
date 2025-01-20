@@ -12,6 +12,7 @@ import { setIsMobile, setIsLgScreen } from "./stores/slice/screen.slice";
 import "./App.css";
 import Chat from "./pages/Client/Chat";
 import AdminLayout from "./pages/Admin/Layout";
+import WrapperRouter from "./components/utils/WrapperRouter";
 
 function App() {
   const dispatch = useDispatch();
@@ -39,12 +40,12 @@ function App() {
         />
         <Route path="/register" element={<Register />} />
         <Route path="/register-success" element={<RegisterSuccess />} />
-
-        <Route path="/admin/*" element={<AdminLayout />} />
-
-        <Route path="/chat" element={<Chat />} />
-        <Route path="/*" element={<Home />} />
-        <Route path="/" element={<Home />} />
+        <Route path="/chat" element={<WrapperRouter Component={Chat} />} />
+        <Route
+          path="/admin/*"
+          element={<WrapperRouter admin={true} Component={AdminLayout} />}
+        />
+        <Route path="/*" element={<WrapperRouter Component={Home} />} />
       </Routes>
     </Router>
   );

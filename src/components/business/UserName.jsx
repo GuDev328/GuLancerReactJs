@@ -1,8 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-const UserName = ({ data, className, nameClassName, usernameClassName }) => {
-  console.log(data);
+const UserName = ({
+  data,
+  className,
+  nameClassName,
+  usernameClassName,
+  noNavigate,
+}) => {
   const navigate = useNavigate();
   const nameClass = nameClassName ? nameClassName : "text-[16px] mr-2";
   const usernameClass = usernameClassName
@@ -10,7 +15,7 @@ const UserName = ({ data, className, nameClassName, usernameClassName }) => {
     : "text-[13px] text-gray-500";
 
   const handleClick = () => {
-    navigate(`/profile/${data?._id}`);
+    !noNavigate && navigate(`/profile/${data?._id}`);
   };
   return (
     <div className={`${className} cursor-pointer`} onClick={handleClick}>
@@ -27,6 +32,7 @@ UserName.propTypes = {
   className: PropTypes.string,
   nameClassName: PropTypes.string,
   usernameClassName: PropTypes.string,
+  noNavigate: PropTypes.bool,
 };
 
 export default UserName;

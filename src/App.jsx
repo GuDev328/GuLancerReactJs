@@ -13,6 +13,7 @@ import "./App.css";
 import Chat from "./pages/Client/Chat";
 import AdminLayout from "./pages/Admin/Layout";
 import WrapperRouter from "./components/utils/WrapperRouter";
+import AdminRootPage from "./pages/Admin";
 
 function App() {
   const dispatch = useDispatch();
@@ -43,7 +44,7 @@ function App() {
         <Route path="/chat" element={<WrapperRouter Component={Chat} />} />
         <Route
           path="/admin/*"
-          element={<WrapperRouter admin={true} Component={AdminLayout} />}
+          element={<WrapperRouter admin={true} Component={AdminRootPage} />}
         />
         <Route path="/*" element={<WrapperRouter Component={Home} />} />
       </Routes>

@@ -10,7 +10,7 @@ import {
   Tooltip,
   Switch,
 } from "antd";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import {
@@ -35,6 +35,7 @@ import { useMediaQuery } from "react-responsive";
 import SideNav from "./SideNav.jsx";
 import authServices from "@/services/authServices";
 import { setUserInfo } from "@/stores/slice/user.slice";
+import AccountManagement from "../Account/index.jsx";
 
 const { Content, Header } = Layout;
 

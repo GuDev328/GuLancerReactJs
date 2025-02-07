@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import UserName from "@/components/business/UserName";
 import { formatCurrency } from "@/utils/common";
 import { UserRole } from "@/constant/user";
+import dayjs from "dayjs";
 
 const UserWall = () => {
   const { isMobile } = useSelector((state) => state.screen);
@@ -172,6 +173,26 @@ const UserWall = () => {
           </div>
         </div>
       )}
+      <div>
+        <span className="font-bold ml-5">Email: </span>
+        <span>{data.email}</span>
+      </div>
+      <div>
+        <span className="font-bold ml-5">Số điện thoại: </span>
+        <span>{data.phone_number}</span>
+      </div>
+      <div>
+        <span className="font-bold ml-5">Ngày sinh: </span>
+        <span>{dayjs(data.date_of_birth).format("DD/MM/YYYY")}</span>
+      </div>
+      <div>
+        <span className="font-bold ml-5">Giới tính: </span>
+        <span>{data.gender == 1 ? "Nữ" : "Nam"}</span>
+      </div>
+      <div>
+        <span className="font-bold ml-5">Địa chỉ: </span>
+        <span>{data?.location}</span>
+      </div>
       <MarkdownView data={data?.description} />
     </div>
   );

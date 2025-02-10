@@ -10,6 +10,7 @@ const MyModal = ({
   title = "Modal",
   okText = "Xác nhận",
   children,
+  customFooter,
   noFooter = false,
   ...props
 }) => {
@@ -21,7 +22,9 @@ const MyModal = ({
       open={open}
       onCancel={onCancel}
       footer={
-        noFooter ? null : (
+        noFooter ? null : customFooter ? (
+          customFooter
+        ) : (
           <>
             <Button2 size="sm" onClick={onCancel}>
               Hủy
@@ -81,6 +84,7 @@ MyModal.propTypes = {
   title: PropTypes.string,
   onConfirm: PropTypes.func,
   children: PropTypes.node,
+  customFooter: PropTypes.node,
   noFooter: PropTypes.bool,
 };
 

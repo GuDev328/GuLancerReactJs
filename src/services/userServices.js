@@ -53,6 +53,20 @@ class UserServices {
     const response = await axiosIns.postAuth(`/users/request-verify`, data);
     return response;
   }
+  async approveVerify(userId) {
+    const response = await axiosIns.postAuth(`/users/handle-verify`, {
+      userId,
+      type: "APPROVE",
+    });
+    return response;
+  }
+  async rejectVerify(userId) {
+    const response = await axiosIns.postAuth(`/users/handle-verify`, {
+      userId,
+      type: "REJECT",
+    });
+    return response;
+  }
 
   async getListUser({ page, limit, ...data }) {
     const response = await axiosIns.postAuth(
@@ -60,6 +74,14 @@ class UserServices {
       data
     );
     return response.data;
+  }
+
+  async getListRequestVerifyUser({ page, limit, ...data }) {
+    const response = await axiosIns.postAuth(
+      `/users/list-request-verify?page=${page}&limit=${limit}`,
+      data
+    );
+    return response.data.result;
   }
 }
 

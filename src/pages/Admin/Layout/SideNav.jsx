@@ -18,8 +18,8 @@ const menuItems = [
     icon: <UserOutlined />,
   },
   {
-    label: <Link to={"abdcd"}>Quản lý tuyến xe</Link>,
-    key: "abdcd",
+    label: <Link to={"verify-management"}>Xác thực người dùng</Link>,
+    key: "verify-management",
     icon: <BoxPlotOutlined />,
   },
 ];
@@ -75,7 +75,9 @@ const SideNav = ({ ...others }) => {
           openKeys={openKeys}
           onOpenChange={onOpenChange}
           selectedKeys={[current]}
-          style={{ border: "none" }}
+          style={{
+            border: "none",
+          }}
         />
       </ConfigProvider>
     </Sider>

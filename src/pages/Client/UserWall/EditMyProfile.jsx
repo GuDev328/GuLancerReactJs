@@ -154,27 +154,6 @@ const UserWall = () => {
                 <SelectTech required={false} />
               </>
             )}
-
-            {userInfo.verified === 1 && (
-              <p className="text-[18px]" style={{ color: "#31c740" }}>
-                <i className="fa-light mr-1 fa-ballot-check"></i>
-                Đã xác thực
-              </p>
-            )}
-            {/* {userInfo.verified === 0 && (
-                            <div className="flex items-center gap-2">
-                                <p
-                                    className="text-[18px]"
-                                    style={{ color: "#c78631" }}
-                                >
-                                    <i className="fa-light mr-1 fa-ballot-check"></i>
-                                    Chưa xác thực
-                                </p>
-                                <Button className="bg-main" size="sm">
-                                    Xác thực ngay
-                                </Button>
-                            </div>
-                        )} */}
           </div>
 
           <Form.Item wrapperCol={24} name="description" valuePropName="value">

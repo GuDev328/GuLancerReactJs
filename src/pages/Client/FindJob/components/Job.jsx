@@ -5,6 +5,10 @@ import PropTypes from "prop-types";
 import { formatCurrency } from "@/utils/common";
 import MDEditor from "@uiw/react-md-editor";
 import { useNavigate } from "react-router-dom";
+import {
+  renderFullUserVerifyStatus,
+  renderUserVerifyStatus,
+} from "../../../../utils/render";
 
 const Job = ({ data }) => {
   const isMobile = useSelector((state) => state.screen.isMobile);
@@ -74,10 +78,7 @@ const Job = ({ data }) => {
                   Với {data?.user[0]?.project_done} dự án đã hoàn thành
                 </p>
               </div>
-              <p className="text-[13px]" style={{ color: "#31c740" }}>
-                <i className="fa-light mr-1 fa-ballot-check"></i>
-                Đã xác thực
-              </p>
+              {renderUserVerifyStatus(data?.user[0]?.verified_info?.status)}
             </div>
           </div>
           <div className=""></div>

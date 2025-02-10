@@ -6,3 +6,10 @@ export const UserRole = {
   UNDEFINED: 2,
   ADMIN: 3,
 };
+
+export const UserVerifyStatus = {
+  Unverified: 0,
+  Pending: 1,
+  Approved: 2,
+  Rejected: 3,
+};

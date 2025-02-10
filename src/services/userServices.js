@@ -49,6 +49,11 @@ class UserServices {
     return response;
   }
 
+  async requestVerify(data) {
+    const response = await axiosIns.postAuth(`/users/request-verify`, data);
+    return response;
+  }
+
   async getListUser({ page, limit, ...data }) {
     const response = await axiosIns.postAuth(
       `/users/list?page=${page}&limit=${limit}`,

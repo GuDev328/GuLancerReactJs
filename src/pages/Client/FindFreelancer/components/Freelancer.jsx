@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import MarkdownView from "@/components/utils/MarkdownView";
 import UserName from "@/components/business/UserName";
+import { UserVerifyStatus } from "../../../../constant/user";
+import { renderUserVerifyStatus } from "../../../../utils/render";
 const Freelancer = ({ data }) => {
   //const isMobile = useSelector((state) => state.screen.isMobile);
   return (
@@ -27,18 +29,7 @@ const Freelancer = ({ data }) => {
             </p>
           </div>
 
-          {data.verified === 1 && (
-            <p className="text-[13px]" style={{ color: "#31c740" }}>
-              <i className="fa-light mr-1 fa-ballot-check"></i>
-              Đã xác thực
-            </p>
-          )}
-          {!data.verified && (
-            <p className="text-[13px]" style={{ color: "#c78631" }}>
-              <i className="fa-light mr-1 fa-ballot-check"></i>
-              Chưa xác thực
-            </p>
-          )}
+          {renderUserVerifyStatus(data?.verified_info.status)}
           <p className="hidden md:block text-[15px] text-main">
             <span className="text-black">Lĩnh vực : </span>
             {data.fields_info.map((item) => item.name).join(", ")}

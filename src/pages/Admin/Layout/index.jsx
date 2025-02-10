@@ -36,6 +36,7 @@ import SideNav from "./SideNav.jsx";
 import authServices from "@/services/authServices";
 import { setUserInfo } from "@/stores/slice/user.slice";
 import AccountManagement from "../Account/index.jsx";
+import { useSelector } from "react-redux";
 
 const { Content, Header } = Layout;
 
@@ -47,7 +48,7 @@ const AdminLayout = ({ children }) => {
   const [collapsed, setCollapsed] = useState(true);
   const [navFill, setNavFill] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const username = localStorage.getItem("username");
+  const userInfo = useSelector((state) => state.user.userInfo);
   const location = useLocation();
   const navigate = useNavigate();
   const nodeRef = useRef(null);
@@ -160,7 +161,7 @@ const AdminLayout = ({ children }) => {
             <Flex align="center" gap="small">
               <Dropdown menu={{ items }} trigger={["click"]}>
                 <div style={{ color: "#fff" }}>
-                  Xin chào, {username} <DownCircleOutlined />
+                  Xin chào, {userInfo.name} <DownCircleOutlined />
                 </div>
               </Dropdown>
             </Flex>

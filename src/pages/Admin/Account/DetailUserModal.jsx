@@ -4,12 +4,15 @@ import PropTypes from "prop-types";
 import { useMediaQuery } from "react-responsive";
 import userServices from "../../../services/userServices";
 import { Image, Rate } from "antd";
-import { UserRole } from "../../../constant/user";
+import { UserRole, UserVerifyStatus } from "../../../constant/user";
 import UserName from "@/components/business/UserName";
 import { Chip } from "@material-tailwind/react";
 import MarkdownView from "@/components/utils/MarkdownView";
 import dayjs from "dayjs";
-import { renderJSXRoleUser } from "../../../utils/render";
+import {
+  renderJSXRoleUser,
+  renderUserVerifyStatus,
+} from "../../../utils/render";
 
 export default function DetailUserModal({ id, open, onCancel, onConfirm }) {
   const isMobile = useMediaQuery({ maxWidth: 769 });
@@ -63,18 +66,7 @@ export default function DetailUserModal({ id, open, onCancel, onConfirm }) {
               {renderJSXRoleUser(data.role)}
             </p>
 
-            {data?.verified === 1 && (
-              <p className="text-[15px]" style={{ color: "#31c740" }}>
-                <i className="fa-light mr-1 fa-ballot-check"></i>
-                Đã xác thực
-              </p>
-            )}
-            {!data.verified && (
-              <p className="text-[15px]" style={{ color: "#c78631" }}>
-                <i className="fa-light mr-1 fa-ballot-check"></i>
-                Chưa xác thực
-              </p>
-            )}
+            {renderUserVerifyStatus(data?.verified_info.status)}
           </div>
 
           <div className="justify-start max-w-[650px] ">

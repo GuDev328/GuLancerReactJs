@@ -1,6 +1,6 @@
 import { Button, Chip } from "@material-tailwind/react";
 import { Avatar, Image, Rate, Spin } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import MarkdownView from "@/components/utils/MarkdownView";
 import { useNavigate, useParams } from "react-router-dom";
@@ -10,24 +10,39 @@ import UserName from "@/components/business/UserName";
 import { formatCurrency } from "@/utils/common";
 import { UserRole } from "@/constant/user";
 import dayjs from "dayjs";
+import VerifyModal from "./VerifyModal";
+import { UserVerifyStatus } from "../../../constant/user";
+import {
+  renderFullUserVerifyStatus,
+  renderUserVerifyStatus,
+} from "../../../utils/render";
 
 const UserWall = () => {
   const { isMobile } = useSelector((state) => state.screen);
   const { userInfo } = useSelector((state) => state.user);
+  const [openVerifyModal, setOpenVerifyModal] = useState(false);
   const { id } = useParams();
-  const dataUser = useQuery({
+  const {
+    isLoading,
+    data: dataUser,
+    refetch,
+  } = useQuery({
     queryKey: ["getUser", id],
     queryFn: async () => await userServices.getDetailUser(id),
   });
-  const data = dataUser.data?.result;
+  const data = dataUser?.result;
   const navigate = useNavigate();
   let isMyProfile = false;
   if (userInfo._id === id) {
     isMyProfile = true;
   }
 
-  if (dataUser.isLoading)
-    return <Spin className="w-full h-full" spinning={true}></Spin>;
+  if (isLoading) return <Spin className="w-full h-full" spinning={true}></Spin>;
+
+  const handleOnConrirmRequestVerify = async () => {
+    setOpenVerifyModal(false);
+    refetch();
+  };
 
   return (
     <div className="w-full h-full bg-white">
@@ -59,19 +74,22 @@ const UserWall = () => {
         <p className="text-sm text-gray-500">
           {data?.role === 0 ? "Freelancer" : "Employer"}
         </p>
+        <div className="flex">
+          {isMyProfile
+            ? renderFullUserVerifyStatus(data?.verified_info.status)
+            : renderUserVerifyStatus(data?.verified_info.status)}
 
-        {data?.verified === 1 && (
-          <p className="text-[15px]" style={{ color: "#31c740" }}>
-            <i className="fa-light mr-1 fa-ballot-check"></i>
-            Đã xác thực
-          </p>
-        )}
-        {!data.verified && (
-          <p className="text-[15px]" style={{ color: "#c78631" }}>
-            <i className="fa-light mr-1 fa-ballot-check"></i>
-            Chưa xác thực
-          </p>
-        )}
+          {isMyProfile &&
+            (data?.verified_info.status === UserVerifyStatus.Rejected ||
+              data?.verified_info.status === UserVerifyStatus.Unverified) && (
+              <span
+                onClick={() => setOpenVerifyModal(true)}
+                className="text-[15px] ml-2 text-main underline cursor-pointer"
+              >
+                Xác thực ngay
+              </span>
+            )}
+        </div>
       </div>
       <div className="flex  flex-wrap ml-[20px] md:ml-[255px] flex-col md:flex-row-reverse justify-between">
         <div className="flex gap-x-2 justify-end items-center ">
@@ -111,22 +129,6 @@ const UserWall = () => {
               <div>123 đánh giá</div>
             </div>
           </div>
-          {/* <div
-                        className={`flex flex-col md:flex-row flex-wrap gap-x-3 text-[17px] `}
-                    >
-                        <div className="flex items-center gap-2">
-                            <i className="fas fa-calendar-edit"></i>
-                            <div>100% Đúng thời gian</div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <i className="fas fa-money-check-alt"></i>
-                            <div>100% Đúng ngân sách</div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <i className="fas fa-vote-yea"></i>
-                            <div> 100% Tỉ lệ chấp nhận dự án</div>
-                        </div>
-                    </div> */}
         </div>
       </div>
       {isMyProfile && (
@@ -194,6 +196,13 @@ const UserWall = () => {
         <span>{data?.location}</span>
       </div>
       <MarkdownView data={data?.description} />
+      {isMyProfile && (
+        <VerifyModal
+          open={openVerifyModal}
+          onCancel={() => setOpenVerifyModal(false)}
+          onConfirm={handleOnConrirmRequestVerify}
+        ></VerifyModal>
+      )}
     </div>
   );
 };

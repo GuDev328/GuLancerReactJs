@@ -1,5 +1,5 @@
 import { TaskStatus } from "../constant/task";
-import { UserRole } from "../constant/user";
+import { UserRole, UserVerifyStatus } from "../constant/user";
 
 export const renderJSXTaskStatus = (status) => {
   if (status == TaskStatus.TODO) {
@@ -139,6 +139,55 @@ export const renderJSXRoleUser = (status) => {
       >
         Admin
       </div>
+    );
+  }
+};
+
+export const renderUserVerifyStatus = (status) =>
+  status === UserVerifyStatus.Approved ? (
+    <p className="text-[15px]" style={{ color: "#31c740" }}>
+      <i className="fa-light mr-1 fa-ballot-check"></i>
+      Đã xác thực
+    </p>
+  ) : (
+    <p className="text-[15px]" style={{ color: "#c78631" }}>
+      <i className="fa-light mr-1 fa-ballot-check"></i>
+      Chưa xác thực
+    </p>
+  );
+export const renderFullUserVerifyStatus = (status) => {
+  if (status === UserVerifyStatus.Approved) {
+    return (
+      <p className="text-[15px]" style={{ color: "#31c740" }}>
+        <i className="fa-light mr-1 fa-ballot-check"></i>
+        Đã xác thực
+      </p>
+    );
+  }
+  if (status === UserVerifyStatus.Unverified) {
+    return (
+      <p className="text-[15px]" style={{ color: "#c78631" }}>
+        <i className="fa-light mr-1 fa-ballot-check"></i>
+        Chưa xác thực
+      </p>
+    );
+  }
+
+  if (status === UserVerifyStatus.Pending) {
+    return (
+      <p className="text-[15px]" style={{ color: "#0f40b1" }}>
+        <i className="fa-light mr-1 fa-ballot-check"></i>
+        Đang xác thực
+      </p>
+    );
+  }
+
+  if (status === UserVerifyStatus.Rejected) {
+    return (
+      <p className="text-[15px]" style={{ color: "#b1100f" }}>
+        <i className="fa-light mr-1 fa-ballot-check"></i>
+        Bị từ chối, yêu cầu xác thực lại
+      </p>
     );
   }
 };

@@ -2,6 +2,7 @@ import React from "react";
 import { Avatar } from "antd";
 import PropTypes from "prop-types";
 import { formatCurrency, formatNumber } from "@/utils/common";
+import ProjectStatusComponent from "../DetailProject/components/ProjectStatus";
 
 const ProjectItem = ({ data }) => {
   return (
@@ -13,7 +14,7 @@ const ProjectItem = ({ data }) => {
           <p className="ml-1 text-[13px]">{data?.admin_info[0]?.name}</p>
         </div>
         <div className="flex items-center text-main">
-          {formatCurrency(data?.salary)}
+          <ProjectStatusComponent status={data.status} />
         </div>
       </div>
     </div>

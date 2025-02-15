@@ -11,6 +11,9 @@ import { useSelector } from "react-redux";
 import { UserRole } from "@/constant/user";
 import Tasks from "./Tasks";
 import Chat from "./Chat";
+import { renderJSXProjectStatus } from "../../../../utils/render";
+import ProjectStatusComponent from "./components/ProjectStatus";
+import MyProgress from "./MyProgress";
 
 const DetailProject = () => {
   const isMobile = useSelector((state) => state.screen.isMobile);
@@ -20,7 +23,8 @@ const DetailProject = () => {
     queryFn: () => projectServices.getDetailProject(id),
   });
   const userInfo = useSelector((state) => state.user.userInfo);
-
+  const isEmployer =
+    userInfo?._id === getDetailProject.data?.result[0]?.admin_id;
   const detailProject = getDetailProject.data?.result[0];
   const ProjectTabs = [
     {
@@ -47,6 +51,12 @@ const DetailProject = () => {
       children: <Chat projectId={detailProject?._id} />,
       icon: <i className="fa-solid fa-messages"></i>,
     },
+    {
+      key: "about-me",
+      label: "Tiến trình",
+      children: <MyProgress projectId={detailProject?._id} />,
+      icon: <i className="fa-solid fa-bullseye-arrow"></i>,
+    },
     userInfo?.role === UserRole.EMPLOYER && {
       key: "apply-invite",
       label: "Lời mời, Ứng tuyển",
@@ -69,7 +79,11 @@ const DetailProject = () => {
           </p>
         </div>
       </div>
-
+      <ProjectStatusComponent
+        status={detailProject?.status}
+        isEmployer={isEmployer}
+        projectId={detailProject?._id}
+      />
       <div className="flex items-center ">
         <Avatar
           className="w-[40px] h-[40px]"

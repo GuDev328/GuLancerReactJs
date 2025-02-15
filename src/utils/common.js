@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export const getBase64 = (file) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -33,6 +35,11 @@ export function formatDateTime(isoDate) {
     .padStart(2, "0")} ${ampm}`;
 
   return formattedDate;
+}
+
+export function formatDate(isoDate) {
+  if (!isoDate) return undefined;
+  return dayjs(isoDate).format("DD/MM/YYYY");
 }
 
 export function formatNumber(number) {

@@ -51,7 +51,7 @@ const DetailProject = () => {
       children: <Chat projectId={detailProject?._id} />,
       icon: <i className="fa-solid fa-messages"></i>,
     },
-    {
+    userInfo?.role === UserRole.FREELANCER && {
       key: "about-me",
       label: "Tiến trình",
       children: <MyProgress projectId={detailProject?._id} />,

@@ -5,7 +5,7 @@ import { Button } from "@material-tailwind/react";
 const MyButton = (props) => {
   const { className = "", children, ...rest } = props;
   return (
-    <Button className={` bg-main ${className}`} {...rest}>
+    <Button className={` ${className}`} color="blue" {...rest}>
       {children}
     </Button>
   );

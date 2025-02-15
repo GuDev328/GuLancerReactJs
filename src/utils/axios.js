@@ -68,7 +68,7 @@ class Axios {
         }
       })
       .catch((err) => {
-        toast.error(err.response.data.message);
+        message.error(err.response.data.message);
         return null;
       });
     return response;
@@ -87,7 +87,7 @@ class Axios {
         }
       })
       .catch((err) => {
-        toast.error(err.response.data.message);
+        message.error(err.response.data.message);
         return null;
       });
     return response;
@@ -105,7 +105,7 @@ class Axios {
         }
       })
       .catch((err) => {
-        toast.error(err.response.data.message);
+        message.error(err.response.data.message);
         return null;
       });
     return response;
@@ -124,7 +124,7 @@ class Axios {
         }
       })
       .catch((err) => {
-        toast.error(err.response.data.message);
+        message.error(err.response.data.message);
         return null;
       });
     return response;

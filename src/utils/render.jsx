@@ -328,3 +328,42 @@ export const renderJSXProjectStatus = (status, isEmployer) => {
   }
   return null;
 };
+
+export const renderStatusTagPhaseProject = (status) => {
+  let color, statusText;
+
+  switch (status) {
+    case "NOT_READY":
+      color = "gray";
+      statusText = "Chưa sẵn sàng";
+      break;
+    case "PROCESSING":
+      color = "blue";
+      statusText = "Đang tiến hành";
+      break;
+    case "PAYING":
+      color = "orange";
+      statusText = "Chờ thanh toán";
+      break;
+    case "COMPLETE":
+      color = "green";
+      statusText = "Hoàn thành";
+      break;
+    case "DISPUTED":
+      color = "red";
+      statusText = "Tranh chấp";
+      break;
+    default:
+      color = "#333";
+      statusText = "Không xác định";
+  }
+
+  return (
+    <div
+      className="ml-1 inline-block px-2 text-white text-sm rounded-lg"
+      style={{ backgroundColor: color }}
+    >
+      {statusText}
+    </div>
+  );
+};

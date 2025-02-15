@@ -14,6 +14,7 @@ import Chat from "./Chat";
 import { renderJSXProjectStatus } from "../../../../utils/render";
 import ProjectStatusComponent from "./components/ProjectStatus";
 import MyProgress from "./MyProgress";
+import Management from "./Management";
 
 const DetailProject = () => {
   const isMobile = useSelector((state) => state.screen.isMobile);
@@ -56,6 +57,12 @@ const DetailProject = () => {
       label: "Tiến trình",
       children: <MyProgress projectId={detailProject?._id} />,
       icon: <i className="fa-solid fa-bullseye-arrow"></i>,
+    },
+    userInfo?.role === UserRole.EMPLOYER && {
+      key: "management",
+      label: "Quản lý",
+      children: <Management projectId={detailProject?._id} />,
+      icon: <i className="fa-solid fa-people-arrows"></i>,
     },
     userInfo?.role === UserRole.EMPLOYER && {
       key: "apply-invite",

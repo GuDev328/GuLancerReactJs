@@ -107,7 +107,7 @@ export default function Chat({ projectId }) {
   return (
     <>
       <div>
-        <div className="flex flex-col bg-white justify-end items-center  h-screen">
+        <div className="flex flex-col bg-white justify-end items-center h-[calc(100vh-270px)]">
           <div
             className=""
             id="scrollableDiv"

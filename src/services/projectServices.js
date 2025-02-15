@@ -87,6 +87,13 @@ class ProjectServices {
     const response = await axiosIns.get("/projects/get-market");
     return response.data;
   }
+
+  async getOverviewProgress(project_id) {
+    const response = await axiosIns.getAuth(
+      `/projects/overview-progress/${project_id}`
+    );
+    return response.data.result;
+  }
 }
 
 const projectServices = new ProjectServices();

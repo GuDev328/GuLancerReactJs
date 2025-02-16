@@ -4,12 +4,12 @@ import { omit } from "lodash";
 
 class ProjectServices {
   async createProject(data) {
-    const response = await axiosIns.postAuth("/projects/create", data);
+    const response = await axiosIns.post("/projects/create", data);
     return response;
   }
 
   async getAllProject(data) {
-    const response = await axiosIns.postAuth(
+    const response = await axiosIns.post(
       `/projects/get-all?page=${data.page}&limit=${data.limit}`,
       omit(data, ["page", "limit"])
     );
@@ -17,11 +17,11 @@ class ProjectServices {
   }
 
   async getAllFields() {
-    const response = await axiosIns.getAuth("/fields/");
+    const response = await axiosIns.get("/fields/");
     return response.data;
   }
   async getAllTechs() {
-    const response = await axiosIns.getAuth("/technology/");
+    const response = await axiosIns.get("/technology/");
     return response.data;
   }
 
@@ -33,14 +33,12 @@ class ProjectServices {
     return response.data;
   }
   async getDetailProject(id) {
-    const response = await axiosIns.getAuth(
-      `/projects/get-detail-project/${id}`
-    );
+    const response = await axiosIns.get(`/projects/get-detail-project/${id}`);
     return response.data;
   }
 
   async applyProject(data) {
-    const response = await axiosIns.postAuth("/projects//apply-invite", data);
+    const response = await axiosIns.post("/projects//apply-invite", data);
     return response;
   }
 
@@ -50,36 +48,31 @@ class ProjectServices {
   }
 
   async getMyProgress(project_id) {
-    const response = await axiosIns.getAuth(
-      `/projects/my-progress/${project_id}`
-    );
+    const response = await axiosIns.get(`/projects/my-progress/${project_id}`);
     return response.data.result[0];
   }
 
   async editMyProgress(data) {
-    const response = await axiosIns.postAuth(
-      `/projects/edit-my-progress`,
-      data
-    );
+    const response = await axiosIns.post(`/projects/edit-my-progress`, data);
     return response;
   }
 
   async acceptApplyInvite(id) {
-    const response = await axiosIns.postAuth("/projects/accept-apply-invite", {
+    const response = await axiosIns.post("/projects/accept-apply-invite", {
       apply_invite_id: id,
     });
     return response;
   }
 
   async rejectApplyInvite(id) {
-    const response = await axiosIns.postAuth("/projects/reject-apply-invite", {
+    const response = await axiosIns.post("/projects/reject-apply-invite", {
       apply_invite_id: id,
     });
     return response;
   }
 
   async getMember(id) {
-    const response = await axiosIns.getAuth(`/projects/get-member/${id}`);
+    const response = await axiosIns.get(`/projects/get-member/${id}`);
     return response.data;
   }
 
@@ -89,7 +82,7 @@ class ProjectServices {
   }
 
   async getOverviewProgress(project_id) {
-    const response = await axiosIns.getAuth(
+    const response = await axiosIns.get(
       `/projects/overview-progress/${project_id}`
     );
     return response.data.result;

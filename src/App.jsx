@@ -14,6 +14,7 @@ import Chat from "./pages/Client/Chat";
 import AdminLayout from "./pages/Admin/Layout";
 import WrapperRouter from "./components/utils/WrapperRouter";
 import AdminRootPage from "./pages/Admin";
+import AuthWrapperRouter from "./components/utils/AuthWrapperRouter";
 
 function App() {
   const dispatch = useDispatch();
@@ -33,14 +34,26 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route
+          path="/login"
+          element={<AuthWrapperRouter Component={Login} />}
+        />
+        <Route
+          path="/forgot-password"
+          element={<AuthWrapperRouter Component={ForgotPassword} />}
+        />
         <Route
           path="/forgot-password-success"
           element={<ForgotPasswordSuccess />}
         />
-        <Route path="/register" element={<Register />} />
-        <Route path="/register-success" element={<RegisterSuccess />} />
+        <Route
+          path="/register"
+          element={<AuthWrapperRouter Component={Register} />}
+        />
+        <Route
+          path="/register-success"
+          element={<AuthWrapperRouter Component={RegisterSuccess} />}
+        />
         <Route path="/chat" element={<WrapperRouter Component={Chat} />} />
         <Route
           path="/admin/*"

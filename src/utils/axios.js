@@ -5,13 +5,12 @@ import { message } from "antd";
 import { toast } from "react-toastify";
 
 const BASE_URL = "http://localhost:3030";
-//const BASE_URL = "https://1tbkgprl-3030.asse.devtunnels.ms/";
 
-const axiosN = axios.create({
+const axiosIns = axios.create({
   baseURL: BASE_URL,
 });
 
-axiosN.interceptors.request.use(
+axiosIns.interceptors.request.use(
   (config) => {
     config.headers["Authorization"] = `Bearer ${localStorage.getItem(
       "accessToken"
@@ -23,114 +22,40 @@ axiosN.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-export const refreshTokenFunc = async (refreshToken) => {
+
+axiosIns.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+    console.log(error);
+    if (error.response?.data.message !== "jwt expired") {
+      message.error(error.response?.data.message);
+    } else {
+      await refreshTokenFunc();
+      return axiosIns(originalRequest);
+    }
+
+    return Promise.reject(error);
+  }
+);
+
+let isRefreshingToken = false;
+
+export const refreshTokenFunc = async () => {
+  if (isRefreshingToken) return;
   try {
-    const res = await axiosN.post("/users/refresh-token", { refreshToken });
+    isRefreshingToken = true;
+    const refreshToken = localStorage.getItem("refreshToken");
+    const res = await axiosIns.post("/users/refresh-token", { refreshToken });
     localStorage.setItem("accessToken", res.data.result.accessToken);
     localStorage.setItem("refreshToken", res.data.result.refreshToken);
+    isRefreshingToken = false;
     return res.data.result.accessToken;
   } catch (error) {
     window.location.href = "/login?jwt=out";
     console.log(error);
+    return null;
   }
 };
-
-const checkToken = async () => {
-  const accessToken = localStorage.getItem("accessToken");
-  const refreshToken = localStorage.getItem("refreshToken");
-  if (accessToken && refreshToken) {
-    const decodedToken = jwtDecode.jwtDecode(accessToken);
-    const decodedRFToken = jwtDecode.jwtDecode(refreshToken);
-    let date = new Date();
-    if (decodedRFToken.exp < date.getTime() / 1000) {
-      window.location.href = "/login?jwt=out";
-    }
-    if (decodedToken.exp < date.getTime() / 1000) {
-      await refreshTokenFunc(refreshToken);
-    }
-    return true;
-  } else {
-    window.location.href = "/login?jwt=out";
-    return false;
-  }
-};
-
-class Axios {
-  async post(url, data, callback) {
-    const response = await axiosN
-      .post(url, data)
-      .then((res) => {
-        if (res.status === 200) {
-          if (typeof callback === "function") {
-            callback(res);
-          }
-          return res;
-        }
-      })
-      .catch((err) => {
-        message.error(err.response.data.message);
-        return null;
-      });
-    return response;
-  }
-
-  async postAuth(url, data, callback) {
-    await checkToken();
-    const response = await axiosN
-      .post(url, data)
-      .then((res) => {
-        if (res.status === 200) {
-          if (typeof callback === "function") {
-            callback(res);
-          }
-          return res;
-        }
-      })
-      .catch((err) => {
-        message.error(err.response.data.message);
-        return null;
-      });
-    return response;
-  }
-
-  async get(url, callback) {
-    const response = await axiosN
-      .get(url)
-      .then((res) => {
-        if (res.status === 200) {
-          if (typeof callback === "function") {
-            callback(res);
-          }
-          return res;
-        }
-      })
-      .catch((err) => {
-        message.error(err.response.data.message);
-        return null;
-      });
-    return response;
-  }
-
-  async getAuth(url, callback) {
-    await checkToken();
-    const response = await axiosN
-      .get(url)
-      .then((res) => {
-        if (res.status === 200) {
-          if (typeof callback === "function") {
-            callback(res);
-          }
-          return res;
-        }
-      })
-      .catch((err) => {
-        message.error(err.response.data.message);
-        return null;
-      });
-    return response;
-  }
-}
-
-const axiosIns = new Axios();
 
 export default axiosIns;

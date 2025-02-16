@@ -5,63 +5,57 @@ import { setUserInfo } from "../stores/slice/user.slice";
 import { store } from "../stores";
 class UserServices {
   async getMe() {
-    const response = await axiosIns.getAuth("/users/get-me", (res) => {
-      const user = res.data.result;
-      localStorage.setItem("user", JSON.stringify(user));
-      store.dispatch(setUserInfo(res.data.result));
-    });
-    return response;
+    const res = await axiosIns.get("/users/get-me");
+    const user = res.data.result;
+    localStorage.setItem("user", JSON.stringify(user));
+    store.dispatch(setUserInfo(res.data.result));
+    return res;
   }
 
   async initRole(data) {
-    const response = await axiosIns.postAuth(
-      "/users/init-role",
-      data,
-      (res) => {
-        const user = res.data.result;
-        localStorage.setItem("user", JSON.stringify(user));
-        store.dispatch(setUserInfo(res.data.result));
-      }
-    );
-    return response;
+    const res = await axiosIns.post("/users/init-role", data);
+    const user = res.data.result;
+    localStorage.setItem("user", JSON.stringify(user));
+    store.dispatch(setUserInfo(res.data.result));
+    return res;
   }
 
   async follow(userId) {
-    const response = await axiosIns.postAuth(`/users/follow`, { userId });
+    const response = await axiosIns.post(`/users/follow`, { userId });
     return response.data;
   }
   async unfollow(userId) {
-    const response = await axiosIns.postAuth(`/users/unfollow`, { userId });
+    const response = await axiosIns.post(`/users/unfollow`, { userId });
     return response.data;
   }
 
   async getDetailUser(userId) {
-    const response = await axiosIns.getAuth(`/users/profile/${userId}`);
+    const response = await axiosIns.get(`/users/profile/${userId}`);
     return response.data;
   }
 
   async deleteUser(id) {
-    const response = await axiosIns.postAuth(`/users/delete`, { id });
+    const response = await axiosIns.post(`/users/delete`, { id });
     return response;
   }
   async updateProfile(data) {
-    const response = await axiosIns.postAuth(`/users/update-me`, data);
+    const response = await axiosIns.post(`/users/update-me`, data);
     return response;
   }
 
   async requestVerify(data) {
-    const response = await axiosIns.postAuth(`/users/request-verify`, data);
+    const response = await axiosIns.post(`/users/request-verify`, data);
     return response;
   }
   async approveVerify(userId) {
-    const response = await axiosIns.postAuth(`/users/handle-verify`, {
+    const response = await axiosIns.post(`/users/handle-verify`, {
       userId,
       type: "APPROVE",
     });
     return response;
   }
   async rejectVerify(userId) {
-    const response = await axiosIns.postAuth(`/users/handle-verify`, {
+    const response = await axiosIns.post(`/users/handle-verify`, {
       userId,
       type: "REJECT",
     });
@@ -69,7 +63,7 @@ class UserServices {
   }
 
   async getListUser({ page, limit, ...data }) {
-    const response = await axiosIns.postAuth(
+    const response = await axiosIns.post(
       `/users/list?page=${page}&limit=${limit}`,
       data
     );
@@ -77,7 +71,7 @@ class UserServices {
   }
 
   async getListRequestVerifyUser({ page, limit, ...data }) {
-    const response = await axiosIns.postAuth(
+    const response = await axiosIns.post(
       `/users/list-request-verify?page=${page}&limit=${limit}`,
       data
     );

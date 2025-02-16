@@ -16,7 +16,7 @@ class ConversationServices {
   }
 
   async getProjectConversation(receiver, limit, page) {
-    const response = await axiosIns.getAuth(
+    const response = await axiosIns.get(
       `/conversations/get-project-conversation/${receiver}?limit=${limit}&page=${page}`
     );
     return response.data;

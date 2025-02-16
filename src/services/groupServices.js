@@ -15,7 +15,7 @@ class GroupServices {
     return response.data;
   }
   async joinGroup(groupId) {
-    const response = await axiosIns.postAuth(`/groups/join-group`, {
+    const response = await axiosIns.post(`/groups/join-group`, {
       group_id: groupId,
     });
     return response.data;

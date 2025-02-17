@@ -10,20 +10,24 @@ import ViewProject from "../ViewProject";
 import UserWall from "../UserWall";
 import EditMyProfile from "../UserWall/EditMyProfile";
 import Chat from "../Chat";
+import BillingPage from "../Biiling";
 function Home() {
   return (
     <>
       <Header />
-      <Routes>
-        <Route path="/find-jobs" element={<FindJob />} />
-        <Route path="/find-freelancers" element={<FindFreelancer />} />
-        <Route path="/community/*" element={<Community />} />
-        <Route path="/projects/*" element={<MyProjects />} />
-        <Route path="/group" element={<Group />} />
-        <Route path="/project/:id" element={<ViewProject />} />
-        <Route path="/profile/:id" element={<UserWall />} />
-        <Route path="/edit-profile/:id" element={<EditMyProfile />} />
-      </Routes>
+      <div className="min-h-[60vh]">
+        <Routes>
+          <Route path="/find-jobs" element={<FindJob />} />
+          <Route path="/find-freelancers" element={<FindFreelancer />} />
+          <Route path="/community/*" element={<Community />} />
+          <Route path="/projects/*" element={<MyProjects />} />
+          <Route path="/group" element={<Group />} />
+          <Route path="/billing" element={<BillingPage />} />
+          <Route path="/project/:id" element={<ViewProject />} />
+          <Route path="/profile/:id" element={<UserWall />} />
+          <Route path="/edit-profile/:id" element={<EditMyProfile />} />
+        </Routes>
+      </div>
       <Footer />
     </>
   );

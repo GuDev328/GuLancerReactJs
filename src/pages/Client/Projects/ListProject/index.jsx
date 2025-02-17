@@ -30,6 +30,7 @@ function ListProject() {
         type: type,
       }),
     onSuccess: (res) => {
+      console.log(res);
       setPagination({
         page: res.data.result.page,
         total: res.data.result.total,

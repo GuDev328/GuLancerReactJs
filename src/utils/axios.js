@@ -52,6 +52,8 @@ export const refreshTokenFunc = async () => {
     isRefreshingToken = false;
     return res.data.result.accessToken;
   } catch (error) {
+    localStorage.setItem("accessToken", "");
+    localStorage.setItem("refreshToken", "");
     window.location.href = "/login?jwt=out";
     console.log(error);
     return null;

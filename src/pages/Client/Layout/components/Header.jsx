@@ -229,6 +229,9 @@ function Header() {
                   >
                     <i className="fa-solid fa-id-card mr-2"></i> Trang cá nhân
                   </MenuItem>
+                  <MenuItem onClick={() => navigate(`/billing`)}>
+                    <i className="fa-solid fa-money-bill mr-2"></i> Thanh toán
+                  </MenuItem>
                   <MenuItem>
                     <i className="fa-solid fa-cogs mr-2"></i> Cài đặt
                   </MenuItem>

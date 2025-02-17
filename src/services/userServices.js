@@ -77,6 +77,10 @@ class UserServices {
     );
     return response.data.result;
   }
+  async getAmoutInfo() {
+    const response = await axiosIns.get(`/users/amount-info`);
+    return response.data.result;
+  }
 }
 
 const userServices = new UserServices();

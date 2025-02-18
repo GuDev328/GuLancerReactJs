@@ -13,3 +13,10 @@ export const UserVerifyStatus = {
   Approved: 2,
   Rejected: 3,
 };
+
+export const HistoryAmountTypeEnum = {
+  DEPOSIT: 0,
+  FROM_PROJECT: 1,
+  WITHDRAW: 2,
+  TO_PROJECT: 3,
+};

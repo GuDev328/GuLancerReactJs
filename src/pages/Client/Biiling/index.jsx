@@ -1,6 +1,7 @@
 import { Tabs } from "antd";
 import React from "react";
 import BillingOrder from "./BillingOrder";
+import HistoryAmount from "./HistoryAmount";
 
 export default function BillingPage() {
   return (
@@ -9,7 +10,11 @@ export default function BillingPage() {
         tabPosition={"left"}
         items={[
           { label: "Tài khoản", key: 1, children: <BillingOrder /> },
-          { label: "Biến động số dư", key: 2, children: <></> },
+          {
+            label: "Biến động số dư",
+            key: 2,
+            children: <HistoryAmount />,
+          },
         ]}
       />
     </div>

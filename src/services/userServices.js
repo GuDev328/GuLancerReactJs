@@ -81,6 +81,12 @@ class UserServices {
     const response = await axiosIns.get(`/users/amount-info`);
     return response.data.result;
   }
+  async getAmoutHistory(data) {
+    const response = await axiosIns.get(
+      `/users/amount-history?page=${data.page}&limit=${data.limit}`
+    );
+    return response.data;
+  }
 }
 
 const userServices = new UserServices();

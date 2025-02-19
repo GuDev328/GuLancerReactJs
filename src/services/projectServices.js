@@ -49,7 +49,7 @@ class ProjectServices {
 
   async getMyProgress(project_id) {
     const response = await axiosIns.get(`/projects/my-progress/${project_id}`);
-    return response.data.result[0];
+    return response.data.result;
   }
 
   async editMyProgress(data) {
@@ -77,6 +77,13 @@ class ProjectServices {
   }
   async toProcessing(project_id) {
     const response = await axiosIns.post("/projects/recruiting-to-processing", {
+      project_id,
+    });
+    return response;
+  }
+
+  async memberStartPhase(project_id) {
+    const response = await axiosIns.post("/projects/member-start-phase", {
       project_id,
     });
     return response;

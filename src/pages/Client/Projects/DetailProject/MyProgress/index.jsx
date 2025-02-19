@@ -10,6 +10,7 @@ import ChangePlanProgressModal from "./ChangePlanProgressModal";
 import MyButton from "./../../../../../components/core/MyButton";
 import { data } from "jquery";
 import { ProjectStatus } from "../../../../../constant/project";
+import { Modal } from "antd";
 
 export default function MyProgress() {
   const { id } = useParams();
@@ -19,12 +20,18 @@ export default function MyProgress() {
     queryFn: () => projectServices.getMyProgress(id),
   });
   if (myProgress.isLoading) return <Spin spinning />;
-  console.log(myProgress.data);
 
   const handleReadyPhase = () => {
     showConfirmModal({
       title: "Bạn chắc chắn muốn bắt đầu?",
       content: "Giai đoạn sẽ được chuyển sang trạng thái Tiến hành",
+      onOk: async () => {
+        const res = await projectServices.memberStartPhase(id);
+        if (res.status === 200) {
+          myProgress.refetch();
+        }
+        Modal.destroyAll();
+      },
     });
   };
 
@@ -66,7 +73,7 @@ export default function MyProgress() {
             )}
           </div>
           <Timeline
-            items={myProgress.data.milestone_info.map((item) => {
+            items={myProgress.data.milestone_info.map((item, index) => {
               let color, icon, statusText, action;
 
               switch (item.status) {
@@ -184,7 +191,7 @@ export default function MyProgress() {
                     <div className="font-bold italic">
                       {formatCurrency(item.salary)}
                     </div>
-                    {action}
+                    {index === myProgress.data.indexCurrentPhase && action}
                   </div>
                 ),
               };

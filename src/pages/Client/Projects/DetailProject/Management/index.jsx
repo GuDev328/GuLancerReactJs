@@ -8,8 +8,13 @@ import { Spin } from "antd";
 import { formatCurrency } from "@/utils/common";
 import { Image } from "antd";
 import { renderStatusTagPhaseProject } from "../../../../../utils/render";
+import { useEffect } from "react";
+import { useState } from "react";
+import EscrowModal from "./EscrowModal";
 
 export default function Management({ projectId }) {
+  const [recordSelected, setRecordSelected] = useState();
+  const [openEscrowModal, setOpenEscrowModal] = useState(false);
   const overview = useQuery({
     queryKey: ["overview", projectId],
     queryFn: () => projectServices.getOverviewProgress(projectId),
@@ -67,7 +72,17 @@ export default function Management({ projectId }) {
       title: "Ký quỹ hiện tại",
       dataIndex: "username",
       key: "username",
-      render: (text, record) => <div>{formatCurrency(record.escrowed)}</div>,
+      render: (text, record) => (
+        <div>
+          {formatCurrency(record.escrowed)}{" "}
+          <span
+            onClick={() => handleOpenModal(record)}
+            className="ml-2 underline text-main cursor-pointer"
+          >
+            Ký quỹ
+          </span>
+        </div>
+      ),
     },
     {
       title: "Đã nhận",
@@ -82,6 +97,22 @@ export default function Management({ projectId }) {
       ),
     },
   ];
+
+  const handleOpenModal = (record) => {
+    setRecordSelected(record);
+    setOpenEscrowModal(true);
+  };
+  const handleCloseModal = () => {
+    setRecordSelected(undefined);
+    setOpenEscrowModal(false);
+  };
+
+  const handleConfirmModal = () => {
+    overview.refetch();
+    setRecordSelected(undefined);
+    setOpenEscrowModal(true);
+  };
+
   if (overview.isLoading) return <Spin spinning />;
   return (
     <div>
@@ -103,6 +134,12 @@ export default function Management({ projectId }) {
         scroll={{ x: 1000 }}
         dataSource={overview.data.progressMember}
         columns={tableColumns}
+      />
+      <EscrowModal
+        open={openEscrowModal}
+        data={recordSelected}
+        onCancel={handleCloseModal}
+        onConfirm={handleConfirmModal}
       />
     </div>
   );

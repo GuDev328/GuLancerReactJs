@@ -39,6 +39,32 @@ export default function MyFormItemInput({
       </Form.Item>
     );
 
+  if (type === "number")
+    return (
+      <Form.Item
+        rules={rulesInput}
+        label=" "
+        colon={false}
+        name={name}
+        {...rest}
+      >
+        <Input
+          label={label}
+          className="bg-white"
+          type="text"
+          onKeyPress={(e) => {
+            if (!/[0-9]/.test(e.key)) {
+              e.preventDefault();
+            }
+          }}
+          onChange={(e) => {
+            form.setFieldValue(name, e.target.value);
+            onChange && onChange(e.target.value);
+          }}
+        />
+      </Form.Item>
+    );
+
   if (type === "date")
     return (
       <Form.Item

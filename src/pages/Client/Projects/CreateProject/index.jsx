@@ -7,6 +7,7 @@ import projectServices from "@/services/projectServices";
 import { useNavigate } from "react-router-dom";
 import SelectFields from "@/components/business/select/SelectFields";
 import SelectTech from "@/components/business/select/SelectTech";
+import MyDatePicker from "@/components/core/MyDatePicker";
 const CreateProject = () => {
   const [description, setDescription] = React.useState("");
   const [form] = Form.useForm();
@@ -40,8 +41,8 @@ const CreateProject = () => {
       <Form
         form={form}
         labelAlign="left"
-        labelCol={{ span: 3 }}
-        wrapperCol={{ span: 20 }}
+        // labelCol={{ span: 3 }}
+        // wrapperCol={{ span: 20 }}
       >
         <Form.Item
           name={"title"}
@@ -65,7 +66,11 @@ const CreateProject = () => {
               label="Loại dự án"
               required
             >
-              <Select options={projectTypesOptions} placeholder="--Chọn--" />
+              <Select
+                disabled
+                options={projectTypesOptions}
+                placeholder="--Chọn--"
+              />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -81,6 +86,39 @@ const CreateProject = () => {
               label="Lương"
             >
               <Input addonAfter="VNĐ" placeholder="--Nhập--" />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={10}>
+          <Col span={12}>
+            <Form.Item
+              rules={[
+                {
+                  required: true,
+                  message: "Ngày bắt đầu không được để trống",
+                },
+              ]}
+              name="startDate"
+              label="Dự kiến bắt đầu"
+              required
+            >
+              <MyDatePicker />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              rules={[
+                {
+                  required: true,
+                  message: "Ngày kết thúc không được để trống",
+                },
+              ]}
+              name="endDate"
+              label="Ngày dự kiến bắt đầu"
+              required
+            >
+              <MyDatePicker />
             </Form.Item>
           </Col>
         </Row>

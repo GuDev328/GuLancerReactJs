@@ -87,6 +87,7 @@ const DetailProject = () => {
         </div>
       </div>
       <ProjectStatusComponent
+        reRender={() => getDetailProject.refetch()}
         status={detailProject?.status}
         isEmployer={isEmployer}
         projectId={detailProject?._id}

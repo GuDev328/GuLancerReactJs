@@ -6,6 +6,8 @@ import { formatCurrency } from "@/utils/common";
 import { Avatar } from "antd";
 import { useSelector } from "react-redux";
 import Apply from "./Apply";
+import { formatDate } from "./../../../../utils/common";
+import { renderUserVerifyStatus } from "../../../../utils/render";
 const OverviewProject = ({ detailProject }) => {
   const isMobile = useSelector((state) => state.screen.isMobile);
   const [open, setOpen] = useState(false);
@@ -26,7 +28,7 @@ const OverviewProject = ({ detailProject }) => {
       </div>
       <div className="flex justify-between">
         <div className="font-bold text-gray-600 ml-1">
-          Hạn ứng tuyển: 20/20/2020
+          Hạn ứng tuyển: {formatDate(detailProject?.recruitmentInfo?.deadline)}
         </div>
         <Button
           onClick={() => setOpen(true)}
@@ -57,15 +59,15 @@ const OverviewProject = ({ detailProject }) => {
               thành
             </p>
           </div>
-          <p className="text-[13px]" style={{ color: "#31c740" }}>
-            <i className="fa-light mr-1 fa-ballot-check"></i>
-            Đã xác thực
-          </p>
+          {renderUserVerifyStatus(
+            detailProject?.admin_info[0].verified_info.status
+          )}
         </div>
       </div>
       <div className="flex items-center ">
         <div className="mx-1 flex-shrink-0">
-          <strong>Cần tuyển:</strong> xxx Freelancer
+          <strong>Cần tuyển:</strong>{" "}
+          {detailProject?.recruitmentInfo?.number_people} Freelancer
         </div>
       </div>
 
@@ -91,7 +93,12 @@ const OverviewProject = ({ detailProject }) => {
           />
         ))}
       </div>
-
+      <div className="flex items-center ">
+        <div className="mx-1 flex-shrink-0">
+          <strong>Dự án dự kiến kết thúc vào:</strong>{" "}
+          {formatDate(detailProject?.end_date)}
+        </div>
+      </div>
       <div className="h-auto">
         <MarkdownView data={detailProject?.description} />
       </div>

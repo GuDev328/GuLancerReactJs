@@ -9,6 +9,7 @@ import {
   renderFullUserVerifyStatus,
   renderUserVerifyStatus,
 } from "../../../../utils/render";
+import { formatDate } from "../../../../utils/common";
 
 const Job = ({ data }) => {
   const isMobile = useSelector((state) => state.screen.isMobile);
@@ -24,7 +25,7 @@ const Job = ({ data }) => {
             {data?.title}
           </p>
           <p className="hidden sm:inline-block text-gray-500 ml-2 mb-1 text-[14px]">
-            Hạn ứng tuyển: 10/09/2022
+            Hạn ứng tuyển: {formatDate(data?.recruitmentInfo?.deadline)}
           </p>
         </div>
         <div className="flex flex-col ml-10 items-end leading-none">
@@ -51,7 +52,7 @@ const Job = ({ data }) => {
                 {data?.technologies_info.map((tech) => tech.name).join(", ")}
               </span>
             </p>
-            <p>Cần tìm 2 Freelancer</p>
+            <p>Cần tìm {data?.recruitmentInfo?.number_people} Freelancer</p>
           </div>
           <div className="hidden  w-full max-h-[85px] overflow-hidden lg:block text-ellipsis">
             <MDEditor

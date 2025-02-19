@@ -71,6 +71,22 @@ class ProjectServices {
     return response;
   }
 
+  async escrow(data) {
+    const response = await axiosIns.post("/projects/escrow", data);
+    return response;
+  }
+  async toProcessing(project_id) {
+    const response = await axiosIns.post("/projects/recruiting-to-processing", {
+      project_id,
+    });
+    return response;
+  }
+
+  async toRecruiting(data) {
+    const response = await axiosIns.post("/projects/to-recruiting", data);
+    return response;
+  }
+
   async getMember(id) {
     const response = await axiosIns.get(`/projects/get-member/${id}`);
     return response.data;

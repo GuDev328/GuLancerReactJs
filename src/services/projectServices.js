@@ -89,6 +89,18 @@ class ProjectServices {
     return response;
   }
 
+  async memberDonePhase(project_id) {
+    const response = await axiosIns.post("/projects/member-done-phase", {
+      project_id,
+    });
+    return response;
+  }
+
+  async payForMember(data) {
+    const response = await axiosIns.post("/projects/pay-for-member", data);
+    return response;
+  }
+
   async toRecruiting(data) {
     const response = await axiosIns.post("/projects/to-recruiting", data);
     return response;

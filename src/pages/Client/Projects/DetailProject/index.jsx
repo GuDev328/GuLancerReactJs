@@ -55,13 +55,23 @@ const DetailProject = () => {
     userInfo?.role === UserRole.FREELANCER && {
       key: "about-me",
       label: "Tiến trình",
-      children: <MyProgress projectId={detailProject?._id} />,
+      children: (
+        <MyProgress
+          reRender={() => getDetailProject.refetch()}
+          projectId={detailProject?._id}
+        />
+      ),
       icon: <i className="fa-solid fa-bullseye-arrow"></i>,
     },
     userInfo?.role === UserRole.EMPLOYER && {
       key: "management",
       label: "Quản lý",
-      children: <Management projectId={detailProject?._id} />,
+      children: (
+        <Management
+          reRender={() => getDetailProject.refetch()}
+          projectId={detailProject?._id}
+        />
+      ),
       icon: <i className="fa-solid fa-people-arrows"></i>,
     },
     userInfo?.role === UserRole.EMPLOYER && {

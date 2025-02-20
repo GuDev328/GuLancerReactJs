@@ -329,8 +329,8 @@ export const renderJSXProjectStatus = (status, isEmployer) => {
   return null;
 };
 
-export const renderStatusTagPhaseProject = (status) => {
-  let color, statusText;
+export const renderStatusTagPhaseProject = (status, handlePayForMember) => {
+  let color, statusText, action;
 
   switch (status) {
     case "NOT_READY":
@@ -340,10 +340,12 @@ export const renderStatusTagPhaseProject = (status) => {
     case "PROCESSING":
       color = "blue";
       statusText = "Đang tiến hành";
+
       break;
     case "PAYING":
       color = "orange";
       statusText = "Chờ thanh toán";
+      action = <div onClick={handlePayForMember}>Thanh toán</div>;
       break;
     case "COMPLETE":
       color = "green";
@@ -359,11 +361,14 @@ export const renderStatusTagPhaseProject = (status) => {
   }
 
   return (
-    <div
-      className="ml-1 inline-block px-2 text-white text-sm rounded-lg"
-      style={{ backgroundColor: color }}
-    >
-      {statusText}
+    <div className="flex">
+      <div
+        className="ml-1 mr-2 inline-block px-2 text-white text-sm rounded-lg"
+        style={{ backgroundColor: color }}
+      >
+        {statusText}
+      </div>
+      <div className="text-main underline">{action}</div>
     </div>
   );
 };

@@ -11,15 +11,36 @@ import { renderStatusTagPhaseProject } from "../../../../../utils/render";
 import { useEffect } from "react";
 import { useState } from "react";
 import EscrowModal from "./EscrowModal";
+import { showConfirmModal } from "../../../../../components/core/MyModal";
+import { Modal } from "antd";
 
-export default function Management({ projectId }) {
+export default function Management({ projectId, reRender }) {
   const [recordSelected, setRecordSelected] = useState();
   const [openEscrowModal, setOpenEscrowModal] = useState(false);
   const overview = useQuery({
     queryKey: ["overview", projectId],
     queryFn: () => projectServices.getOverviewProgress(projectId),
   });
-  console.log(overview.data);
+
+  const handlePayForMember = (user_id) => {
+    const data = {
+      user_id,
+      project_id: projectId,
+    };
+    showConfirmModal({
+      title: "Bạn chắc chắn muốn thanh toán?",
+      content: "Số tiền đã ký quỹ sẽ được thanh toán cho thành viên",
+      onOk: async () => {
+        const res = await projectServices.payForMember(data);
+        if (res.status === 200) {
+          overview.refetch();
+          reRender();
+        }
+        Modal.destroyAll();
+      },
+    });
+  };
+
   const tableColumns = [
     {
       title: "STT",
@@ -56,9 +77,11 @@ export default function Management({ projectId }) {
       title: "Trạng thái",
       dataIndex: "email",
       key: "email",
-
-      render: (text, record) =>
-        renderStatusTagPhaseProject(record.currentPhase.status),
+      render: (text, record) => {
+        return renderStatusTagPhaseProject(record.currentPhase.status, () =>
+          handlePayForMember(record.user_info[0]._id)
+        );
+      },
     },
     {
       title: "Số tiền giai đoạn hiện tại",
@@ -147,4 +170,5 @@ export default function Management({ projectId }) {
 
 Management.propTypes = {
   projectId: PropTypes.string.isRequired,
+  reRender: PropTypes.func.isRequired,
 };

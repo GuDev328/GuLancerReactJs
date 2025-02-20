@@ -11,8 +11,9 @@ import MyButton from "./../../../../../components/core/MyButton";
 import { data } from "jquery";
 import { ProjectStatus } from "../../../../../constant/project";
 import { Modal } from "antd";
+import PropTypes from "prop-types";
 
-export default function MyProgress() {
+export default function MyProgress({ reRender }) {
   const { id } = useParams();
   const [openModalChangeProgress, setOpenModalChageProgress] = useState(false);
   const myProgress = useQuery({
@@ -29,6 +30,7 @@ export default function MyProgress() {
         const res = await projectServices.memberStartPhase(id);
         if (res.status === 200) {
           myProgress.refetch();
+          reRender();
         }
         Modal.destroyAll();
       },
@@ -47,6 +49,14 @@ export default function MyProgress() {
       title: "Bạn chắc chắn muốn báo cáo hoàn thành?",
       content:
         "Hãy chắc chắn bạn đã bàn giao sản phẩm, Giai đoạn sẽ được chuyển sang trạng thái Chờ thanh toán",
+      onOk: async () => {
+        const res = await projectServices.memberDonePhase(id);
+        if (res.status === 200) {
+          myProgress.refetch();
+          reRender();
+        }
+        Modal.destroyAll();
+      },
     });
   };
 
@@ -191,7 +201,8 @@ export default function MyProgress() {
                     <div className="font-bold italic">
                       {formatCurrency(item.salary)}
                     </div>
-                    {index === myProgress.data.indexCurrentPhase && action}
+                    {/* {index === myProgress.data.indexCurrentPhase && action} */}
+                    {action}
                   </div>
                 ),
               };
@@ -221,3 +232,6 @@ export default function MyProgress() {
     </div>
   );
 }
+MyProgress.propTypes = {
+  reRender: PropTypes.func.isRequired,
+};

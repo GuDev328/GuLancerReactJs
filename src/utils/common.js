@@ -91,3 +91,32 @@ export function timeAgo(dateString) {
 export function formatCurrency(value) {
   return Number(value).toLocaleString("vi-VN") + "đ";
 }
+
+export function formatTimeVi(isoString) {
+  const date = new Date(isoString);
+
+  // Trừ đi 7 giờ để chuyển về múi giờ Việt Nam
+  date.setHours(date.getHours() - 7);
+
+  const now = new Date();
+  now.setHours(now.getHours() - 7);
+
+  const isToday =
+    date.getDate() === now.getDate() &&
+    date.getMonth() === now.getMonth() &&
+    date.getFullYear() === now.getFullYear();
+
+  if (isToday) {
+    return date.toLocaleTimeString("vi-VN", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+  } else {
+    return date.toLocaleDateString("vi-VN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  }
+}

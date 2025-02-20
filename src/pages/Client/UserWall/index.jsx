@@ -16,6 +16,7 @@ import {
   renderFullUserVerifyStatus,
   renderUserVerifyStatus,
 } from "../../../utils/render";
+import conversationServices from "../../../services/conversationServices";
 
 const UserWall = () => {
   const { isMobile } = useSelector((state) => state.screen);
@@ -42,6 +43,11 @@ const UserWall = () => {
   const handleOnConrirmRequestVerify = async () => {
     setOpenVerifyModal(false);
     refetch();
+  };
+
+  const handleToChat = async () => {
+    await conversationServices.addNewConversation(id);
+    navigate("/chat?to=" + id);
   };
 
   return (
@@ -101,7 +107,7 @@ const UserWall = () => {
           )}
 
           {!isMyProfile && (
-            <Button variant="outlined" color={"blue"}>
+            <Button onClick={handleToChat} variant="outlined" color={"blue"}>
               <i className="fas fa-comment-alt-lines text-[18px]"></i>
             </Button>
           )}

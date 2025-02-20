@@ -7,6 +7,7 @@ import { Avatar, Image, Input, Spin, Upload } from "antd";
 import conversationServices from "@/services/conversationServices";
 import ControlSendMess from "@/components/business/ControlSendMess";
 import Gallery from "@/components/business/Gallery";
+import { useSearchParams } from "react-router-dom";
 
 export default function Chat() {
   const [receiver, setReceiver] = useState("");
@@ -17,6 +18,9 @@ export default function Chat() {
     page: 1,
     total_page: 1,
   });
+  const [searchParams] = useSearchParams();
+  const userIdChatTo = searchParams.get("to");
+
   useEffect(() => {
     if (localStorage.getItem("accessToken")) {
       socket.auth = {
@@ -61,6 +65,9 @@ export default function Chat() {
     }
   }, [receiver]);
 
+  useEffect(() => {
+    if (userIdChatTo) setReceiver(userIdChatTo);
+  }, [userIdChatTo]);
   const fetchFirstMessage = async () => {
     const info = await conversationServices.getConversation(receiver, 20, 1);
     setMessages(info.result);

@@ -41,6 +41,10 @@ export default function Management({ projectId, reRender }) {
     });
   };
 
+  const handleGoToDispute = (disputeId) => {
+    window.open(`/dispute/${disputeId}`, "_blank");
+  };
+
   const tableColumns = [
     {
       title: "STT",
@@ -78,8 +82,10 @@ export default function Management({ projectId, reRender }) {
       dataIndex: "email",
       key: "email",
       render: (text, record) => {
-        return renderStatusTagPhaseProject(record.currentPhase.status, () =>
-          handlePayForMember(record.user_info[0]._id)
+        return renderStatusTagPhaseProject(
+          record.currentPhase.status,
+          () => handlePayForMember(record.user_info[0]._id),
+          () => handleGoToDispute(record.currentPhase.dispute_id)
         );
       },
     },

@@ -122,6 +122,21 @@ class ProjectServices {
     );
     return response.data.result;
   }
+
+  async createDispute(data) {
+    const response = await axiosIns.post("/disputes/", data);
+    return response;
+  }
+
+  async getDispute(dispute_id) {
+    const response = await axiosIns.get(`/disputes/${dispute_id}`);
+    return response.data.result;
+  }
+
+  async editDispute(dispute_id, data) {
+    const response = await axiosIns.put(`/disputes/${dispute_id}`, data);
+    return response;
+  }
 }
 
 const projectServices = new ProjectServices();

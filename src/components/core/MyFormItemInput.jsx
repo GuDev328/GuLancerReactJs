@@ -2,11 +2,13 @@ import { Form } from "antd";
 import React from "react";
 import PropTypes from "prop-types";
 import { Button, Input, Select, Option } from "@material-tailwind/react";
+import { Checkbox } from "antd";
+import { Textarea } from "@material-tailwind/react";
 
 export default function MyFormItemInput({
   onChange,
   rules,
-  isRequired,
+  isRequired = false,
   name,
   label,
   form,
@@ -110,6 +112,49 @@ export default function MyFormItemInput({
             </Option>
           ))}
         </Select>
+      </Form.Item>
+    );
+
+  if (type === "checkbox")
+    return (
+      <Form.Item
+        rules={rulesInput}
+        label=" "
+        colon={false}
+        valuePropName="checked"
+        name={name}
+        {...rest}
+      >
+        <Checkbox
+          onChange={(e) => {
+            form.setFieldValue(name, e.target.checked);
+            onChange && onChange(e.target.checked);
+          }}
+        >
+          {label}
+        </Checkbox>
+      </Form.Item>
+    );
+
+  if (type === "textarea")
+    return (
+      <Form.Item
+        rules={rulesInput}
+        label=" "
+        colon={false}
+        name={name}
+        {...rest}
+      >
+        <Textarea
+          label={label}
+          className="bg-white"
+          rows={4}
+          autoCapitalize="on"
+          onChange={(e) => {
+            form.setFieldValue(name, e.target.value);
+            onChange && onChange(e.target.value);
+          }}
+        />
       </Form.Item>
     );
 }

@@ -12,9 +12,11 @@ import { data } from "jquery";
 import { ProjectStatus } from "../../../../../constant/project";
 import { Modal } from "antd";
 import PropTypes from "prop-types";
-
+import { useSelector } from "react-redux";
+import { message } from "antd";
 export default function MyProgress({ reRender }) {
   const { id } = useParams();
+  const userInfo = useSelector((state) => state.user.userInfo);
   const [openModalChangeProgress, setOpenModalChageProgress] = useState(false);
   const myProgress = useQuery({
     queryKey: ["myProgress", id],
@@ -41,6 +43,29 @@ export default function MyProgress({ reRender }) {
     showConfirmModal({
       title: "Bạn chắc chắn muốn huỷ bỏ tranh chấp?",
       content: "Giai đoạn sẽ được chuyển sang trạng thái Chờ thanh toán",
+    });
+  };
+
+  const onClickDispute = () => {
+    showConfirmModal({
+      title: "Bạn chắc chắn muốn tạo tranh chấp?",
+      content:
+        "Bạn có chắc chắn muốn tạo 1 cuộc tranh chấp. Bạn sẽ được chuyển sang trang tranh chấp.",
+      onOk: async () => {
+        const data = {
+          project_id: id,
+          freelancer_id: userInfo._id,
+          employer_id: myProgress.data.project_info[0].admin_id,
+        };
+        const res = await projectServices.createDispute(data);
+        console.log(res);
+        if (res.status === 200) {
+          myProgress.refetch();
+          window.open(`/dispute/${res.data.result.insertedId}`, "_blank");
+          reRender();
+          Modal.destroyAll();
+        }
+      },
     });
   };
 
@@ -84,7 +109,7 @@ export default function MyProgress({ reRender }) {
           </div>
           <Timeline
             items={myProgress.data.milestone_info.map((item, index) => {
-              let color, icon, statusText, action;
+              let color, icon, statusText, action, actionOther;
 
               switch (item.status) {
                 case "NOT_READY":
@@ -122,7 +147,10 @@ export default function MyProgress({ reRender }) {
                   );
                   statusText = "Chờ thanh toán";
                   action = (
-                    <div className="text-main underline cursor-pointer">
+                    <div
+                      onClick={onClickDispute}
+                      className="text-main underline cursor-pointer"
+                    >
                       Báo cáo tranh chấp
                     </div>
                   );
@@ -146,6 +174,16 @@ export default function MyProgress({ reRender }) {
                       className="text-main underline cursor-pointer"
                     >
                       Huỷ bỏ tranh chấp
+                    </div>
+                  );
+                  actionOther = (
+                    <div
+                      onClick={() =>
+                        window.open(`/dispute/${item.dispute_id}`, "_blank")
+                      }
+                      className="text-main underline cursor-pointer"
+                    >
+                      Đi đến tranh chấp
                     </div>
                   );
                   break;
@@ -203,6 +241,7 @@ export default function MyProgress({ reRender }) {
                     </div>
                     {/* {index === myProgress.data.indexCurrentPhase && action} */}
                     {action}
+                    {actionOther}
                   </div>
                 ),
               };

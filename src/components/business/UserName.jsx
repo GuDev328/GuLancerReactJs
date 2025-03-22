@@ -18,7 +18,10 @@ const UserName = ({
     !noNavigate && navigate(`/profile/${data?._id}`);
   };
   return (
-    <div className={`${className} cursor-pointer`} onClick={handleClick}>
+    <div
+      className={`${className} cursor-pointer flex items-center`}
+      onClick={handleClick}
+    >
       <span className={`${nameClass} hover:text-main`}>{data.name}</span>
       <span className={`${usernameClass} hover:text-main`}>
         @{data.username}

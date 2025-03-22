@@ -11,10 +11,10 @@ import { setIsMobile, setIsLgScreen } from "./stores/slice/screen.slice";
 
 import "./App.css";
 import Chat from "./pages/Client/Chat";
-import AdminLayout from "./pages/Admin/Layout";
 import WrapperRouter from "./components/utils/WrapperRouter";
 import AdminRootPage from "./pages/Admin";
 import AuthWrapperRouter from "./components/utils/AuthWrapperRouter";
+import DisputePage from "./pages/Both/Dispute";
 
 function App() {
   const dispatch = useDispatch();
@@ -45,6 +45,10 @@ function App() {
         <Route
           path="/forgot-password-success"
           element={<ForgotPasswordSuccess />}
+        />
+        <Route
+          path="/dispute/:dispute_id"
+          element={<WrapperRouter Component={DisputePage} />}
         />
         <Route
           path="/register"

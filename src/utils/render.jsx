@@ -1,3 +1,4 @@
+import { Tag } from "antd";
 import DotMenuDropdown from "../components/core/DotMenuDropdown";
 import MyDropdown from "../components/core/MyDropdown";
 import { ProjectStatus } from "../constant/project";
@@ -329,7 +330,11 @@ export const renderJSXProjectStatus = (status, isEmployer) => {
   return null;
 };
 
-export const renderStatusTagPhaseProject = (status, handlePayForMember) => {
+export const renderStatusTagPhaseProject = (
+  status,
+  handlePayForMember,
+  handelGoToDispute
+) => {
   let color, statusText, action;
 
   switch (status) {
@@ -354,6 +359,7 @@ export const renderStatusTagPhaseProject = (status, handlePayForMember) => {
     case "DISPUTED":
       color = "red";
       statusText = "Tranh chấp";
+      action = <div onClick={handelGoToDispute}>Đi tới tranh chấp</div>;
       break;
     default:
       color = "#333";
@@ -368,7 +374,63 @@ export const renderStatusTagPhaseProject = (status, handlePayForMember) => {
       >
         {statusText}
       </div>
-      <div className="text-main underline">{action}</div>
+      <div className="text-main underline cursor-pointer">{action}</div>
     </div>
+  );
+};
+
+export const renderStatusDispute = (status) => {
+  const statusMap = {
+    CREATED: {
+      label: "Đã tạo",
+      bgColor: "#FFF7E6",
+      textColor: "#FAAD14",
+    },
+    PROCESSING: {
+      label: "Đang xử lý",
+      bgColor: "#E6F7FF",
+      textColor: "#1890FF",
+    },
+
+    RESOLVED: {
+      label: "Đã giải quyết",
+      bgColor: "#F6FFED",
+      textColor: "#52C41A",
+    },
+    CANCEL: {
+      label: "Đã hủy",
+      bgColor: "#FFF1F0",
+      textColor: "#FF4D4F",
+    },
+    NEED_MORE_PROOF: {
+      label: "Cần thêm bằng chứng",
+      bgColor: "#F9F0FF",
+      textColor: "#722ED1",
+    },
+  };
+
+  const { label, bgColor, textColor } = statusMap[status] || {
+    label: "Không xác định",
+    bgColor: "#F5F5F5",
+    textColor: "#8C8C8C",
+  }; // Xám nhạt
+
+  return (
+    <span
+      style={{
+        backgroundColor: bgColor,
+        color: textColor,
+        padding: "4px 20px",
+        margin: "0px 10px",
+        borderRadius: "8px",
+        fontWeight: 500,
+        fontSize: "14px",
+        display: "inline-block",
+        //minWidth: "120px",
+        textAlign: "center",
+      }}
+    >
+      {label}
+    </span>
   );
 };

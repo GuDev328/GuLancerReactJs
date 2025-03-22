@@ -20,6 +20,24 @@ class MediaServices {
     return response.data;
   }
 
+  async uploadFile(file) {
+    const formData = new FormData();
+
+    if (Array.isArray(file)) {
+      file.forEach((file) => {
+        formData.append("file", file);
+      });
+    } else {
+      formData.append("file", file);
+    }
+    const response = await axiosIns.post("/medias/upload-file", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  }
+
   async uploadVideoHLS(file) {
     const formData = new FormData();
 

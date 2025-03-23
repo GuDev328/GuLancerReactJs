@@ -15,6 +15,7 @@ import { Image } from "antd";
 import { renderStatusDispute } from "../../../utils/render";
 import { Tabs } from "antd";
 import Proof from "./components/Proof";
+import Chat from "./components/Chat";
 function DisputeMainPage() {
   const { dispute_id } = useParams();
   const userInfo = useSelector((state) => state.user.userInfo);
@@ -24,8 +25,8 @@ function DisputeMainPage() {
   });
   const reporter_info = useMemo(() => {
     return dispute?.employer_info?._id === dispute?.reporter
-      ? dispute?.freelancer_info
-      : dispute?.employer_info;
+      ? dispute?.employer_info
+      : dispute?.freelancer_info;
   }, [dispute]);
 
   const reporter_proof = useMemo(() => {
@@ -67,6 +68,7 @@ function DisputeMainPage() {
     {
       key: "3",
       label: "Thảo luận chung",
+      children: <Chat />,
     },
   ];
 

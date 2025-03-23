@@ -26,6 +26,13 @@ class ConversationServices {
     );
     return response.data;
   }
+
+  async getDisputeConversation(receiver, limit, page) {
+    const response = await axiosIns.get(
+      `/conversations/get-dispute-conversation/${receiver}?limit=${limit}&page=${page}`
+    );
+    return response.data;
+  }
 }
 
 const conversationServices = new ConversationServices();

@@ -3,18 +3,15 @@ import socket from "@/utils/socket";
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import { Button } from "@material-tailwind/react";
 import { Avatar, Image, Input, Spin, Upload } from "antd";
 import conversationServices from "@/services/conversationServices";
-import EmojiPicker from "emoji-picker-react";
 import ControlSendMess from "@/components/business/ControlSendMess";
 import Gallery from "@/components/business/Gallery";
 import PropTypes from "prop-types";
-
-export default function Chat({ projectId }) {
-  const [receiver, setReceiver] = useState(projectId);
+import { useParams } from "react-router-dom";
+export default function Chat() {
+  const { dispute_id } = useParams();
   const [messages, setMessages] = useState([]);
-  const [avatarUserCurrent, setAvatarUserCurrent] = useState("");
   const [isConnectedSocket, setIsConnectedSocket] = useState(false);
   const [pagiantion, setPagination] = useState({
     page: 1,
@@ -28,18 +25,18 @@ export default function Chat({ projectId }) {
       socket.connect();
       setIsConnectedSocket(true);
       socket.on("disconnect", () => {
-        socket.emit("leaveRoomPChat", receiver);
+        socket.emit("leaveRoomDisputeChat", dispute_id);
         setIsConnectedSocket(false);
         console.log("socket disconnected");
       });
-      socket.emit("joinRoomPChat", receiver);
+      socket.emit("joinRoomDisputeChat", dispute_id);
       socket.on("connect_error", (err) => {
         setIsConnectedSocket(false);
         console.log(err);
       });
 
-      socket.off("chatPUpdated");
-      socket.on("chatPUpdated", (data) => {
+      socket.off("chatDisputeUpdated");
+      socket.on("chatDisputeUpdated", (data) => {
         setMessages((messages) => [
           {
             sender_id: data.sender_id,
@@ -55,7 +52,7 @@ export default function Chat({ projectId }) {
       fetchFirstMessage();
 
       return () => {
-        socket.emit("leaveRoomPChat", receiver);
+        socket.emit("leaveRoomDisputeChat", dispute_id);
         socket.disconnect();
         setIsConnectedSocket(false);
       };
@@ -66,7 +63,7 @@ export default function Chat({ projectId }) {
 
   const fetchFirstMessage = async () => {
     const info = await conversationServices.getProjectConversation(
-      receiver,
+      dispute_id,
       20,
       1
     );
@@ -80,9 +77,9 @@ export default function Chat({ projectId }) {
   const user = JSON.parse(localStorage.getItem("user"));
 
   const handleSubmit = (value, medias) => {
-    socket.emit("newPChat", receiver, {
+    socket.emit("newDisputeChat", dispute_id, {
       sender_id: user._id,
-      receiver_id: receiver,
+      receiver_id: dispute_id,
       content: value,
       medias: medias,
       sender_info: [user],
@@ -90,9 +87,9 @@ export default function Chat({ projectId }) {
   };
 
   const fetchMoreMessages = async () => {
-    if (receiver && pagiantion.page < pagiantion.total_page) {
+    if (dispute_id && pagiantion.page < pagiantion.total_page) {
       const info = await conversationServices.getProjectConversation(
-        receiver,
+        dispute_id,
         20,
         pagiantion.page + 1
       );
@@ -107,7 +104,7 @@ export default function Chat({ projectId }) {
   return (
     <>
       <div>
-        <div className="flex flex-col bg-white justify-end items-center h-[calc(100vh-270px)]">
+        <div className="flex flex-col bg-white justify-end items-center h-[calc(100vh-300px)]">
           <div
             className=""
             id="scrollableDiv"
@@ -142,6 +139,7 @@ export default function Chat({ projectId }) {
                           size={40}
                         />
                       </div>
+
                       <div>
                         <div className="text-sm text-blue-gray-500">
                           {message?.sender_info[0]?.name}

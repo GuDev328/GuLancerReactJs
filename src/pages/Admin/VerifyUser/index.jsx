@@ -3,27 +3,15 @@ import userServices from "@/services/userServices";
 import MyTable from "../../../components/core/MyTable";
 
 import { Image, Modal } from "antd";
-import {
-  renderFullUserVerifyStatus,
-  renderJSXRoleUser,
-} from "./../../../utils/render";
-import MyButton from "@/components/core/MyButton";
-import Icon, {
-  DeleteOutlined,
-  EditOutlined,
-  PlusOutlined,
-} from "@ant-design/icons";
+import { renderJSXRoleUser } from "./../../../utils/render";
 
 import authServices from "../../../services/authServices";
-import { set } from "lodash";
-import MyModal, { showConfirmModal } from "../../../components/core/MyModal";
 import Search from "./Search";
 import DetailModal from "./DetailModal";
 
 export default function VerifyUserManagement() {
   const [listUser, setListUser] = useState([]);
   const [reRender, setReRender] = useState(false);
-  const [openModalCreateAccount, setOpenModalCreateAccount] = useState(false);
   const [openModalDetailUser, setOpenModalDetailUser] = useState(false);
   const [searchValues, setSearchValues] = useState({});
   const [userId, setUserId] = useState("");
@@ -46,18 +34,6 @@ export default function VerifyUserManagement() {
 
   const handleChangePage = (page, size) => {
     setTableInfo({ ...tableInfo, page, limit: size });
-  };
-
-  const onCancelCreateAccount = () => {
-    setOpenModalCreateAccount(false);
-  };
-  const onConfirmCreateAccount = async (dataForm) => {
-    const res = await authServices.register(dataForm);
-    if (res) {
-      setOpenModalCreateAccount(false);
-      setReRender(!reRender);
-    }
-    return res;
   };
 
   const onCancelDetailUser = () => {

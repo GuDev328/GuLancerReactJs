@@ -22,6 +22,11 @@ const menuItems = [
     key: "verify-management",
     icon: <BoxPlotOutlined />,
   },
+  {
+    label: <Link to={"dispute-management"}>Quản lý tranh chấp</Link>,
+    key: "dispute-management",
+    icon: <BoxPlotOutlined />,
+  },
 ];
 
 const rootSubmenuKeys = ["account-management"];

@@ -87,6 +87,13 @@ class UserServices {
     );
     return response.data;
   }
+  async getListDispute({ page, limit, ...data }) {
+    const response = await axiosIns.post(
+      `/disputes/list?page=${page}&limit=${limit}`,
+      data
+    );
+    return response.data.result;
+  }
 }
 
 const userServices = new UserServices();

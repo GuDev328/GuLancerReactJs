@@ -10,10 +10,12 @@ import EmojiPicker from "emoji-picker-react";
 import ControlSendMess from "@/components/business/ControlSendMess";
 import Gallery from "@/components/business/Gallery";
 import PropTypes from "prop-types";
-
+import { useContext } from "react";
+import { ProjectInfoContext } from "../../../../Both/Dispute";
 export default function Chat({ projectId }) {
   const [receiver, setReceiver] = useState(projectId);
   const [messages, setMessages] = useState([]);
+  const disputeInfo = useContext(ProjectInfoContext);
   const [avatarUserCurrent, setAvatarUserCurrent] = useState("");
   const [isConnectedSocket, setIsConnectedSocket] = useState(false);
   const [pagiantion, setPagination] = useState({
@@ -172,9 +174,11 @@ export default function Chat({ projectId }) {
               ))}
             </InfiniteScroll>
           </div>
-          <div className="w-[95%] ">
-            <ControlSendMess onSubmit={handleSubmit} />
-          </div>
+          {!disputeInfo && (
+            <div className="w-[95%] ">
+              <ControlSendMess onSubmit={handleSubmit} />
+            </div>
+          )}
         </div>
       </div>
     </>

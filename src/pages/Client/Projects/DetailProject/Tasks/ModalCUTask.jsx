@@ -13,12 +13,16 @@ import taskServices from "@/services/taskServices";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 import PropTypes from "prop-types";
+import { useContext } from "react";
+import { ProjectInfoContext } from "../../../../Both/Dispute";
 const ModalCUTask = ({ data, open, onCancel, onOk, setReRender }) => {
   const [form] = Form.useForm();
   const { id } = useParams();
+  const disputeInfo = useContext(ProjectInfoContext);
+  const projectId = disputeInfo?.projectId;
   const queryMember = useQuery({
-    queryKey: ["member", id],
-    queryFn: () => projectServices.getMember(id),
+    queryKey: ["member", id || projectId],
+    queryFn: () => projectServices.getMember(id || projectId),
   });
   const optionMember = queryMember.data?.result.map((member) => ({
     label: (

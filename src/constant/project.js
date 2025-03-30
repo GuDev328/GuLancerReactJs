@@ -8,3 +8,9 @@ export const ProjectStatus = {
   Complete: 6,
   Disputed: 7,
 };
+
+export const DisputeResolveAction = {
+  PayAll: 1,
+  PayPart: 2,
+  Continue: 3,
+};

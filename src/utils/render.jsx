@@ -331,6 +331,7 @@ export const renderJSXProjectStatus = (status, isEmployer) => {
 };
 
 export const renderStatusTagPhaseProject = (
+  blockAction,
   status,
   handlePayForMember,
   handelGoToDispute
@@ -374,7 +375,9 @@ export const renderStatusTagPhaseProject = (
       >
         {statusText}
       </div>
-      <div className="text-main underline cursor-pointer">{action}</div>
+      {!blockAction && (
+        <div className="text-main underline cursor-pointer">{action}</div>
+      )}
     </div>
   );
 };
@@ -392,7 +395,17 @@ export const renderStatusDispute = (status) => {
       textColor: "#1890FF",
     },
 
-    RESOLVED: {
+    RESOLVED_PAY_ALL: {
+      label: "Đã giải quyết",
+      bgColor: "#F6FFED",
+      textColor: "#52C41A",
+    },
+    RESOLVED_PAY_PART: {
+      label: "Đã giải quyết",
+      bgColor: "#F6FFED",
+      textColor: "#52C41A",
+    },
+    RESOLVED_NOT_PAY: {
       label: "Đã giải quyết",
       bgColor: "#F6FFED",
       textColor: "#52C41A",

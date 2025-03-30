@@ -4,13 +4,16 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import projectServices from "@/services/projectServices";
 import { Spin } from "antd";
-import paymentServices from "../../../../../services/paymentServices";
+import { useContext } from "react";
+import { ProjectInfoContext } from "../../../../Both/Dispute";
 
 const Members = () => {
   const { id } = useParams();
+  const disputeInfo = useContext(ProjectInfoContext);
+  const projectId = disputeInfo?.projectId;
   const { data, isLoading } = useQuery({
-    queryKey: ["member", id],
-    queryFn: () => projectServices.getMember(id),
+    queryKey: ["member", id || projectId],
+    queryFn: () => projectServices.getMember(id || projectId),
   });
 
   if (isLoading) return <Spin spinning={true} className="w-full h-full" />;

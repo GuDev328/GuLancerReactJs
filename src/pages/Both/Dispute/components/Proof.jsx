@@ -8,15 +8,18 @@ import { useState } from "react";
 import EditingProof from "./EditingProof";
 import Video from "@/components/utils/Media/Video";
 import { Image } from "antd";
+import { useContext } from "react";
+import { StatusDisputeContext } from "..";
 export default function Proof({ editable = false, proof }) {
   const [isEditing, setIsEditing] = useState(false);
+  const { isDisputeCanceled } = useContext(StatusDisputeContext);
   return (
     <div>
       {isEditing ? (
         <EditingProof setIsEditing={setIsEditing} proof={proof} />
       ) : (
         <div>
-          {editable && (
+          {editable && !isDisputeCanceled && (
             <div className="text-right text-2xl font-bold">
               <MyButton
                 onClick={() => setIsEditing(true)}

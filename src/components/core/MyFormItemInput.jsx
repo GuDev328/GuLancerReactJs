@@ -11,6 +11,7 @@ export default function MyFormItemInput({
   isRequired = false,
   name,
   label,
+  disabled = false,
   form,
   type = "text",
   selectOptions = [],
@@ -33,6 +34,7 @@ export default function MyFormItemInput({
           label={label}
           className="bg-white"
           type="text"
+          disabled={disabled}
           onChange={(e) => {
             form.setFieldValue(name, e.target.value);
             onChange && onChange(e.target.value);
@@ -54,6 +56,7 @@ export default function MyFormItemInput({
           label={label}
           className="bg-white"
           type="text"
+          disabled={disabled}
           onKeyPress={(e) => {
             if (!/[0-9]/.test(e.key)) {
               e.preventDefault();
@@ -80,6 +83,7 @@ export default function MyFormItemInput({
           className="bg-white"
           label={label}
           type="date"
+          disabled={disabled}
           onChange={(e) => {
             console.log(e.target.value);
             form.setFieldValue(name, e.target.value);
@@ -163,6 +167,7 @@ MyFormItemInput.propTypes = {
   onChange: PropTypes.func,
   rules: PropTypes.array,
   isRequired: PropTypes.bool,
+  disabled: PropTypes.bool,
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   form: PropTypes.object.isRequired,

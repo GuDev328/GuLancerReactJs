@@ -9,10 +9,13 @@ import ControlSendMess from "@/components/business/ControlSendMess";
 import Gallery from "@/components/business/Gallery";
 import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
+import { useContext } from "react";
+import { StatusDisputeContext } from "..";
 export default function Chat() {
   const { dispute_id } = useParams();
   const [messages, setMessages] = useState([]);
   const [isConnectedSocket, setIsConnectedSocket] = useState(false);
+  const { isDisputeCanceled } = useContext(StatusDisputeContext);
   const [pagiantion, setPagination] = useState({
     page: 1,
     total_page: 1,
@@ -170,9 +173,11 @@ export default function Chat() {
               ))}
             </InfiniteScroll>
           </div>
-          <div className="w-[95%] ">
-            <ControlSendMess onSubmit={handleSubmit} />
-          </div>
+          {!isDisputeCanceled && (
+            <div className="w-[95%] ">
+              <ControlSendMess onSubmit={handleSubmit} />
+            </div>
+          )}
         </div>
       </div>
     </>

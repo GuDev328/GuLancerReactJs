@@ -24,7 +24,7 @@ const MyModal = ({
       footer={
         noFooter ? null : customFooter ? (
           customFooter
-        ) : (
+        ) : (    
           <>
             <Button2 size="sm" onClick={onCancel}>
               Hủy

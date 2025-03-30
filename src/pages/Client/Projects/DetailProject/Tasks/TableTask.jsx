@@ -8,6 +8,8 @@ import Search from "./Search";
 import DrawerTask from "./DrawerTask";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
+import { ProjectInfoContext } from "../../../../Both/Dispute";
+import { useContext } from "react";
 const TableTask = ({ reRender, setReRender }) => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [selectedId, setSelectedId] = useState("");
@@ -16,10 +18,12 @@ const TableTask = ({ reRender, setReRender }) => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const { id } = useParams();
+  const disputeInfo = useContext(ProjectInfoContext);
+  const projectId = disputeInfo?.projectId;
   const [dataSearch, setDataSearch] = useState({});
   const fetchData = useCallback(async () => {
     const data = await taskServices.getAllTask({
-      project_id: id,
+      project_id: id || projectId,
       page,
       limit,
       ...dataSearch,

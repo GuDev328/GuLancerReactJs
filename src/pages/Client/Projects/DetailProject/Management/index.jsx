@@ -13,10 +13,13 @@ import { useState } from "react";
 import EscrowModal from "./EscrowModal";
 import { showConfirmModal } from "../../../../../components/core/MyModal";
 import { Modal } from "antd";
+import { useContext } from "react";
+import { ProjectInfoContext } from "../../../../Both/Dispute";
 
 export default function Management({ projectId, reRender }) {
   const [recordSelected, setRecordSelected] = useState();
   const [openEscrowModal, setOpenEscrowModal] = useState(false);
+  const disputeInfo = useContext(ProjectInfoContext);
   const overview = useQuery({
     queryKey: ["overview", projectId],
     queryFn: () => projectServices.getOverviewProgress(projectId),
@@ -83,6 +86,7 @@ export default function Management({ projectId, reRender }) {
       key: "email",
       render: (text, record) => {
         return renderStatusTagPhaseProject(
+          disputeInfo,
           record.currentPhase.status,
           () => handlePayForMember(record.user_info[0]._id),
           () => handleGoToDispute(record.currentPhase.dispute_id)
@@ -94,7 +98,10 @@ export default function Management({ projectId, reRender }) {
       dataIndex: "name",
       key: "name",
       render: (text, record) => (
-        <div>{formatCurrency(record.currentPhase.salary)}</div>
+        <div>
+          {formatCurrency(record.currentPhase.salary_unpaid)}/
+          {formatCurrency(record.currentPhase.salary)}
+        </div>
       ),
     },
     {
@@ -104,12 +111,14 @@ export default function Management({ projectId, reRender }) {
       render: (text, record) => (
         <div>
           {formatCurrency(record.escrowed)}{" "}
-          <span
-            onClick={() => handleOpenModal(record)}
-            className="ml-2 underline text-main cursor-pointer"
-          >
-            Ký quỹ
-          </span>
+          {!disputeInfo && (
+            <span
+              onClick={() => handleOpenModal(record)}
+              className="ml-2 underline text-main cursor-pointer"
+            >
+              Ký quỹ
+            </span>
+          )}
         </div>
       ),
     },

@@ -11,17 +11,20 @@ import { useSelector } from "react-redux";
 import { UserRole } from "@/constant/user";
 import Tasks from "./Tasks";
 import Chat from "./Chat";
-import { renderJSXProjectStatus } from "../../../../utils/render";
 import ProjectStatusComponent from "./components/ProjectStatus";
 import MyProgress from "./MyProgress";
 import Management from "./Management";
-
+import { useContext } from "react";
+import { ProjectInfoContext } from "../../../Both/Dispute";
 const DetailProject = () => {
   const isMobile = useSelector((state) => state.screen.isMobile);
   const { id } = useParams();
+  const disputeInfo = useContext(ProjectInfoContext);
+  const projectId = disputeInfo?.projectId;
+  console.log(projectId + "adadas");
   const getDetailProject = useQuery({
-    queryKey: ["getDetailProject", id],
-    queryFn: () => projectServices.getDetailProject(id),
+    queryKey: ["getDetailProject", id || projectId],
+    queryFn: () => projectServices.getDetailProject(id || projectId),
   });
   const userInfo = useSelector((state) => state.user.userInfo);
   const isEmployer =
@@ -63,7 +66,8 @@ const DetailProject = () => {
       ),
       icon: <i className="fa-solid fa-bullseye-arrow"></i>,
     },
-    userInfo?.role === UserRole.EMPLOYER && {
+    (userInfo?.role === UserRole.EMPLOYER ||
+      userInfo?.role === UserRole.ADMIN) && {
       key: "management",
       label: "Quản lý",
       children: (

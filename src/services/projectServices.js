@@ -137,6 +137,34 @@ class ProjectServices {
     const response = await axiosIns.put(`/disputes/${dispute_id}`, data);
     return response;
   }
+  async changeStatusDispute(dispute_id, status) {
+    const response = await axiosIns.put(`/disputes/${dispute_id}/status`, {
+      status,
+    });
+    return response;
+  }
+
+  async resolvePayAllDispute(dispute_id, data) {
+    const response = await axiosIns.post(
+      `/disputes/${dispute_id}/pay-all`,
+      data
+    );
+    return response;
+  }
+  async resolvePayPartDispute(dispute_id, data) {
+    const response = await axiosIns.post(
+      `/disputes/${dispute_id}/pay-part`,
+      data
+    );
+    return response;
+  }
+  async resolveNotPayDispute(dispute_id, data) {
+    const response = await axiosIns.post(
+      `/disputes/${dispute_id}/not-pay`,
+      data
+    );
+    return response;
+  }
 }
 
 const projectServices = new ProjectServices();

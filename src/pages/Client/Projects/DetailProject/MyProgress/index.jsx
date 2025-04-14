@@ -168,14 +168,6 @@ export default function MyProgress({ reRender }) {
                     <i className="fa-solid fa-exclamation-triangle text-red-500"></i>
                   );
                   statusText = "Tranh chấp";
-                  action = (
-                    <div
-                      onClick={handleCancelDisputed}
-                      className="text-main underline cursor-pointer"
-                    >
-                      Huỷ bỏ tranh chấp
-                    </div>
-                  );
                   actionOther = (
                     <div
                       onClick={() =>
@@ -237,6 +229,7 @@ export default function MyProgress({ reRender }) {
                     )}
 
                     <div className="font-bold italic">
+                      Đã thanh toán: {formatCurrency(item.salary_unpaid)}/
                       {formatCurrency(item.salary)}
                     </div>
                     {/* {index === myProgress.data.indexCurrentPhase && action} */}

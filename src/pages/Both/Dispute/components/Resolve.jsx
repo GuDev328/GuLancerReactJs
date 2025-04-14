@@ -19,7 +19,7 @@ export default function Resolve() {
     queryKey: ["dispute", dispute_id],
     queryFn: () => projectServices.getDispute(dispute_id),
   });
-  console.log(disputeInfo?.data);
+
   const userInfo = useSelector((state) => state.user.userInfo);
   const { isDisputeCanceled } = useContext(StatusDisputeContext);
   const handleOpen = (type) => {

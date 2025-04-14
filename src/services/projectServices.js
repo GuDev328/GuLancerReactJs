@@ -163,7 +163,20 @@ class ProjectServices {
       `/disputes/${dispute_id}/not-pay`,
       data
     );
-    return response;
+  }
+
+  async getListApply({page, limit}) {
+    const response = await axiosIns.get("/projects/list-apply" + `?page=${page}&limit=${limit}`);
+    return response.data;
+  }
+  async getListInvite({page, limit}) {
+    const response = await axiosIns.get("/projects/list-invite" + `?page=${page}&limit=${limit}`);
+    return response.data;
+  }
+
+  async getListProjectRecruitingController() {
+    const response = await axiosIns.get("/projects/list-project-recruiting" );
+    return response.data;
   }
 }
 

@@ -6,20 +6,28 @@ import { Button as Button2 } from "@material-tailwind/react";
 import MyDatePicker from "@/components/core/MyDatePicker";
 import projectServices from "@/services/projectServices";
 import { toast } from "react-toastify";
+import { Select } from "antd";
+import { useQuery } from "@tanstack/react-query";
 
 const { TextArea } = Input;
  
-const Apply = ({ open, setOpen, projectId }) => {
+const Invite = ({ open, setOpen, user_id }) => {
   const [salaryType, setSalaryType] = useState(0);
   const [timeType, setTimeType] = useState(0);
   const [form] = Form.useForm();
 
+  const listProjectRecruiting = useQuery({
+    queryKey: ["getProjectRecruiting"],
+    queryFn: async () => await projectServices.getListProjectRecruitingController(),
+  });
+  const dataProjectRecruiting = listProjectRecruiting.data?.result;
   const handleConfirm = async () => {
     await form.validateFields();
     const dataForm = form.getFieldsValue();
     const data = {
-      project_id: projectId,
-      type: 0,
+      user_id,
+      project_id: dataForm.project_id,
+      type: 1,
       content: dataForm.content,
       salary: dataForm.salary ? Number(dataForm.salary) : null,
       time_to_complete: dataForm.time_to_complete
@@ -43,7 +51,16 @@ const Apply = ({ open, setOpen, projectId }) => {
       onCancel={() => setOpen(false)}
     >
       <Form form={form}>
-        <Form.Item initialValue={""} name={"content"} label="Lời chào">
+      <Form.Item  name={"project_id"} required label="Dự án">
+          <Select          
+            placeholder="Chọn dự án"
+            options={dataProjectRecruiting?.map((item) => ({
+              value: item._id,
+              label: item.title,
+            }))}
+          ></Select>
+        </Form.Item>
+        <Form.Item initialValue={""} name={"content"} label="Lời mời">
           <TextArea
             autoSize={{ minRows: 6 }}
             placeholder="Nhập lời chào ứng tuyển"
@@ -121,10 +138,10 @@ const Apply = ({ open, setOpen, projectId }) => {
   );
 };
 
-Apply.propTypes = {
+Invite.propTypes = {
   open: PropTypes.bool,
   setOpen: PropTypes.func,
-  projectId: PropTypes.string,
+  user_id: PropTypes.string,
 };
 
-export default Apply;
+export default Invite;

@@ -17,11 +17,13 @@ import {
   renderUserVerifyStatus,
 } from "../../../utils/render";
 import conversationServices from "../../../services/conversationServices";
+import Invite from "./InviteProject";
 
 const UserWall = () => {
   const { isMobile } = useSelector((state) => state.screen);
   const { userInfo } = useSelector((state) => state.user);
   const [openVerifyModal, setOpenVerifyModal] = useState(false);
+  const [openInviteModal, setOpenInviteModal] = useState(false);
   const { id } = useParams();
   const {
     isLoading,
@@ -111,8 +113,8 @@ const UserWall = () => {
               <i className="fas fa-comment-alt-lines text-[18px]"></i>
             </Button>
           )}
-          {!isMyProfile && (
-            <Button className="bg-main mr-5 text-white">
+          {!isMyProfile && userInfo?.role === UserRole.EMPLOYER && (
+            <Button onClick={() => setOpenInviteModal(true)} className="bg-main mr-5 text-white">
               <i className="far mr-2 text-[18px] fa-bullseye-pointer"></i>
               Thuê ngay
             </Button>
@@ -209,6 +211,16 @@ const UserWall = () => {
           onConfirm={handleOnConrirmRequestVerify}
         ></VerifyModal>
       )}
+
+      {
+        !isMyProfile && (
+          <Invite
+            open={openInviteModal}
+            setOpen={setOpenInviteModal}
+            user_id={id}
+          ></Invite>
+        )
+      }
     </div>
   );
 };

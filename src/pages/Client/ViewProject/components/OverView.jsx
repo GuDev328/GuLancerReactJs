@@ -17,7 +17,7 @@ const OverviewProject = ({ detailProject }) => {
         <p className="flex-shrink-0">{detailProject?.title}</p>
         <div className="leading-5 mt-2">
           <p className=" text-main">
-            {detailProject ? formatCurrency(detailProject?.salary) : "0"}
+            {detailProject ? formatCurrency(detailProject?.recruitmentInfo?.salary) : "0"}
           </p>
           <p className="text-gray-400 text-[14px]  font-normal">
             {detailProject?.salaryType === 0

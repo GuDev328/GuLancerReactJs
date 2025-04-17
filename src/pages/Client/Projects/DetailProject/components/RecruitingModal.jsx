@@ -65,6 +65,13 @@ export default function RecruitingModal({
             label="Hạn ứng tuyển"
             form={form}
           />
+            <MyFormItemInput
+            type="number"
+            name="salary"
+            isRequired
+            label="Mức lương"
+            form={form}
+          />
         </div>
       </Form>
     </MyModal>

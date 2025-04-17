@@ -41,8 +41,8 @@ const CreateProject = () => {
       <Form
         form={form}
         labelAlign="left"
-        // labelCol={{ span: 3 }}
-        // wrapperCol={{ span: 20 }}
+         labelCol={{ span: 3 }}
+         wrapperCol={{ span: 20 }}
       >
         <Form.Item
           name={"title"}
@@ -59,7 +59,7 @@ const CreateProject = () => {
         <SelectFields />
         <SelectTech />
         <Row gutter={10}>
-          <Col span={12}>
+          <Col span={24}>
             <Form.Item
               initialValue={0}
               name="salaryType"
@@ -73,25 +73,11 @@ const CreateProject = () => {
               />
             </Form.Item>
           </Col>
-          <Col span={12}>
-            <Form.Item
-              rules={[
-                {
-                  required: true,
-                  message: "Lương không được để trống",
-                },
-              ]}
-              required
-              name="salary"
-              label="Lương"
-            >
-              <Input addonAfter="VNĐ" placeholder="--Nhập--" />
-            </Form.Item>
-          </Col>
+         
         </Row>
 
         <Row gutter={10}>
-          <Col span={12}>
+          <Col span={24}>
             <Form.Item
               rules={[
                 {
@@ -106,7 +92,7 @@ const CreateProject = () => {
               <MyDatePicker />
             </Form.Item>
           </Col>
-          <Col span={12}>
+          <Col span={24}>
             <Form.Item
               rules={[
                 {

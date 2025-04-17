@@ -7,6 +7,8 @@ import { useEffect } from 'react'
 import { formatDate, formatDateTime } from './../../../../utils/common';
 import { formatCurrency } from '@/utils/common';
 import { useNavigate } from 'react-router-dom'
+import { Flex } from 'antd'
+import Apply from './../../ViewProject/components/Apply';
 
 export default function ProjectApply() {
     const [pageInfo, setPageInfo] = useState({
@@ -14,8 +16,11 @@ export default function ProjectApply() {
         limit: 10,
         totalPage: 5
     })
+    const [open, setOpen] = useState(false);
     const naviagteTo = useNavigate();
-    const [listApply, setListApply] = useState([])
+    const [listApply, setListApply] = useState([]);
+    const [applyIdSelected, setApplyIdSelected] = useState(null);
+    const [isViewMode, setIsViewMode] = useState(false);
     const getListApply = useQuery({
         queryKey: ["getMyApply", pageInfo.page, 10],
         queryFn: () =>
@@ -29,12 +34,25 @@ export default function ProjectApply() {
         if (getListApply.data) {
           setListApply(getListApply.data.result.applies);
           setPageInfo({
-            page: getListApply.data.result.page,
-            limit: getListApply.data.result.limit,
-            totalPage: getListApply.data.result.totalPages,
+            page: getListApply.data.result.pagination.page,
+            limit: getListApply.data.result.pagination.limit,
+            totalPage: getListApply.data.result.pagination.totalPages,
           });
         }
       }, [getListApply.data]);
+
+      const handleClickView = (record) => {
+        setApplyIdSelected(record._id);
+        setIsViewMode(true);
+        setOpen(true);
+      };
+
+      const handleClickEdit = (record) => {
+        setApplyIdSelected(record._id);
+        setIsViewMode(false);
+        setOpen(true);
+      };
+
     const columns = [
         {
             title: 'Dự án',
@@ -83,9 +101,14 @@ export default function ProjectApply() {
             title: 'Hành động',
             key: 'action',
             render: (_, record) => (
-                <div onClick={() => naviagteTo(`/project/${record.project._id}`)} className="text-main cursor-pointer hover:underline">
-                    Xem chi tiết dự án
-                </div>
+                <Flex className="gap-2 text-main text-[16px]">
+
+                    <i onClick={() => handleClickView(record)} className="fa-solid fa-eye"></i>
+                    <i onClick={() => handleClickEdit(record)} className="fa-solid fa-pen-to-square"></i>
+                            
+                    <i onClick={() => naviagteTo(`/project/${record.project._id}`)} className="fa-solid fa-share-all"></i>
+    
+                </Flex>
             )
         },
     ]
@@ -99,9 +122,7 @@ export default function ProjectApply() {
         }))
     }
 
-    const handleRowClick = (record) => {
-        console.log('Clicked row:', record)
-    }
+
 
     return (
         <div className="bg-white p-4 rounded-lg">
@@ -110,7 +131,12 @@ export default function ProjectApply() {
                 data={listApply}
                 pageInfo={pageInfo}
                 onChangePage={handleChangePage}
-                onRowClick={handleRowClick}
+            />
+            <Apply open={open} refetchList={getListApply.refetch} 
+            setOpen={setOpen} projectId={null} 
+            applyId={applyIdSelected} 
+           
+            isViewMode={isViewMode}
             />
         </div>
     )

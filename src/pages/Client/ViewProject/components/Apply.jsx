@@ -6,66 +6,114 @@ import { Button as Button2 } from "@material-tailwind/react";
 import MyDatePicker from "@/components/core/MyDatePicker";
 import projectServices from "@/services/projectServices";
 import { toast } from "react-toastify";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import { useEffect } from "react";
 
 const { TextArea } = Input;
  
-const Apply = ({ open, setOpen, projectId }) => {
-  const [salaryType, setSalaryType] = useState(0);
-  const [timeType, setTimeType] = useState(0);
+const Apply = ({ open, setOpen, projectId, applyId, isViewMode, refetchList }) => {
+  const [salaryType, setSalaryType] = useState( applyId ? 1 : 0);
+  const [timeType, setTimeType] = useState(applyId ? 1 : 0);
   const [form] = Form.useForm();
+  const queryClient = useQueryClient();
+  // const salarySuggest = record?.salary === record.project.;
+  // const timeSuggest = record?.time_to_complete;
 
+  const { data: detailApplyInvite, refetch } = useQuery({
+    queryKey: ["apply", applyId],
+    queryFn: () => projectServices.getDetailApply(applyId),
+    enabled: !!applyId,
+
+  });
+
+  useEffect(()=>{
+    if(applyId){
+      setSalaryType(1);
+      setTimeType(1);
+    }
+    form.setFieldsValue({
+      content: detailApplyInvite?.content,
+      salary: detailApplyInvite?.salary,
+      time_to_complete: detailApplyInvite?.time_to_complete  ? dayjs(detailApplyInvite?.time_to_complete) : null,
+    });
+  }, [detailApplyInvite])
+  
   const handleConfirm = async () => {
     await form.validateFields();
     const dataForm = form.getFieldsValue();
-    const data = {
-      project_id: projectId,
-      type: 0,
-      content: dataForm.content,
-      salary: dataForm.salary ? Number(dataForm.salary) : null,
-      time_to_complete: dataForm.time_to_complete
-        ? new Date(dataForm.time_to_complete).toISOString()
-        : null,
-    };
-    const res = await projectServices.applyProject(data);
+    let res;
+    if(applyId) {
+      const dataUpdate = {
+        apply_invite_id: applyId,
+        content: dataForm.content,
+        salary: dataForm.salary ? Number(dataForm.salary) : null,
+        time_to_complete: dataForm.time_to_complete
+          ? new Date(dataForm.time_to_complete).toISOString()
+          : null,
+      };
+      res = await projectServices.editApplyProject(dataUpdate);
+    } else {
+      const dataCreate = {
+        project_id: projectId,
+        type: 0,
+        content: dataForm.content,
+        salary: dataForm.salary ? Number(dataForm.salary) : null,
+        time_to_complete: dataForm.time_to_complete
+          ? new Date(dataForm.time_to_complete).toISOString()
+          : null,
+      };
+      res = await projectServices.applyProject(dataCreate);
+    }
     if (res.status === 200) {
-      toast.success("Ứng tuyển thành công");
+      toast.success( applyId? "Cập nhật thành công": "Ứng tuyển thành công");
       form.resetFields();
       setOpen(false);
+      refetchList();
+      refetch();
     } else {
-      toast.error("Ứng tuyển thất bại");
+      toast.error(applyId? "Cập nhật thất bại": "Ứng tuyển thất bại");
     }
   };
+  
   return (
     <MyModal
       title="Ứng tuyển dự án"
+      noFooter={isViewMode}
       open={open}
+      width={"50%"}
       onConfirm={handleConfirm}
       onCancel={() => setOpen(false)}
+      destroyOnClose
     >
-      <Form form={form}>
-        <Form.Item initialValue={""} name={"content"} label="Lời chào">
+      <Form   labelAlign="left"
+         labelCol={{ span: 6 }}
+         wrapperCol={{ span: 20 }}  form={form} disabled={isViewMode} >
+        <Form.Item name={"content"} label="Lời chào">
           <TextArea
             autoSize={{ minRows: 6 }}
             placeholder="Nhập lời chào ứng tuyển"
           ></TextArea>
         </Form.Item>
-        <div className="flex gap-2 mb-2">
+        {!applyId && <div className="flex gap-2 mb-2">
           <p>Mức lương:</p>
           <Button2
             onClick={() => setSalaryType(0)}
             className={salaryType === 0 ? "bg-blue-500" : "bg-gray-500"}
             size="sm"
+            disabled={isViewMode}
           >
             Theo mô tả
           </Button2>
           <Button2
             className={salaryType === 1 ? "bg-blue-500" : "bg-gray-500"}
             size="sm"
+            disabled={isViewMode}
             onClick={() => setSalaryType(1)}
           >
             Đề xuất
           </Button2>
-        </div>
+        </div>} 
         {salaryType === 1 && (
           <Form.Item
             required
@@ -76,34 +124,40 @@ const Apply = ({ open, setOpen, projectId }) => {
               },
             ]}
             name={"salary"}
-            label="Mức lương đề xuất"
+            label="Mức lương "
           >
             <InputNumber
               style={{ width: "100%" }}
               placeholder="Nhập mức lương đề xuất"
+
+              suffix="VNĐ"
             ></InputNumber>
           </Form.Item>
         )}
-        <div className="flex gap-2 mb-2">
+        {!applyId  && <div className="flex gap-2 mb-2">
           <p>Thời gian hoàn thành:</p>
           <Button2
+           
             onClick={() => setTimeType(0)}
             className={timeType === 0 ? "bg-blue-500" : "bg-gray-500"}
             size="sm"
+            disabled={isViewMode}
           >
             Theo mô tả
           </Button2>
           <Button2
             className={timeType === 1 ? "bg-blue-500" : "bg-gray-500"}
             size="sm"
+            disabled={isViewMode}
             onClick={() => setTimeType(1)}
           >
             Đề xuất
           </Button2>
-        </div>
+        </div>}
         {timeType === 1 && (
           <Form.Item
             required
+            
             rules={[
               {
                 required: true,
@@ -111,7 +165,7 @@ const Apply = ({ open, setOpen, projectId }) => {
               },
             ]}
             name={"time_to_complete"}
-            label="Thời gian hoàn thành đề xuất"
+            label="Thời gian hoàn thành"
           >
             <MyDatePicker></MyDatePicker>
           </Form.Item>
@@ -125,6 +179,9 @@ Apply.propTypes = {
   open: PropTypes.bool,
   setOpen: PropTypes.func,
   projectId: PropTypes.string,
+  applyId: PropTypes.string,
+  isViewMode: PropTypes.bool,
+  refetchList: PropTypes.func,
 };
 
 export default Apply;

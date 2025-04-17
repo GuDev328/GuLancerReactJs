@@ -38,13 +38,23 @@ class ProjectServices {
   }
 
   async applyProject(data) {
-    const response = await axiosIns.post("/projects//apply-invite", data);
+    const response = await axiosIns.post("/projects/apply-invite", data);
+    return response;
+  }
+
+  async editApplyProject(data){
+    const response = await axiosIns.post("/projects/edit-apply-invite", data);
     return response;
   }
 
   async getApplyInvite(data) {
     const response = await axiosIns.post(`/projects/get-apply-invite`, data);
     return response.data;
+  }
+
+  async getDetailApply(id) {
+    const response = await axiosIns.get(`/projects/detail-apply-invite/${id}`);
+    return response.data.result;
   }
 
   async getMyProgress(project_id) {

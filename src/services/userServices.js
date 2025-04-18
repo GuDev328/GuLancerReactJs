@@ -42,6 +42,14 @@ class UserServices {
     const response = await axiosIns.post(`/users/update-me`, data);
     return response;
   }
+  async blockUser(id) {
+    const response = await axiosIns.post(`/users/block`, { id });
+    return response;
+  }
+  async unblockUser(id) {
+    const response = await axiosIns.post(`/users/unblock`, { id });
+    return response;
+  }
 
   async requestVerify(data) {
     const response = await axiosIns.post(`/users/request-verify`, data);

@@ -3,7 +3,7 @@ import DotMenuDropdown from "../components/core/DotMenuDropdown";
 import MyDropdown from "../components/core/MyDropdown";
 import { ProjectStatus } from "../constant/project";
 import { TaskStatus } from "../constant/task";
-import { UserRole, UserVerifyStatus } from "../constant/user";
+import { UserRole, UserStatus, UserVerifyStatus } from "../constant/user";
 
 export const renderJSXTaskStatus = (status) => {
   if (status == TaskStatus.TODO) {
@@ -446,4 +446,22 @@ export const renderStatusDispute = (status) => {
       {label}
     </span>
   );
+};
+
+export const renderAcountStatus = (status) => {
+  if (status === UserStatus.Active) {
+    return (
+      <div className="flex justify-center">
+        <span className="text-green-500">Đang hoạt động</span>
+      </div>
+    );
+  }
+  if (status === UserStatus.Blocked) {
+    return (
+      <div className="flex justify-center">
+        <span className="text-red-500">Đã khoá</span>
+      </div>
+    );
+  }
+  return null;
 };

@@ -3,7 +3,7 @@ import userServices from "@/services/userServices";
 import MyTable from "../../../components/core/MyTable";
 
 import { Image, Modal } from "antd";
-import { renderJSXRoleUser } from "./../../../utils/render";
+import { renderAcountStatus, renderJSXRoleUser } from "./../../../utils/render";
 import MyButton from "@/components/core/MyButton";
 import Icon, {
   DeleteOutlined,
@@ -16,6 +16,7 @@ import DetailUserModal from "./DetailUserModal";
 import { set } from "lodash";
 import MyModal, { showConfirmModal } from "../../../components/core/MyModal";
 import Search from "./Search";
+import { UserStatus } from "../../../constant/user";
 
 export default function AccountManagement() {
   const [listUser, setListUser] = useState([]);
@@ -101,12 +102,58 @@ export default function AccountManagement() {
       key: "username",
     },
     {
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
+      render: (text, record) => renderAcountStatus(record.status),
+    },
+    {
       title: "Hành động",
       align: "center",
 
       render: (text, record) => (
         <div className="flex justify-center">
-          <EditOutlined className="text-blue-500 cursor-pointer" />
+          {record.status === UserStatus.Active ? (
+            <i className="fa-solid fa-ban text-red-500 cursor-pointer"
+           onClick={(e) => {
+            e.stopPropagation();
+
+            showConfirmModal({
+              title: "Xác nhận",
+              content: "Bạn có chắc chắn muốn khoá tài khoản này?",
+              onOk: async () => {
+                const res = await userServices.blockUser(record._id);
+                if (res) {
+                  setReRender(!reRender);
+                  Modal.destroyAll();
+                }
+              },
+            });
+          }}
+          >
+
+          </i>
+          ) : (
+            <i className="fa-solid fa-lock-open text-blue-500 cursor-pointer"
+           onClick={(e) => {
+            e.stopPropagation();
+
+            showConfirmModal({
+              title: "Xác nhận",
+              content: "Bạn có chắc chắn muốn mở khoá tài khoản này?",
+              onOk: async () => {
+                const res = await userServices.unblockUser(record._id);
+                if (res) {
+                  setReRender(!reRender);
+                  Modal.destroyAll();
+                }
+              },
+            });
+          }}
+          >
+
+          </i>
+          )}
           <DeleteOutlined
             onClick={(e) => {
               e.stopPropagation();

@@ -6,10 +6,12 @@ import projectServices from "@/services/projectServices";
 import MyModal, { showConfirmModal } from "@/components/core/MyModal";
 import { formatCurrency } from "@/utils/common";
 import { toast } from "react-toastify";
+import Apply from './../../../ViewProject/components/Apply';
 
 const ApplyInviteManagement = ({ projectId }) => {
   const [open, setOpen] = useState(false);
   const [selectedApply, setSelectedApply] = useState(null);
+  const [openEdit, setOpenEdit] = useState(false);
   const data = useQuery({
     queryKey: ["apply-invite", projectId],
     queryFn: () =>
@@ -60,6 +62,11 @@ const ApplyInviteManagement = ({ projectId }) => {
     });
   };
 
+  const handleEdit=(record)=>{
+    setSelectedApply(record)
+    setOpenEdit(true)
+  }
+
   const columns = [
     {
       title: "STT",
@@ -105,7 +112,7 @@ const ApplyInviteManagement = ({ projectId }) => {
       dataIndex: "salary",
       key: "salary",
       render: (text, record) => {
-        return <p>{record.salary}</p>;
+        return <p>{ formatCurrency(record.salary)}</p>;
       },
     },
     {
@@ -122,26 +129,38 @@ const ApplyInviteManagement = ({ projectId }) => {
       fixed: "right",
       align: "center",
       key: "action",
-      render: (text, record) => (
-        <div className="flex justify-center">
-          <i
-            onClick={() => ViewContent(record)}
-            className="far cursor-pointer text-lg
-                      fa-eye text-blue-500 mr-2"
-          ></i>
-          <i
-            onClick={() => handleAccept(record._id)}
-            className="far cursor-pointer text-lg fa-check-circle text-green-500 mr-2"
-          ></i>
-          <i
-            onClick={() => handleReject(record._id)}
-            className="far cursor-pointer text-lg fa-times-circle text-red-500"
-          ></i>
-        </div>
-      ),
+      render: (text, record) => {
+        if(record.type===1) return <div className="flex justify-center">
+        <i
+          onClick={() => ViewContent(record)}
+          className="far cursor-pointer text-lg fa-eye text-blue-500 mr-2"
+        ></i>
+        <i
+          onClick={() => handleEdit(record)}
+          className="fa-solid cursor-pointer fa-pen-to-square text-lg text-blue-500 mr-2"
+        ></i>
+        
+      </div>
+        else return <div className="flex justify-center">
+        <i
+          onClick={() => ViewContent(record)}
+          className="far cursor-pointer text-lg fa-eye text-blue-500 mr-2"
+        ></i>
+        <i
+          onClick={() => handleAccept(record._id)}
+          className="far cursor-pointer text-lg fa-check-circle text-green-500 mr-2"
+        ></i>
+        <i
+          onClick={() => handleReject(record._id)}
+          className="far cursor-pointer text-lg fa-times-circle text-red-500"
+        ></i>
+      </div>
+      }
+
+      
     },
   ];
-
+  const isInvite = selectedApply?.type ===1
   return (
     <>
       <Table
@@ -149,12 +168,19 @@ const ApplyInviteManagement = ({ projectId }) => {
         columns={columns}
         dataSource={dataTable}
       />
-
+      <Apply
+        open={openEdit}
+        setOpen={setOpenEdit}
+        projectId={null}
+        applyId={selectedApply?._id}
+        isViewMode={false}
+        refetchList={data.refetch}
+      />
       <Modal
         open={open}
         footer={null}
         onCancel={() => setOpen(false)}
-        title="Chi tiết ứng tuyển"
+        title={isInvite ? "Chi tiết lời mời" : "Chi tiết ứng tuyển"}
         centered
       >
         <div>
@@ -203,11 +229,11 @@ const ApplyInviteManagement = ({ projectId }) => {
             <p>{selectedApply?.user_info[0].email}</p>
           </div>
 
-          <p className="font-medium">Nội dung ứng tuyển: </p>
+          <p className="font-medium">{isInvite ? "Lời mời" : "Nội dung ứng tuyển"}: </p>
           <p>{selectedApply?.content}</p>
 
           <div className="flex">
-            <p className="font-medium mr-2">Lương ứng tuyển: </p>
+            <p className="font-medium mr-2">{isInvite ? "Lương mời" : "Lương ứng tuyển"}: </p>
             <p className="font-medium">
               {selectedApply?.salary
                 ? formatCurrency(selectedApply?.salary)
@@ -215,7 +241,7 @@ const ApplyInviteManagement = ({ projectId }) => {
             </p>
           </div>
           <div className="flex">
-            <p className="font-medium mr-2">Ngày dự kiến hoàn thành: </p>
+            <p className="font-medium mr-2">{isInvite ? "Ngày dự kiến hoàn thành" : "Ngày dự kiến hoàn thành"}: </p>
             <p>
               {selectedApply?.time_to_complete
                 ? new Date(selectedApply?.time_to_complete).toLocaleDateString()
@@ -223,7 +249,7 @@ const ApplyInviteManagement = ({ projectId }) => {
             </p>
           </div>
           <div className="flex">
-            <p className="font-medium mr-2">Ngày ứng tuyển: </p>
+            <p className="font-medium mr-2">{isInvite ? "Ngày mời" : "Ngày ứng tuyển"}: </p>
             <p>
               {selectedApply?.created_at
                 ? new Date(selectedApply?.created_at).toLocaleDateString()

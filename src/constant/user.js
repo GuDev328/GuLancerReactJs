@@ -20,3 +20,9 @@ export const HistoryAmountTypeEnum = {
   WITHDRAW: 2,
   TO_PROJECT: 3,
 };
+
+export const UserStatus = {
+  Active: 0,
+  Disabled: 1,
+  Blocked: 2,
+};

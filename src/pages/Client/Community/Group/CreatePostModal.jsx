@@ -132,7 +132,7 @@ const CreatePostModal = ({ open, setOpen, groupId, groupName }) => {
     const create = await tweetServices.createTweet(data);
     if (create && create.status === 200) {
       handleCancel();
-      message.success("Tạo bài viết thành công!");
+      message.success(create.data.message);
     }
   };
   return (

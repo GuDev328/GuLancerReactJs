@@ -6,6 +6,7 @@ import { Routes, Route } from "react-router-dom";
 import Group from "./Group";
 import MyGroups from "./MyGroups";
 import SearchCommunity from "./SearchComunity";
+import SettingGroup from "./Group/SettingGroup";
 function Community() {
     const isMobile = useSelector((state) => state.screen.isMobile);
     const isLgScreen = useSelector((state) => state.screen.isLgScreen);
@@ -27,6 +28,7 @@ function Community() {
                             element={<SearchCommunity />}
                         />
                         <Route path="/" element={<Posts />} />
+                        <Route path="/setting-group/:id" element={<SettingGroup />} />
                         <Route path="/:id" element={<Group />} />
                     </Routes>
                 </div>

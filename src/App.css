@@ -49,3 +49,11 @@ input:-moz-autofill:active {
     font-size: 19px; /* Điều chỉnh kích thước placeholder */
     color: #888; /* Điều chỉnh màu sắc nếu cần */
 }
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE và Edge */
+    scrollbar-width: none;     /* Firefox */
+  }

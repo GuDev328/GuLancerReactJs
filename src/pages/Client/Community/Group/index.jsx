@@ -8,10 +8,14 @@ import { data } from "jquery";
 import { useSelector } from "react-redux";
 import CreatePostModal from "./CreatePostModal";
 import PostsGroup from "./GroupPosts";
+import DotMenuDropdown from './../../../../components/core/DotMenuDropdown';
+import { Tooltip } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const Group = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
   const { id } = useParams();
+  const navigate = useNavigate();
   const [openCreatePostModal, setOpenCreatePostModal] = React.useState(false);
   const fetchDetailGroup = useQuery({
     queryKey: ["getGroupById", id],
@@ -19,18 +23,17 @@ const Group = () => {
     onError: (error) => console.error(error),
   });
   const detaiGroup = fetchDetailGroup?.data?.result;
+  const isAdmin = detaiGroup?.admin_id.includes(userInfo?._id);
   return (
     <div className="mt-3  w-[98%] ">
-      {/* <Spin
-                className="min-h-96 relative"
-                spinning={fetchDetailGroup?.isLoading}
-            > */}
       <div className="Banner relative">
         <img
           src={detaiGroup?.cover_photo}
           className="h-72 rounded-bl-xl rounded-br-xl w-full object-cover object-center"
         />
-        <div className="absolute w-full flex items-center py-2 pl-4 text-white  rounded-bl-xl rounded-br-xl bg-main bottom-0">
+        <div className="absolute w-full flex justify-between items-center py-2 pl-4 text-white  rounded-bl-xl rounded-br-xl bg-main bottom-0">
+          <div>
+
           <p className="font-bold text-[22px] ">{detaiGroup?.name}</p>
           {detaiGroup?.type === 0 ? (
             <p className=" ml-2 text-[14px]">
@@ -41,6 +44,11 @@ const Group = () => {
               <i className="fad fa-lock-alt"></i> Nhóm riêng tư
             </p>
           )}
+          </div>
+          <div className="mr-3">
+            {isAdmin && <Tooltip title="Quản lý" className="cursor-pointer"><i onClick={() => navigate(`/community/setting-group/${id}`)} className="fa-solid mr-2 fa-bars-progress"></i></Tooltip>}
+            {!isAdmin &&<DotMenuDropdown items={[]}/>}
+          </div>
         </div>
       </div>
       <div className="flex mt-3 items-start justify-between">

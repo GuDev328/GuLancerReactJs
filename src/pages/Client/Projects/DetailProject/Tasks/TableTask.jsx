@@ -60,11 +60,11 @@ const TableTask = ({ reRender, setReRender }) => {
         return (
           <div className="flex items-center">
             <img
-              src={record.assign_to_info[0].avatar}
+              src={record.assign_to_info.avatar}
               alt="avatar"
               className="w-10 h-10 rounded-full"
             />
-            <p className="ml-2">{record.assign_to_info[0].name}</p>
+            <p className="ml-2">{record.assign_to_info.name}</p>
           </div>
         );
       },

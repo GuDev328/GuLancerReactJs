@@ -55,7 +55,7 @@ export default function MyProgress({ reRender }) {
         const data = {
           project_id: id,
           freelancer_id: userInfo._id,
-          employer_id: myProgress.data.project_info[0].admin_id,
+          employer_id: myProgress.data.project_info.admin_id,
         };
         const res = await projectServices.createDispute(data);
         console.log(res);
@@ -94,7 +94,7 @@ export default function MyProgress({ reRender }) {
               Thoả thuận với {myProgress.data.number_of_milestone} lần thanh
               toán tiền
             </div>
-            {myProgress.data.project_info[0].status ===
+            {myProgress.data.project_info.status ===
               ProjectStatus.Recruiting && (
               <MyButton
                 onClick={() => setOpenModalChageProgress(true)}

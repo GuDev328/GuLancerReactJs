@@ -109,16 +109,16 @@ const DetailProject = () => {
       <div className="flex items-center ">
         <Avatar
           className="w-[40px] h-[40px]"
-          src={detailProject?.admin_info[0]?.avatar}
+          src={detailProject?.admin_info?.avatar}
           size={40}
         />
         <div className=" leading-none ml-1 mt-[13px]">
           <div className=" flex items-end">
-            <p className="mr-1">{detailProject?.admin_info[0]?.name}</p>
+            <p className="mr-1">{detailProject?.admin_info?.name}</p>
             <i className=" fa-solid fa-star" style={{ color: "#FFB800" }}></i>
-            <p>{detailProject?.admin_info[0]?.star}/5.0</p>
+            <p>{detailProject?.admin_info?.star}/5.0</p>
             <p className=" hidden sm:inline-block ml-1 text-[13px] text-gray-500">
-              Với {detailProject?.admin_info[0]?.project_done} dự án đã hoàn
+              Với {detailProject?.admin_info?.project_done} dự án đã hoàn
               thành
             </p>
           </div>

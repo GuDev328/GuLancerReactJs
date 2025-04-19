@@ -32,8 +32,8 @@ const ListChatUser = ({ receiver, setReceiver, setAvatarUserCurrent }) => {
             user.user_id_1 === userId ? user.user_id_2 : user.user_id_1;
           const receiver_info =
             user.user_id_1 === userId
-              ? user.user_2_info[0]
-              : user.user_1_info[0];
+              ? user.user_2_info
+              : user.user_1_info;
           console.log(receiver_id, receiver_info);
           return (
             <div

@@ -10,8 +10,8 @@ const ProjectItem = ({ data }) => {
       <div className="text-[16px]">{data?.title}</div>
       <div className="flex justify-between">
         <div className="flex items-center">
-          <Avatar size={25} src={data?.admin_info[0]?.avatar} />
-          <p className="ml-1 text-[13px]">{data?.admin_info[0]?.name}</p>
+          <Avatar size={25} src={data?.admin_info?.avatar} />
+          <p className="ml-1 text-[13px]">{data?.admin_info?.name}</p>
         </div>
         <div className="flex items-center text-main">
           <ProjectStatusComponent status={data.status} />

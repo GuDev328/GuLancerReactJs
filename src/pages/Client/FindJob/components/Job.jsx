@@ -66,20 +66,20 @@ const Job = ({ data }) => {
 
         <div className="hidden sm:block">
           <div className="flex items-center ">
-            <Avatar className="bg-main" src={data?.user[0]?.avatar} />
+            <Avatar className="bg-main" src={data?.user?.avatar} />
             <div className=" leading-none ml-1 mt-[13px]">
               <div className=" flex items-end">
-                <p className="mr-1">{data?.user[0]?.name}</p>
+                <p className="mr-1">{data?.user?.name}</p>
                 <i
                   className=" fa-solid fa-star"
                   style={{ color: "#FFB800" }}
                 ></i>
-                <p>{data?.user[0]?.star}/5.0</p>
+                <p>{data?.user?.star }/5.0</p>
                 <p className=" hidden sm:inline-block ml-1 text-[13px] text-gray-500">
-                  Với {data?.user[0]?.project_done} dự án đã hoàn thành
+                  Với {data?.user?.project_done} dự án đã hoàn thành
                 </p>
               </div>
-              {renderUserVerifyStatus(data?.user[0]?.verified_info?.status)}
+              {renderUserVerifyStatus(data?.user?.verified_info?.status)}
             </div>
           </div>
           <div className=""></div>

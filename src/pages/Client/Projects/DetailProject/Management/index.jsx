@@ -61,11 +61,11 @@ export default function Management({ projectId, reRender }) {
       render: (text, record) => (
         <div className="flex items-center">
           <Image
-            src={record.user_info[0].avatar}
+            src={record.user_info.avatar}
             width={40}
             className=" rounded-full"
           />
-          <div>{record.user_info[0].name}</div>
+          <div>{record.user_info.name}</div>
         </div>
       ),
     },
@@ -88,7 +88,7 @@ export default function Management({ projectId, reRender }) {
         return renderStatusTagPhaseProject(
           disputeInfo,
           record.currentPhase.status,
-          () => handlePayForMember(record.user_info[0]._id),
+          () => handlePayForMember(record.user_info._id),
           () => handleGoToDispute(record.currentPhase.dispute_id)
         );
       },

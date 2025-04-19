@@ -62,13 +62,13 @@ const DrawerTask = ({ open, onClose, id, setReRender }) => {
         <div className="text-[17px] font-bold">{data?.title}</div>
         <Flex align="center" gap={8}>
           <p>Người làm:</p>
-          <Avatar src={data?.assign_to_info[0]?.avatar} />
-          <p>{data?.assign_to_info[0]?.name}</p>
+          <Avatar src={data?.assign_to_info?.avatar} />
+          <p>{data?.assign_to_info?.name}</p>
         </Flex>
         <Flex align="center" gap={8}>
           <p>Người tạo:</p>
-          <Avatar src={data?.created_by_info[0]?.avatar} />
-          <p>{data?.created_by_info[0]?.name}</p>
+          <Avatar src={data?.created_by_info?.avatar} />
+          <p>{data?.created_by_info?.name}</p>
         </Flex>
         <Flex align="center" gap={8}>
           <p>Ngày tạo:</p>

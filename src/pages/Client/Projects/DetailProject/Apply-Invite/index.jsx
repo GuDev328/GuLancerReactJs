@@ -82,11 +82,11 @@ const ApplyInviteManagement = ({ projectId }) => {
         return (
           <div className="flex items-center">
             <img
-              src={record.user_info[0].avatar}
+              src={record.user_info.avatar}
               alt="avatar"
               className="w-10 h-10 rounded-full"
             />
-            <p className="ml-2">{record.user_info[0].name}</p>
+            <p className="ml-2">{record.user_info.name}</p>
           </div>
         );
       },
@@ -96,7 +96,7 @@ const ApplyInviteManagement = ({ projectId }) => {
       dataIndex: "email",
       key: "email",
       render: (text, record) => {
-        return <p>{record.user_info[0].email}</p>;
+        return <p>{record.user_info.email}</p>;
       },
     },
     {
@@ -188,32 +188,32 @@ const ApplyInviteManagement = ({ projectId }) => {
             <div className="w-[45px]">
               <Avatar
                 className=""
-                src={selectedApply?.user_info[0]?.avatar}
+                src={selectedApply?.user_info?.avatar}
                 size={45}
               />
             </div>
             <div className="">
               <div className="flex">
                 <p className="ml-1 text-[16px] font-medium mr-2">
-                  {selectedApply?.user_info[0]?.name}
+                  {selectedApply?.user_info?.name}
                 </p>
                 <p className="text-gray-600 text-[14px] font-medium">
-                  @{selectedApply?.user_info[0]?.username}
+                  @{selectedApply?.user_info?.username}
                 </p>
               </div>
               <div className="flex items-center">
                 <p className="bg-[#ffb800] px-1 text-[14px] rounded-lg text-white">
-                  {selectedApply?.user_info[0]?.star}
+                  {selectedApply?.user_info?.star}
                 </p>
 
                 <Rate
                   className="text-[14px]"
                   disabled
-                  defaultValue={selectedApply?.user_info[0]?.star}
+                  defaultValue={selectedApply?.user_info?.star}
                 />
                 <p className="ml-1 text-[13px] text-main">120 đánh giá</p>
                 <p className="  ml-1 text-[13px] text-main">
-                  {selectedApply?.user_info[0]?.project_done} dự án đã hoàn
+                  {selectedApply?.user_info?.project_done} dự án đã hoàn
                   thành
                 </p>
               </div>
@@ -226,7 +226,7 @@ const ApplyInviteManagement = ({ projectId }) => {
           </div>
           <div className="flex">
             <p className="font-medium mr-2 ">Email: </p>
-            <p>{selectedApply?.user_info[0].email}</p>
+            <p>{selectedApply?.user_info.email}</p>
           </div>
 
           <p className="font-medium">{isInvite ? "Lời mời" : "Nội dung ứng tuyển"}: </p>

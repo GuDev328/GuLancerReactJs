@@ -50,11 +50,11 @@ export default function EscrowModal({ data, open, onCancel, onConfirm }) {
         <div className="flex items-center">
           <span>Ký quỹ cho:</span>
           <Image
-            src={data.user_info[0].avatar}
+            src={data.user_info.avatar}
             width={40}
             className=" rounded-full"
           />
-          <div>{data.user_info[0].name}</div>
+          <div>{data.user_info.name}</div>
         </div>
         <div>
           Giai đoạn {data.currentPhase.no}/ {data.milestone_info.length}

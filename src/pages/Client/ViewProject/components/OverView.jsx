@@ -44,23 +44,23 @@ const OverviewProject = ({ detailProject }) => {
           <Avatar
             size={43}
             className="bg-main"
-            src={detailProject?.admin_info[0]?.avatar}
+            src={detailProject?.admin_info?.avatar}
           />
         </div>
         <div className=" leading-none ml-1 mt-[13px]">
           <div className=" flex items-end flex-wrap">
-            <p className="mr-1">{detailProject?.admin_info[0]?.name}</p>
+            <p className="mr-1">{detailProject?.admin_info?.name}</p>
             <div className="flex items-center">
               <i className=" fa-solid fa-star" style={{ color: "#FFB800" }}></i>
-              <p>{detailProject?.admin_info[0]?.star}/5.0</p>
+              <p>{detailProject?.admin_info?.star}/5.0</p>
             </div>
             <p className="  inline-block ml-1 text-[13px] text-gray-500">
-              Với {detailProject?.admin_info[0]?.project_done} dự án đã hoàn
+              Với {detailProject?.admin_info?.project_done} dự án đã hoàn
               thành
             </p>
           </div>
           {renderUserVerifyStatus(
-            detailProject?.admin_info[0].verified_info.status
+            detailProject?.admin_info.verified_info.status
           )}
         </div>
       </div>

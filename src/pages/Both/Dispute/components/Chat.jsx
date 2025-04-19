@@ -138,14 +138,14 @@ export default function Chat() {
                     <div className="w-1/2 flex ">
                       <div className="mr-1">
                         <Avatar
-                          src={message?.sender_info[0]?.avatar}
+                          src={message?.sender_info?.avatar}
                           size={40}
                         />
                       </div>
 
                       <div>
                         <div className="text-sm text-blue-gray-500">
-                          {message?.sender_info[0]?.name}
+                          {message?.sender_info?.name}
                         </div>
                         <div className="bg-blue-500 flex flex-col text-white block p-2 rounded-md float-start">
                           {message.medias.length > 0 && (

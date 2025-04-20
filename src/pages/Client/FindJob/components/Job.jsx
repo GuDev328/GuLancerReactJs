@@ -30,7 +30,7 @@ const Job = ({ data }) => {
         </div>
         <div className="flex flex-col ml-10 items-end leading-none">
           <div className="text-main font-bold text-[20px]">
-            {formatCurrency(data?.salary)}
+            {formatCurrency(data?.recruitmentInfo?.salary)}
           </div>
           <div className="text-gray-500    text-[14px]">
             {data?.salaryType === 0 ? "Trả theo dự án" : "Trả theo giờ"}
@@ -74,7 +74,7 @@ const Job = ({ data }) => {
                   className=" fa-solid fa-star"
                   style={{ color: "#FFB800" }}
                 ></i>
-                <p>{data?.user?.star.$numberDecimal }/5.0</p>
+                <p>{data?.user?.star.$numberDecimal}/5.0</p>
                 <p className=" hidden sm:inline-block ml-1 text-[13px] text-gray-500">
                   Với {data?.user?.project_done} dự án đã hoàn thành
                 </p>

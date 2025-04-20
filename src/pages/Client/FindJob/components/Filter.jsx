@@ -9,7 +9,7 @@ const salaryType = [
   { label: "Trả lương theo dự án", value: 0 },
   { label: "Tất cả", value: null },
 ];
-const Filter = ({ setDataSearch }) => {
+const Filter = ({ setDataSearch, dataSearch }) => {
   const [showMoreTech, setShowMoreTech] = useState(false);
   const [showMoreField, setShowMoreField] = useState(false);
   const [optionsFields, setOptionsFields] = useState([]);
@@ -64,6 +64,7 @@ const Filter = ({ setDataSearch }) => {
         <p className="text-[23px] font-bold">Kiểu dự án</p>
         <div className="ml-3">
           <Radio.Group
+            value={dataSearch.salaryType}
             options={salaryType}
             onChange={onChangeSalaryType}
           ></Radio.Group>
@@ -73,6 +74,7 @@ const Filter = ({ setDataSearch }) => {
         <p className="text-[23px] font-bold">Lĩnh vực</p>
         <div className="ml-3">
           <Checkbox.Group
+            value={dataSearch.fields}
             options={optionsFields.slice(
               0,
               showMoreField ? optionsFields.length : 5
@@ -93,6 +95,7 @@ const Filter = ({ setDataSearch }) => {
         <p className="text-[23px] font-bold">Công nghệ</p>
         <div className="ml-3">
           <Checkbox.Group
+            value={dataSearch.technologies}
             className="flex flex-col"
             options={optionsTechs.slice(
               0,
@@ -116,14 +119,14 @@ const Filter = ({ setDataSearch }) => {
           <div className="flex items-center mb-2 ">
             <p className=" block w-[38px]">Từ: </p>
             <Input
-              value={salaryFrom}
+              value={salaryFrom || dataSearch.salaryFrom}
               onChange={(a) => setSalaryFrom(a.target.value)}
             />
           </div>
           <div className="flex items-center">
             <p className="w-[38px] block">Đến: </p>
             <Input
-              value={salaryTo}
+              value={salaryTo || dataSearch.salaryTo}
               onChange={(a) => setSalaryTo(a.target.value)}
             />
           </div>
@@ -144,6 +147,7 @@ const Filter = ({ setDataSearch }) => {
 
 Filter.propTypes = {
   setDataSearch: PropTypes.func.isRequired,
+  dataSearch: PropTypes.object.isRequired,
 };
 
 export default Filter;

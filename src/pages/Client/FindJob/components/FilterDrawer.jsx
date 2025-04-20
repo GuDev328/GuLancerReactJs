@@ -12,7 +12,7 @@ const salaryType = [
   { label: "Tất cả", value: null },
 ];
 
-const FilterDrawer = ({ open, setOpen, setDataSearch }) => {
+const FilterDrawer = ({ open, setOpen, setDataSearch, dataSearch }) => {
   const [showMoreTech, setShowMoreTech] = useState(false);
   const [showMoreField, setShowMoreField] = useState(false);
   const [optionsFields, setOptionsFields] = useState([]);
@@ -70,6 +70,7 @@ const FilterDrawer = ({ open, setOpen, setDataSearch }) => {
             <p className="text-[23px] font-bold">Kiểu dự án</p>
             <div className="ml-3">
               <Radio.Group
+                value={dataSearch.salaryType}
                 className="flex flex-col"
                 options={salaryType}
                 onChange={onChangeSalaryType}
@@ -80,6 +81,7 @@ const FilterDrawer = ({ open, setOpen, setDataSearch }) => {
             <p className="text-[23px] font-bold">Lĩnh vực</p>
             <div className="ml-3">
               <Checkbox.Group
+                value={dataSearch.fields}
                 options={optionsFields.slice(
                   0,
                   showMoreField ? optionsFields.length : 5
@@ -100,6 +102,7 @@ const FilterDrawer = ({ open, setOpen, setDataSearch }) => {
             <p className="text-[23px] font-bold">Công nghệ</p>
             <div className="ml-3">
               <Checkbox.Group
+                value={dataSearch.technologies}
                 className="flex flex-col"
                 options={optionsTechs.slice(
                   0,
@@ -123,14 +126,14 @@ const FilterDrawer = ({ open, setOpen, setDataSearch }) => {
               <div className="flex items-center mb-2">
                 <p className=" block w-[38px]">Từ: </p>
                 <Input
-                  value={salaryFrom}
+                  value={salaryFrom || dataSearch.salaryFrom}
                   onChange={(a) => setSalaryFrom(a.target.value)}
                 />
               </div>
               <div className="flex items-center">
                 <p className="w-[38px] block">Đến: </p>
                 <Input
-                  value={salaryTo}
+                  value={salaryTo || dataSearch.salaryTo}
                   onChange={(a) => setSalaryTo(a.target.value)}
                 />
               </div>
@@ -155,6 +158,7 @@ FilterDrawer.propTypes = {
   open: PropTypes.bool.isRequired,
   setOpen: PropTypes.func.isRequired,
   setDataSearch: PropTypes.func.isRequired,
+  dataSearch: PropTypes.object.isRequired,
 };
 
 export default FilterDrawer;

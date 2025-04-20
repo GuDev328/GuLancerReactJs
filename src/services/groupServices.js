@@ -31,7 +31,12 @@ class GroupServices {
     });
     return response.data;
   }
-  
+
+  async leaveGroup(id) {
+    const response = await axiosIns.put(`/groups/leave-group/${id}`);
+    return response;
+  }
+
   async joinGroup(groupId) {
     const response = await axiosIns.post(`/groups/join-group`, {
       group_id: groupId,

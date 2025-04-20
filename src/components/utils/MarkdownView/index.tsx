@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import PropTypes from "prop-types";
 
-const MarkdownView = ({ data }) => {
+const MarkdownView = ({ isPart =false,data }) => {
     const [height, setHeight] = useState("auto");
     const updateHeight = () => {
         const editor = document.querySelector(".wmde-markdown");
@@ -12,7 +12,8 @@ const MarkdownView = ({ data }) => {
     };
 
     useEffect(() => {
-        updateHeight();
+        if (!isPart) updateHeight();
+        else setHeight("100%")
     }, [data]);
     return (
         <MDEditor

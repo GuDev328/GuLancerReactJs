@@ -43,11 +43,12 @@ function FindJob() {
     <>
       <Banner setDataSearch={setDataSearch} />
       <div className="flex">
-        <Filter setDataSearch={setDataSearch} />
+        <Filter setDataSearch={setDataSearch} dataSearch={dataSearch} />
         <Jobs
           pageData={pageData}
           pageInfo={pageInfo}
           setDataSearch={setDataSearch}
+          dataSearch={dataSearch}
         />
       </div>
     </>

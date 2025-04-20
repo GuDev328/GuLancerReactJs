@@ -4,7 +4,9 @@ import projectServices from "@/services/projectServices";
 const { Title } = Typography;
 import { Button } from "@material-tailwind/react";
 import PropTypes from "prop-types";
-const Filter = ({ setDataSearch }) => {
+import { UserVerifyStatus } from "../../../../constant/user";
+import { Radio } from "antd";
+const Filter = ({ setDataSearch, dataSearch }) => {
   const [showMoreTech, setShowMoreTech] = useState(false);
   const [showMoreField, setShowMoreField] = useState(false);
   const [optionsFields, setOptionsFields] = useState([]);
@@ -36,7 +38,9 @@ const Filter = ({ setDataSearch }) => {
   const handleOnChangeTechs = (list) => {
     setDataSearch((pre) => ({ ...pre, technologies: list }));
   };
-
+  const handleOnChangeVerified = (e) => {
+    setDataSearch((pre) => ({ ...pre, verified: e.target.value }));
+  };
   const handleFilterSalary = () => {
     setDataSearch((pre) => ({
       ...pre,
@@ -55,25 +59,24 @@ const Filter = ({ setDataSearch }) => {
       <div className="rounded-3xl bg-white min-w-[230px] w-[15%] my-3 p-5">
         <p className="text-[23px] font-bold">Xác thực</p>
         <div className="ml-3">
-          <Checkbox>Tất cả</Checkbox>
-          <br />
-          <Checkbox>Đã xác thực</Checkbox>
-          <Checkbox>Chưa xác thực</Checkbox>
+          <Radio.Group
+            value={dataSearch.verified}
+            options={[
+              { label: "Tất cả", value: undefined },
+              { label: "Đã xác thực", value: UserVerifyStatus.Approved },
+              { label: "Chưa xác thực", value: UserVerifyStatus.Unverified },
+            ]}
+            className="flex flex-col"
+            onChange={handleOnChangeVerified}
+          />
         </div>
       </div>
-      <div className="rounded-3xl bg-white min-w-[230px] w-[15%] my-3 p-5">
-        <p className="text-[23px] font-bold">Trạng thái</p>
-        <div className="ml-3">
-          <Checkbox>Tất cả</Checkbox>
-          <br />
-          <Checkbox>Đang Online</Checkbox>
-          <Checkbox>Đang Offline</Checkbox>
-        </div>
-      </div>
+
       <div className="rounded-3xl bg-white min-w-[230px] w-[15%] my-3 p-5">
         <p className="text-[23px] font-bold">Lĩnh vực</p>
         <div className="ml-3">
           <Checkbox.Group
+            value={dataSearch.fields}
             options={optionsFields.slice(
               0,
               showMoreField ? optionsFields.length : 5
@@ -95,6 +98,7 @@ const Filter = ({ setDataSearch }) => {
         <div className="ml-3">
           <Checkbox.Group
             className="flex flex-col"
+            value={dataSearch.technologies}
             options={optionsTechs.slice(
               0,
               showMoreTech ? optionsTechs.length : 5
@@ -117,14 +121,14 @@ const Filter = ({ setDataSearch }) => {
           <div className="flex items-center mb-2 ">
             <p className=" block w-[38px]">Từ: </p>
             <Input
-              value={salaryFrom}
+              value={salaryFrom || dataSearch.salaryFrom}
               onChange={(a) => setSalaryFrom(a.target.value)}
             />
           </div>
           <div className="flex items-center">
             <p className="w-[38px] block">Đến: </p>
             <Input
-              value={salaryTo}
+              value={salaryTo || dataSearch.salaryTo}
               onChange={(a) => setSalaryTo(a.target.value)}
             />
           </div>
@@ -145,6 +149,7 @@ const Filter = ({ setDataSearch }) => {
 
 Filter.propTypes = {
   setDataSearch: PropTypes.func,
+  dataSearch: PropTypes.any,
 };
 
 export default Filter;

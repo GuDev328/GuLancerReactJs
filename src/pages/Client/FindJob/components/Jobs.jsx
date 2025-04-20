@@ -14,7 +14,7 @@ const orderByOptions = [
   { label: "Theo số dự án hoàn thành người tuyển dụng", value: 3 },
 ];
 
-const Jobs = ({ pageData, pageInfo, setDataSearch }) => {
+const Jobs = ({ pageData, pageInfo, setDataSearch, dataSearch }) => {
   const [openFilterDrawer, setOpenFilterDrawer] = React.useState(false);
   const isMobile = useSelector((state) => state.screen.isMobile);
 
@@ -76,6 +76,7 @@ const Jobs = ({ pageData, pageInfo, setDataSearch }) => {
         open={openFilterDrawer}
         setOpen={setOpenFilterDrawer}
         setDataSearch={setDataSearch}
+        dataSearch={dataSearch}
       />
     </div>
   );
@@ -84,5 +85,6 @@ Jobs.propTypes = {
   pageData: PropTypes.array.isRequired,
   pageInfo: PropTypes.object.isRequired,
   setDataSearch: PropTypes.func.isRequired,
+  dataSearch: PropTypes.object.isRequired,
 };
 export default Jobs;

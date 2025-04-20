@@ -7,6 +7,10 @@ import { useNavigate } from "react-router-dom";
 import { GroupType } from "../../../../constant/group";
 import { formatNumber } from "@/utils/common";
 import { isPending } from "@reduxjs/toolkit";
+import { showConfirmModal } from "../../../../components/core/MyModal";
+import { message } from "antd";
+import { Modal } from "antd";
+import DotMenuDropdown from "../../../../components/core/DotMenuDropdown";
 const MyGroups = () => {
   const getGroups = useQuery({
     queryKey: ["getListGroup"],
@@ -62,12 +66,44 @@ const MyGroups = () => {
                     <Button variant="outlined" className="w-[80%] " size="sm">
                       Đang xét duyệt
                     </Button>
-                    <Button
-                      className=" text-main bg-white border border-main"
-                      size="sm"
-                    >
-                      <i className="fa-solid fa-ellipsis-stroke-vertical"></i>
-                    </Button>
+                    <DotMenuDropdown
+                      items={[
+                        {
+                          label: (
+                            <div className="text-red-500">
+                              <i className="fa-solid fa-xmark-large"></i> Huỷ
+                              yêu cầu
+                            </div>
+                          ),
+                          onClick: () => {
+                            showConfirmModal({
+                              title: "Xác nhận",
+                              content:
+                                "Bạn có chắc chắn muốn rời cộng đồng này?",
+                              onOk: async () => {
+                                const res = await groupServices.leaveGroup(
+                                  group._id
+                                );
+                                if (res) {
+                                  message.success(res.data.message);
+                                  getGroups.refetch();
+                                  Modal.destroyAll();
+                                }
+                              },
+                            });
+                          },
+                        },
+                        {
+                          label: (
+                            <div className="text-main">
+                              <i className="fa-solid fa-flag-swallowtail"></i>{" "}
+                              Báo cáo cộng đồng
+                            </div>
+                          ),
+                          onClick: () => {},
+                        },
+                      ]}
+                    />
                   </div>
                 </div>
               );
@@ -124,12 +160,35 @@ const MyGroups = () => {
                       >
                         Xem nhóm
                       </Button>
-                      <Button
-                        className=" text-main bg-white border border-main"
-                        size="sm"
-                      >
-                        <i className="fa-solid fa-ellipsis-stroke-vertical"></i>
-                      </Button>
+                      <DotMenuDropdown
+                        items={[
+                          {
+                            label: (
+                              <div className="text-red-500">
+                                <i className="fa-regular fa-trash-xmark"></i>{" "}
+                                Xoá cộng đồng
+                              </div>
+                            ),
+                            onClick: () => {
+                              showConfirmModal({
+                                title: "Xác nhận",
+                                content:
+                                  "Bạn có chắc chắn muốn xoá cộng đồng này?",
+                                onOk: async () => {
+                                  const res = await groupServices.deleteGroup(
+                                    group._id
+                                  );
+                                  if (res) {
+                                    message.success(res.data.message);
+                                    getGroups.refetch();
+                                    Modal.destroyAll();
+                                  }
+                                },
+                              });
+                            },
+                          },
+                        ]}
+                      />
                     </div>
                   </div>
                 );
@@ -184,12 +243,44 @@ const MyGroups = () => {
                     >
                       Xem nhóm
                     </Button>
-                    <Button
-                      className=" text-main bg-white border border-main"
-                      size="sm"
-                    >
-                      <i className="fa-solid fa-ellipsis-stroke-vertical"></i>
-                    </Button>
+                    <DotMenuDropdown
+                      items={[
+                        {
+                          label: (
+                            <div className="text-red-500">
+                              <i className="fa-solid  fa-right-from-bracket"></i>{" "}
+                              Rời nhóm
+                            </div>
+                          ),
+                          onClick: () => {
+                            showConfirmModal({
+                              title: "Xác nhận",
+                              content:
+                                "Bạn có chắc chắn muốn rời cộng đồng này?",
+                              onOk: async () => {
+                                const res = await groupServices.leaveGroup(
+                                  group._id
+                                );
+                                if (res) {
+                                  message.success(res.data.message);
+                                  getGroups.refetch();
+                                  Modal.destroyAll();
+                                }
+                              },
+                            });
+                          },
+                        },
+                        {
+                          label: (
+                            <div className="text-main">
+                              <i className="fa-solid fa-flag-swallowtail"></i>{" "}
+                              Báo cáo cộng đồng
+                            </div>
+                          ),
+                          onClick: () => {},
+                        },
+                      ]}
+                    />
                   </div>
                 </div>
               );

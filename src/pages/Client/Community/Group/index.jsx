@@ -8,9 +8,12 @@ import { data } from "jquery";
 import { useSelector } from "react-redux";
 import CreatePostModal from "./CreatePostModal";
 import PostsGroup from "./GroupPosts";
-import DotMenuDropdown from './../../../../components/core/DotMenuDropdown';
+import DotMenuDropdown from "./../../../../components/core/DotMenuDropdown";
 import { Tooltip } from "antd";
 import { useNavigate } from "react-router-dom";
+import { Modal } from "antd";
+import { message } from "antd";
+import { showConfirmModal } from "../../../../components/core/MyModal";
 
 const Group = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
@@ -33,21 +36,63 @@ const Group = () => {
         />
         <div className="absolute w-full flex justify-between items-center py-2 pl-4 text-white  rounded-bl-xl rounded-br-xl bg-main bottom-0">
           <div>
-
-          <p className="font-bold text-[22px] ">{detaiGroup?.name}</p>
-          {detaiGroup?.type === 0 ? (
-            <p className=" ml-2 text-[14px]">
-              <i className="fad fa-globe-asia"></i> Nhóm công khai
-            </p>
-          ) : (
-            <p className=" ml-2 text-[14px]">
-              <i className="fad fa-lock-alt"></i> Nhóm riêng tư
-            </p>
-          )}
+            <p className="font-bold text-[22px] ">{detaiGroup?.name}</p>
+            {detaiGroup?.type === 0 ? (
+              <p className=" ml-2 text-[14px]">
+                <i className="fad fa-globe-asia"></i> Nhóm công khai
+              </p>
+            ) : (
+              <p className=" ml-2 text-[14px]">
+                <i className="fad fa-lock-alt"></i> Nhóm riêng tư
+              </p>
+            )}
           </div>
           <div className="mr-3">
-            {isAdmin && <Tooltip title="Quản lý" className="cursor-pointer"><i onClick={() => navigate(`/community/setting-group/${id}`)} className="fa-solid mr-2 fa-bars-progress"></i></Tooltip>}
-            {!isAdmin &&<DotMenuDropdown items={[]}/>}
+            {isAdmin && (
+              <Tooltip title="Quản lý" className="cursor-pointer">
+                <i
+                  onClick={() => navigate(`/community/setting-group/${id}`)}
+                  className="fa-solid mr-2 fa-bars-progress"
+                ></i>
+              </Tooltip>
+            )}
+            {!isAdmin && (
+              <DotMenuDropdown
+                items={[
+                  {
+                    label: (
+                      <div className="text-red-500">
+                        <i className="fa-solid  fa-right-from-bracket"></i> Rời
+                        nhóm
+                      </div>
+                    ),
+                    onClick: () => {
+                      showConfirmModal({
+                        title: "Xác nhận",
+                        content: "Bạn có chắc chắn muốn rời cộng đồng này?",
+                        onOk: async () => {
+                          const res = await groupServices.leaveGroup(id);
+                          if (res) {
+                            message.success(res.data.message);
+                            navigate(`/community/my-groups`);
+                            Modal.destroyAll();
+                          }
+                        },
+                      });
+                    },
+                  },
+                  {
+                    label: (
+                      <div className="text-main">
+                        <i className="fa-solid fa-flag-swallowtail"></i> Báo cáo
+                        cộng đồng
+                      </div>
+                    ),
+                    onClick: () => {},
+                  },
+                ]}
+              />
+            )}
           </div>
         </div>
       </div>

@@ -18,6 +18,7 @@ function FindFreelancer(props) {
     orderBy: 0,
     page: 1,
     limit: 10,
+    verified: undefined,
   });
   const [pageInfo, setPageInfo] = React.useState({
     page: 1,
@@ -45,7 +46,7 @@ function FindFreelancer(props) {
   }, [dataSearch]);
   return (
     <div className="flex justify-around">
-      <Filter setDataSearch={setDataSearch} />
+      <Filter setDataSearch={setDataSearch} dataSearch={dataSearch} />
       <div
         className=""
         style={{ width: isMobile ? "95%" : "calc(95% - 294px)" }}
@@ -80,6 +81,7 @@ function FindFreelancer(props) {
           pageInfo={pageInfo}
           setDataSearch={setDataSearch}
           setPageInfo={setPageInfo}
+          dataSearch={dataSearch}
         />
       </div>
     </div>

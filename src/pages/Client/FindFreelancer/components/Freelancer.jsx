@@ -7,6 +7,7 @@ import MarkdownView from "@/components/utils/MarkdownView";
 import UserName from "@/components/business/UserName";
 import { UserVerifyStatus } from "../../../../constant/user";
 import { renderUserVerifyStatus } from "../../../../utils/render";
+import { formatCurrency } from "@/utils/common";
 const Freelancer = ({ data }) => {
   //const isMobile = useSelector((state) => state.screen.isMobile);
   return (
@@ -22,7 +23,11 @@ const Freelancer = ({ data }) => {
               {data.star.$numberDecimal}
             </p>
 
-            <Rate className="text-[18px]" disabled value={data?.star.$numberDecimal} />
+            <Rate
+              className="text-[18px]"
+              disabled
+              value={data?.star.$numberDecimal}
+            />
             <p className="ml-1 text-[13px] text-main">120 đánh giá</p>
             <p className="  ml-1 text-[13px] text-main">
               {data.project_done} dự án đã hoàn thành
@@ -40,18 +45,15 @@ const Freelancer = ({ data }) => {
           </p>
         </div>
       </div>
-      <div className="hidden self-center xl:block lg:w-[40%] max-h-[130px] overflow-hidden text-ellipsis">
-        <MarkdownView data={data.description} />
+      <div className="hidden  xl:block lg:w-[40%]  ">
+        <MarkdownView isPart={true} data={data.description} />
       </div>
       <div className=" hidden xl:flex w-[150px]  flex-col items-end">
         <Button size="sm" className="bg-main">
           <i className="text-[18px] mr-1 far fa-comment-alt-lines"></i>
           Liên hệ ngay
         </Button>
-        <p className="text-gray-600">500,000đ 1 giờ</p>
-        <p className="pl-8 mt-4 text-[15px] text-gray-600">
-          8 dự án trung bình hoàn thành mỗi tháng
-        </p>
+        <p className="text-gray-600">{formatCurrency(data.salary)}/ giờ</p>
       </div>
       <Button
         size="sm"

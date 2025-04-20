@@ -1,124 +1,162 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Drawer } from "antd";
-import { Checkbox, Button, Typography, Form, Input } from "antd";
+import { Checkbox, Input } from "antd";
 import PropTypes from "prop-types";
-import Filter from "./Filter";
-const techs = [
-    "HTML, CSS, JavaScript",
-    "Node.js",
-    "React.js",
-    "Java",
-    "Node.js",
-    "Python",
-    "Golang",
-    // Thêm các mục khác ở đây
-];
+import projectServices from "@/services/projectServices";
+import MyButton from "./../../../../components/core/MyButton";
+import { Radio } from "antd";
+import { UserVerifyStatus } from "../../../../constant/user";
 
-const fields = [
-    "Xây dựng ứng dụng",
-    "Xây dựng website",
-    "Thiết kế",
-    "Trí tuệ nhân tạo",
-    "Quản lý tài khoản",
-    "Trí tuệ nhân tạo",
-    "Quản lý tài khoản",
-];
-const FilterDrawer = ({ open, setOpen }) => {
-    const [showMoreTech, setShowMoreTech] = React.useState(false);
-    const [showMoreField, setShowMoreField] = React.useState(false);
-    const handleShowMoreTech = () => {
-        setShowMoreTech(!showMoreTech);
-    };
-    const handleShowMoreFiled = () => {
-        setShowMoreField(!showMoreField);
-    };
-    const closeDrawer = () => setOpen(false);
-    return (
-        <div>
-            <Drawer title="Bộ Lọc" onClose={closeDrawer} open={open}>
-                <div className="">
-                    <div className="rounded-3xl bg-white  p-2">
-                        <p className="text-[23px] font-bold">Xác thực</p>
-                        <div className="ml-3">
-                            <Checkbox>Tất cả</Checkbox>
-                            <br />
-                            <Checkbox>Đã xác thực</Checkbox>
-                            <br />
-                            <Checkbox>Chưa xác thực</Checkbox>
-                        </div>
-                    </div>
-                    <div className="rounded-3xl bg-white  p-2">
-                        <p className="text-[23px] font-bold">Trạng thái</p>
-                        <div className="ml-3">
-                            <Checkbox>Tất cả</Checkbox>
-                            <br />
-                            <Checkbox>Đang Online</Checkbox> <br />
-                            <Checkbox>Đang Offline</Checkbox>
-                        </div>
-                    </div>
-                    <div className="rounded-3xl bg-white min-w-[230px] w-[15%]  p-2">
-                        <p className="text-[23px] font-bold">Lĩnh vực</p>
-                        <div className="ml-3">
-                            {fields
-                                .slice(0, showMoreField ? fields.length : 5)
-                                .map((item, index) => (
-                                    <>
-                                        <Checkbox key={index}>{item}</Checkbox>
-                                        <br />
-                                    </>
-                                ))}
-                            <Button
-                                onClick={handleShowMoreFiled}
-                                type="link"
-                                style={{ marginTop: 8 }}
-                            >
-                                {showMoreField ? "Thu gọn" : "Xem thêm"}
-                            </Button>
-                        </div>
-                    </div>
-
-                    <div className="rounded-3xl bg-white min-w-[230px] w-[15%]  p-2">
-                        <p className="text-[23px] font-bold">Công nghệ</p>
-                        <div className="ml-3">
-                            {techs
-                                .slice(0, showMoreTech ? techs.length : 5)
-                                .map((item, index) => (
-                                    <>
-                                        <Checkbox key={index}>{item}</Checkbox>
-                                        <br />
-                                    </>
-                                ))}
-                            <Button
-                                onClick={handleShowMoreTech}
-                                type="link"
-                                style={{ marginTop: 8 }}
-                            >
-                                {showMoreTech ? "Thu gọn" : "Xem thêm"}
-                            </Button>
-                        </div>
-                    </div>
-                    <div className="rounded-3xl bg-white min-w-[230px] w-[15%]  p-2">
-                        <p className="text-[23px] font-bold">Mức lương</p>
-                        <div className="ml-3">
-                            <div className="flex items-center mb-2">
-                                <p className=" block w-[38px]">Từ: </p>
-                                <Input />
-                            </div>
-                            <div className="flex items-center">
-                                <p className="w-[38px] block">Đến: </p>
-                                <Input />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </Drawer>
-        </div>
+const FilterDrawer = ({ open, setOpen, setDataSearch, dataSearch }) => {
+  const [showMoreTech, setShowMoreTech] = useState(false);
+  const [showMoreField, setShowMoreField] = useState(false);
+  const [optionsFields, setOptionsFields] = useState([]);
+  const [optionsTechs, setOptionsTechs] = useState([]);
+  const [salaryFrom, setSalaryFrom] = useState(null);
+  const [salaryTo, setSalaryTo] = useState(null);
+  const fetchOptions = async () => {
+    const resFields = await projectServices.getAllFields();
+    const resTechs = await projectServices.getAllTechs();
+    setOptionsFields(
+      resFields.result.map((item) => ({
+        label: item.name,
+        value: item._id,
+      }))
     );
+    setOptionsTechs(
+      resTechs.result.map((item) => ({
+        label: item.name,
+        value: item._id,
+      }))
+    );
+  };
+  useEffect(() => {
+    fetchOptions();
+  }, []);
+  const handleOnChangeFields = (list) => {
+    setDataSearch((pre) => ({ ...pre, fields: list }));
+  };
+  const handleOnChangeTechs = (list) => {
+    setDataSearch((pre) => ({ ...pre, technologies: list }));
+  };
+
+  const handleFilterSalary = () => {
+    setDataSearch((pre) => ({
+      ...pre,
+      salaryFrom: salaryFrom ? Number(salaryFrom) : null,
+      salaryTo: salaryTo ? Number(salaryTo) : null,
+    }));
+  };
+  const handleShowMoreTech = () => {
+    setShowMoreTech(!showMoreTech);
+  };
+  const handleShowMoreFiled = () => {
+    setShowMoreField(!showMoreField);
+  };
+  const handleOnChangeVerified = (e) => {
+    setDataSearch((pre) => ({ ...pre, verified: e.target.value }));
+  };
+  const closeDrawer = () => setOpen(false);
+  return (
+    <div>
+      <Drawer title="Bộ Lọc" onClose={closeDrawer} open={open}>
+        <div className="hidden md:block   w-[230px]">
+          <div className="rounded-3xl bg-white min-w-[230px] w-[15%]  ">
+            <p className="text-[23px] font-bold">Xác thực</p>
+            <Radio.Group
+              value={dataSearch.verified}
+              options={[
+                { label: "Tất cả", value: undefined },
+                { label: "Đã xác thực", value: UserVerifyStatus.Approved },
+                { label: "Chưa xác thực", value: UserVerifyStatus.Unverified },
+              ]}
+              className="flex flex-col"
+              onChange={handleOnChangeVerified}
+            />
+          </div>
+
+          <div className="rounded-3xl bg-white min-w-[230px] w-[15%] ">
+            <p className="text-[23px] font-bold">Lĩnh vực</p>
+            <div className="ml-3">
+              <Checkbox.Group
+                value={dataSearch.fields}
+                options={optionsFields.slice(
+                  0,
+                  showMoreField ? optionsFields.length : 5
+                )}
+                className="flex flex-col"
+                onChange={handleOnChangeFields}
+              />
+              <a
+                onClick={handleShowMoreFiled}
+                className="text-[15px] mt-[8px] cursor-pointer"
+              >
+                {showMoreField ? "Thu gọn" : "Xem thêm"}
+              </a>
+            </div>
+          </div>
+
+          <div className="rounded-3xl bg-white min-w-[230px] w-[15%] ">
+            <p className="text-[23px] font-bold">Công nghệ</p>
+            <div className="ml-3">
+              <Checkbox.Group
+                value={dataSearch.technologies}
+                className="flex flex-col"
+                options={optionsTechs.slice(
+                  0,
+                  showMoreTech ? optionsTechs.length : 5
+                )}
+                onChange={handleOnChangeTechs}
+              />
+
+              <a
+                onClick={handleShowMoreTech}
+                type="link"
+                className="text-[15px] mt-[8px] cursor-pointer"
+              >
+                {showMoreTech ? "Thu gọn" : "Xem thêm"}
+              </a>
+            </div>
+          </div>
+          <div className="rounded-3xl bg-white min-w-[230px] w-[15%] ">
+            <p className="text-[23px] font-bold">Mức lương</p>
+            <div className="ml-3 text-[14px]">
+              <div className="flex items-center mb-2 ">
+                <p className=" block w-[38px]">Từ: </p>
+                <Input
+                  value={salaryFrom || dataSearch.salaryFrom}
+                  onChange={(a) => setSalaryFrom(a.target.value)}
+                />
+              </div>
+              <div className="flex items-center">
+                <p className="w-[38px] block">Đến: </p>
+                <Input
+                  value={salaryTo || dataSearch.salaryTo}
+                  onChange={(a) => setSalaryTo(a.target.value)}
+                />
+              </div>
+              <div className="pb-6">
+                <MyButton
+                  onClick={handleFilterSalary}
+                  size="sm"
+                  className="bg-main float-right mt-1"
+                >
+                  Lọc
+                </MyButton>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Drawer>
+    </div>
+  );
 };
 
 FilterDrawer.propTypes = {
-    open: PropTypes.bool.isRequired,
-    setOpen: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+  setOpen: PropTypes.func.isRequired,
+  setDataSearch: PropTypes.func.isRequired,
+  dataSearch: PropTypes.any.isRequired,
 };
 
 export default FilterDrawer;

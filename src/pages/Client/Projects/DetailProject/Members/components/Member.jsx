@@ -13,7 +13,7 @@ const Member = ({ member }) => {
             <p className="ml-1 text-[18px] mt-2">{member.name}</p>
             <div className="flex items-center">
               <p className="bg-[#ffb800] px-1 rounded-lg text-white">
-                {member.star}
+                {member.star.$numberDecimal}
               </p>
               <Rate disabled defaultValue={2} />
               <p className="ml-1 text-[13px] text-main">

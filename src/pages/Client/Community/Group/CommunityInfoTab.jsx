@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Input } from 'antd';
 import { Upload } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Select } from 'antd';
 import { useQueryClient, useMutation, useQuery } from '@tanstack/react-query';
 import  groupServices  from '@/services/groupServices';
@@ -12,6 +12,9 @@ import { useEffect } from 'react';
 import { message } from 'antd';
 import { Checkbox } from 'antd';
 import { Radio } from 'antd';
+import { showConfirmModal } from '../../../../components/core/MyModal';
+import { Modal } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 const CommunityInfoTab = () => {
   const [form] = Form.useForm();
@@ -23,7 +26,7 @@ const CommunityInfoTab = () => {
     queryKey: ["getGroupById", id],
     queryFn: async () => await groupServices.getGroupById(id),
   });
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (fetchDetailGroup?.data?.result) {
       form.setFieldsValue({
@@ -83,6 +86,22 @@ const CommunityInfoTab = () => {
   };
   return (
     <div>
+      <div className='flex justify-end'>
+        <MyButton  onClick={() => {
+                showConfirmModal({
+                  title: "Xác nhận",
+                  content: "Bạn có chắc chắn muốn xóa cộng đồng ?",
+                  onOk: async () => {
+                    const res = await groupServices.deleteGroup(id);
+                    if (res) {
+                      message.success(res.data.message);
+                      navigate('/community/my-groups');
+                      Modal.destroyAll();
+                    }
+                  },
+                });
+              }} size="sm" variant="outlined" color="red"  ><i className="fa-regular text-lg fa-trash-xmark"></i> Xoá cộng đồng</MyButton>
+      </div>
       <Form form={form} labelCol={{ span: 3 }}>
         <Form.Item label="Ảnh nền" valuePropName="fileList">
           <Upload

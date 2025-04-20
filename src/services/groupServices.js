@@ -24,11 +24,24 @@ class GroupServices {
     return response.data;
   }
 
+  async handleMember(id, status){
+    const response = await axiosIns.post(`/groups/handle-member`,{
+      id,
+      status,
+    });
+    return response.data;
+  }
+  
   async joinGroup(groupId) {
     const response = await axiosIns.post(`/groups/join-group`, {
       group_id: groupId,
     });
     return response.data;
+  }
+
+  async deleteGroup(id) {
+    const response = await axiosIns.delete(`/groups/${id}`);
+    return response;
   }
 }
 

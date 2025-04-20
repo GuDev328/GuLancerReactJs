@@ -203,13 +203,13 @@ const ApplyInviteManagement = ({ projectId }) => {
               </div>
               <div className="flex items-center">
                 <p className="bg-[#ffb800] px-1 text-[14px] rounded-lg text-white">
-                  {selectedApply?.user_info?.star}
+                  {selectedApply?.user_info?.star.$numberDecimal}
                 </p>
 
                 <Rate
                   className="text-[14px]"
                   disabled
-                  defaultValue={selectedApply?.user_info?.star}
+                  defaultValue={selectedApply?.user_info?.star.$numberDecimal}
                 />
                 <p className="ml-1 text-[13px] text-main">120 đánh giá</p>
                 <p className="  ml-1 text-[13px] text-main">

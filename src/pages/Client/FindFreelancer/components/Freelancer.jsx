@@ -19,10 +19,10 @@ const Freelancer = ({ data }) => {
           <UserName data={data} />
           <div className="flex items-center">
             <p className="bg-[#ffb800] px-1 text-[15px] rounded-lg text-white">
-              {data.star}
+              {data.star.$numberDecimal}
             </p>
 
-            <Rate className="text-[18px]" disabled value={data.star} />
+            <Rate className="text-[18px]" disabled value={data?.star.$numberDecimal} />
             <p className="ml-1 text-[13px] text-main">120 đánh giá</p>
             <p className="  ml-1 text-[13px] text-main">
               {data.project_done} dự án đã hoàn thành

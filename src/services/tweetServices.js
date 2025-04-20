@@ -13,7 +13,14 @@ class TweetServices {
   }
   async getPostsByGroup(data) {
     const response = await axiosIns.get(
-      `tweets/group/${data.group_id}?page=${data.page}&limit=${data.limit}`
+      `tweets/group/${data.group_id}?page=${data.page}&limit=${data.limit}&censor=${true}`
+    );
+    return response.data;
+  }
+
+  async getPostsPendingByGroup(data) {
+    const response = await axiosIns.get(
+      `tweets/group/${data.group_id}?page=${data.page}&limit=${data.limit}&censor=${false}`
     );
     return response.data;
   }
@@ -37,6 +44,14 @@ class TweetServices {
       tweet_id: postId,
     });
     return response.data;
+  }
+  async approve(postId) {
+    const response = await axiosIns.put(`tweets/approve/${postId}`);
+    return response;
+  }
+  async reject(postId) {
+    const response = await axiosIns.put(`tweets/reject/${postId}`);
+    return response;
   }
 }
 

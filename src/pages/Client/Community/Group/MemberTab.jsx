@@ -6,10 +6,15 @@ import { MemberStatus } from '../../../../constant/group';
 import { renderJSXRoleUser } from '../../../../utils/render';
 import { Image } from 'antd';
 import { Rate } from 'antd';
+import { Modal } from 'antd';
+import { showConfirmModal } from '../../../../components/core/MyModal';
+import { useSelector } from 'react-redux';
 
 const MemberTab = () => {
   const {id} =useParams()
+   const userInfo = useSelector((state) => state.user.userInfo);
   const [listMember, setListMember] = useState([]);
+  const [reRender, setReRender] = useState(false);
   const [tableInfo, setTableInfo] = useState({
       page: 1,
       limit: 10,
@@ -26,7 +31,7 @@ const MemberTab = () => {
         setListMember(res);
       };
       fetchListMember();
-    }, [tableInfo]);
+    }, [tableInfo, reRender]);
   
     const handleChangePage = (page, size) => {
       setTableInfo({ ...tableInfo, page, limit: size });
@@ -50,7 +55,7 @@ const MemberTab = () => {
           <div className="text-left">
             <div>{record.user_info.name}</div>
             <div className="text-gray-500">@{record.user_info.username}</div>
-            <Rate style={{ fontSize: 15 }} value={record.user_info.star.$numberDecimal || record.user_info.star} />
+            <Rate style={{ fontSize: 15 }} value={record.user_info.star.$numberDecimal} />
           </div>
          </div>
         ),
@@ -70,74 +75,33 @@ const MemberTab = () => {
         key: "role",
         render: (text, record) => renderJSXRoleUser(record.user_info.role),
       },
-      // {
-      //   title: "Hành động",
-      //   align: "center",
+      {
+        title: "Hành động",
+        align: "center",
   
-      //   render: (text, record) => (
-      //     <div className="flex justify-center">
-      //       {record.status === UserStatus.Active ? (
-      //         <i className="fa-solid fa-ban text-red-500 cursor-pointer"
-      //        onClick={(e) => {
-      //         e.stopPropagation();
+        render: (text, record) => (
+          record.user_id !== userInfo._id && <div className="flex justify-center">
+            <i className="fa-solid fa-right-from-bracket text-lg text-red-500 cursor-pointer ml-2"
+              onClick={(e) => {
+                e.stopPropagation();
   
-      //         showConfirmModal({
-      //           title: "Xác nhận",
-      //           content: "Bạn có chắc chắn muốn khoá tài khoản này?",
-      //           onOk: async () => {
-      //             const res = await userServices.blockUser(record._id);
-      //             if (res) {
-      //               setReRender(!reRender);
-      //               Modal.destroyAll();
-      //             }
-      //           },
-      //         });
-      //       }}
-      //       >
-  
-      //       </i>
-      //       ) : (
-      //         <i className="fa-solid fa-lock-open text-blue-500 cursor-pointer"
-      //        onClick={(e) => {
-      //         e.stopPropagation();
-  
-      //         showConfirmModal({
-      //           title: "Xác nhận",
-      //           content: "Bạn có chắc chắn muốn mở khoá tài khoản này?",
-      //           onOk: async () => {
-      //             const res = await userServices.unblockUser(record._id);
-      //             if (res) {
-      //               setReRender(!reRender);
-      //               Modal.destroyAll();
-      //             }
-      //           },
-      //         });
-      //       }}
-      //       >
-  
-      //       </i>
-      //       )}
-      //       <DeleteOutlined
-      //         onClick={(e) => {
-      //           e.stopPropagation();
-  
-      //           showConfirmModal({
-      //             title: "Xác nhận",
-      //             content: "Bạn có chắc chắn muốn xóa tài khoản này?",
-      //             onOk: async () => {
-      //               const res = await userServices.deleteUser(record._id);
-      //               if (res) {
-      //                 setReRender(!reRender);
-      //                 Modal.destroyAll();
-      //               }
-      //             },
-      //           });
-      //         }}
-      //         className="text-red-500 cursor-pointer ml-2"
-      //       />
-      //     </div>
-      //   ),
-      // },
+                showConfirmModal({
+                  title: "Xác nhận",
+                  content: "Bạn có chắc chắn muốn cho người dùng này rời cộng đồng ?",
+                  onOk: async () => {
+                    const res = await groupServices.handleMember(record._id, MemberStatus.REJECTED);
+                    if (res) {
+                      setReRender(!reRender);
+                      Modal.destroyAll();
+                    }
+                  },
+                });
+              }}
+              ></i>
+            </div> 
+         
+        ),
+      },
     ];
   return (
     <div>

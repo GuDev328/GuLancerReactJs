@@ -57,3 +57,12 @@ input:-moz-autofill:active {
     -ms-overflow-style: none;  /* IE và Edge */
     scrollbar-width: none;     /* Firefox */
   }
+
+  .wmde-markdown.wmde-markdown-color {
+    background-color: #fff;
+    color: #000;
+  }
+
+  .w-md-editor-preview {
+    background-color: #fff;
+  }

@@ -110,7 +110,7 @@ function ControlCommunity() {
           </div>
           <Spin spinning={getGroups.isLoading} />
           {getGroups.data?.result?.map((group) => {
-            if (!group.isAdmin) {
+            if (!group.isAdmin && !group.isPending) {
               return (
                 <div
                   key={group._id}

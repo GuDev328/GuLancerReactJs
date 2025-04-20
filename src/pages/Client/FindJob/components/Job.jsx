@@ -74,7 +74,7 @@ const Job = ({ data }) => {
                   className=" fa-solid fa-star"
                   style={{ color: "#FFB800" }}
                 ></i>
-                <p>{data?.user?.star }/5.0</p>
+                <p>{data?.user?.star.$numberDecimal }/5.0</p>
                 <p className=" hidden sm:inline-block ml-1 text-[13px] text-gray-500">
                   Với {data?.user?.project_done} dự án đã hoàn thành
                 </p>

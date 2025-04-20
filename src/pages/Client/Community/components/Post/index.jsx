@@ -9,11 +9,16 @@ import MediaPost from "./MediaPost";
 import ModalComment from "./ModalComment";
 import { timeAgo } from "@/utils/common";
 import tweetServices from "@/services/tweetServices";
+import  MyButton  from '@/components/core/MyButton';
+import { showConfirmModal } from "../../../../../components/core/MyModal";
+import { Modal } from "antd";
+import { message } from "antd";
 
-const Post = ({ post, isShowGroupName = true }) => {
+const Post = ({ isAdmin =false, post, isShowGroupName = true }) => {
   const [tym, setTym] = React.useState(false);
   const [showComments, setShowComments] = React.useState(false);
   const [tyming, setTyming] = React.useState(false);
+  const [display, setDisplay] = React.useState(true);
 
   useEffect(() => {
     setTym(!!post.liked);
@@ -40,6 +45,8 @@ const Post = ({ post, isShowGroupName = true }) => {
       setTyming(false);
     }
   };
+
+  if(!display) return null;
 
   return (
     <div className="bg-white p-4 rounded-3xl my-1 w-[90%] max-w-[700px]">
@@ -77,7 +84,7 @@ const Post = ({ post, isShowGroupName = true }) => {
         </ReadMoreReadLess>
       </div>
       <MediaPost post={post} />
-      <div className="text-gray-700 text-[15px] flex justify-between">
+     {!isAdmin && <div className="text-gray-700 text-[15px] flex justify-between">
         <p>
           {formatNumber(post?.likes)} thích, {formatNumber(post?.views)} lượt
           xem
@@ -86,9 +93,9 @@ const Post = ({ post, isShowGroupName = true }) => {
           {formatNumber(post?.comment)} bình luận, {formatNumber(post?.retweet)}{" "}
           chia sẻ
         </p>
-      </div>
+      </div>}
       <hr className="mt-1" />
-      <div className="flex mt-2 justify-around">
+      {!isAdmin && <div className="flex mt-2 justify-around">
         <div className=" flex items-center cursor-pointer" onClick={handleTym}>
           <i
             className={`${
@@ -108,8 +115,39 @@ const Post = ({ post, isShowGroupName = true }) => {
           <i className="text-[22px] mr-2 fa-light fa-share-from-square"></i>
           <p>Chia sẻ</p>
         </div>
-      </div>
-      {showComments && (
+      </div>}
+
+       {isAdmin && <div className="flex mt-2 gap-2 justify-end">
+        <MyButton onClick={() => {
+          showConfirmModal({
+            title: "Xác nhận",
+            content: "Bạn có chắc chắn muốn từ chối bài viết này?",
+            onOk: async () => {
+              const res = await tweetServices.reject(post._id);
+              message.success(res.data.message);
+              if (res) {
+               setDisplay(false);
+                Modal.destroyAll();
+              }
+            },
+          });
+        }} size="sm" className="bg-black" >Từ chối</MyButton>
+        <MyButton onClick={() => {
+          showConfirmModal({
+            title: "Xác nhận",
+            content: "Bạn có chắc chắn muốn kiểm duyệt bài viết này?",
+            onOk: async () => {
+              const res = await tweetServices.approve(post._id);
+              if (res) {
+                message.success(res.data.message);
+               setDisplay(false);
+                Modal.destroyAll();
+              }
+            },
+          });
+        }} size="sm">Kiểm duyệt</MyButton>
+        </div>}     
+      {showComments && !isAdmin && (
         <ModalComment
           open={showComments}
           setOpen={setShowComments}
@@ -123,6 +161,7 @@ const Post = ({ post, isShowGroupName = true }) => {
 Post.propTypes = {
   post: PropTypes.object.isRequired,
   isShowGroupName: PropTypes.bool,
+  isAdmin: PropTypes.bool,
 };
 
 export default Post;

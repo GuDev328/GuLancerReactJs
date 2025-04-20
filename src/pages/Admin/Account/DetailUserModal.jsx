@@ -73,7 +73,7 @@ export default function DetailUserModal({ id, open, onCancel, onConfirm }) {
             <div className={`flex flex-col md:flex-row flex-wrap gap-x-3 `}>
               <div className="flex  items-center gap-2">
                 <div className="text-[18px] font-bold ml-6">
-                  {data?.star}
+                  {data?.star.$numberDecimal}
                   <i className="ml-1 fa-solid fa-star text-[#ffcf17]"></i>{" "}
                 </div>
               </div>

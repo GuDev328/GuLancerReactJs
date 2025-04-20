@@ -23,6 +23,8 @@ const MarkdownView = ({ data }) => {
             style={{
                 border: "none",
                 boxShadow: "none",
+                backgroundColor: "white",
+                color: "black",
                 
             }}
             preview="preview"

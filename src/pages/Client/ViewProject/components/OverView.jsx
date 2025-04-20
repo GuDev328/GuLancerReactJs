@@ -52,7 +52,7 @@ const OverviewProject = ({ detailProject }) => {
             <p className="mr-1">{detailProject?.admin_info?.name}</p>
             <div className="flex items-center">
               <i className=" fa-solid fa-star" style={{ color: "#FFB800" }}></i>
-              <p>{detailProject?.admin_info?.star}/5.0</p>
+              <p>{detailProject?.admin_info?.star.$numberDecimal}/5.0</p>
             </div>
             <p className="  inline-block ml-1 text-[13px] text-gray-500">
               Với {detailProject?.admin_info?.project_done} dự án đã hoàn

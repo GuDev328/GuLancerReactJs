@@ -125,8 +125,8 @@ const UserWall = () => {
             className={`flex flex-col md:flex-row flex-wrap gap-x-3 text-[17px] `}
           >
             <div className="flex  items-center gap-2">
-              <div className="text-xl font-bold">{data?.star}</div>
-              <Rate value={data?.star} />
+              <div className="text-xl font-bold">{data?.star.$numberDecimal}</div>
+              <Rate value={data?.star.$numberDecimal} />
             </div>
             <div className="flex  items-center gap-2">
               <i className="fas fa-tasks-alt text-xl"></i>

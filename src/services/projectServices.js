@@ -8,6 +8,16 @@ class ProjectServices {
     return response;
   }
 
+  async updateProject(data) {
+    const response = await axiosIns.put(`/projects/update`, data);
+    return response;
+  }
+
+  async deleteProject(id) {
+    const response = await axiosIns.delete(`/projects/${id}`);
+    return response;
+  }
+
   async getAllProject(data) {
     const response = await axiosIns.post(
       `/projects/get-all?page=${data.page}&limit=${data.limit}`,
@@ -151,6 +161,11 @@ class ProjectServices {
     const response = await axiosIns.put(`/disputes/${dispute_id}/status`, {
       status,
     });
+    return response;
+  }
+
+  async cancelDispute(dispute_id) {
+    const response = await axiosIns.put(`/disputes/${dispute_id}/cancel`, );
     return response;
   }
 

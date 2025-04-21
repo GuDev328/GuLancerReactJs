@@ -24,12 +24,15 @@ const Search = ({ setDataSearch }) => {
   const optionMember = queryMember.data?.result.map((member) => ({
     label: (
       <Flex align="center" gap={8}>
-        <Avatar style={{ width: "20px", height: "20px" }} src={member.avatar} />
-        <span>{member.name}</span>
+        <Avatar
+          style={{ width: "20px", height: "20px" }}
+          src={member?.avatar}
+        />
+        <span>{member?.name}</span>
       </Flex>
     ),
 
-    value: member._id,
+    value: member?._id,
   }));
 
   const statusOption = [

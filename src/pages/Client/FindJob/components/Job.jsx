@@ -3,13 +3,13 @@ import React from "react";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { formatCurrency } from "@/utils/common";
-import MDEditor from "@uiw/react-md-editor";
 import { useNavigate } from "react-router-dom";
 import {
   renderFullUserVerifyStatus,
   renderUserVerifyStatus,
 } from "../../../../utils/render";
 import { formatDate } from "../../../../utils/common";
+import MarkdownView from "@/components/utils/MarkdownView";
 
 const Job = ({ data }) => {
   const isMobile = useSelector((state) => state.screen.isMobile);
@@ -55,12 +55,7 @@ const Job = ({ data }) => {
             <p>Cần tìm {data?.recruitmentInfo?.number_people} Freelancer</p>
           </div>
           <div className="hidden  w-full max-h-[85px] overflow-hidden lg:block text-ellipsis">
-            <MDEditor
-              className="custom-preview"
-              hideToolbar={true}
-              value={data?.description}
-              preview="preview"
-            ></MDEditor>
+            <MarkdownView isPart={true} data={data.description} />
           </div>
         </div>
 

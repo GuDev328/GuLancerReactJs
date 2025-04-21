@@ -27,17 +27,16 @@ const ModalCUTask = ({ data, open, onCancel, onOk, setReRender }) => {
   const optionMember = queryMember.data?.result.map((member) => ({
     label: (
       <Flex align="center" gap={8}>
-        <Avatar src={member.avatar} />
-        <span>{member.name}</span>
+        <Avatar src={member?.avatar} />
+        <span>{member?.name}</span>
       </Flex>
     ),
 
-    value: member._id,
+    value: member?._id,
   }));
 
   useEffect(() => {
     if (data) {
-      console.log(data);
       form.setFieldsValue({
         ...data,
         deadline: dayjs(data.deadline),

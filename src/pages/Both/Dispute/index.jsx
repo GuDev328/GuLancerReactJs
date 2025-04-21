@@ -145,13 +145,20 @@ function DisputeMainPage() {
       refetch();
     }
   };
+  const cancelDispute = async () => {
+    const res = await projectServices.cancelDispute(dispute_id);
+    if (res.status === 200) {
+      message.success("Hủy tranh chấp thành công!");
+      refetch();
+    }
+  };
   const actionStatus = () => {
     if (reporter_info._id === userInfo._id) {
       return [
         {
           label: "Hủy tranh chấp",
           onClick: () => {
-            handleChangeStatus("CANCEL");
+            cancelDispute();
           },
         },
       ];
@@ -204,7 +211,7 @@ function DisputeMainPage() {
               <Image
                 width={50}
                 style={{ objectFit: "cover", borderRadius: "20px" }}
-                src={dispute.employer_info.avatar}
+                src={dispute.employer_info?.avatar}
               />{" "}
               <UserName data={dispute.employer_info} />
             </div>

@@ -10,18 +10,18 @@ const Member = ({ member }) => {
         <div className="flex">
           <Avatar src={member?.avatar} className="" size={45} />
           <div className="">
-            <p className="ml-1 text-[18px] mt-2">{member.name}</p>
+            <p className="ml-1 text-[18px] mt-2">{member?.name}</p>
             <div className="flex items-center">
               <p className="bg-[#ffb800] px-1 rounded-lg text-white">
-                {member.star.$numberDecimal}
+                {member?.star.$numberDecimal}
               </p>
-              <Rate disabled defaultValue={2} />
+              <Rate disabled defaultValue={member?.star.$numberDecimal} />
               <p className="ml-1 text-[13px] text-main">
-                {member.project_done} đánh giá
+                {member?.project_done} đánh giá
               </p>
             </div>
             <p className="hidden sm:inline-block ml-1 text-[13px] text-main">
-              Với {member.project_done} dự án đã hoàn thành
+              Với {member?.project_done} dự án đã hoàn thành
             </p>
             {renderUserVerifyStatus(member?.verified_info.status)}
           </div>

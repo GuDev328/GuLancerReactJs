@@ -19,9 +19,10 @@ const Members = () => {
   if (isLoading) return <Spin spinning={true} className="w-full h-full" />;
   return (
     <div className="flex flex-wrap">
-      {data.result.map((member) => (
-        <Member key={member._id} member={member} />
-      ))}
+      {data.result &&
+        data.result.map((member) => (
+          <Member key={member?._id} member={member} />
+        ))}
       {data.result.length === 0 && (
         <p className="text-center w-full py-[100px] text-gray-500">
           Chưa có thành viên nào trong dự án

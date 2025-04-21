@@ -3,10 +3,50 @@ import { Chip } from "@material-tailwind/react";
 import PropTypes from "prop-types";
 import MarkdownView from "@/components/utils/MarkdownView";
 import { formatDate } from "@/utils/common";
+import MyButton from "./../../../../../components/core/MyButton";
+import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import projectServices from "@/services/projectServices";
+import { message } from "antd";
+import { ProjectStatus } from "../../../../../constant/project";
 
 const OverviewProject = ({ detailProject }) => {
+  const navigate = useNavigate();
+
+  const handleDelete = async () => {
+    const res = await projectServices.deleteProject(detailProject?._id);
+    if (res.status === 200) {
+      message.success("Xoá dự án thành công!");
+      navigate("/projects");
+    } else {
+      console.log(res);
+      message.error("Xoá dự án thất bại!");
+    }
+  };
+
   return (
     <div className="text-[15px]">
+      <div className="flex justify-end gap-2">
+        <MyButton
+          onClick={() => navigate(`/projects/update/${detailProject?._id}`)}
+          variant="outlined"
+          size="sm"
+          color={"blue"}
+        >
+          <i className="fad fa-edit text-[18px]"></i> Chỉnh sửa thông tin
+        </MyButton>
+        {(detailProject?.status === ProjectStatus.NotReady ||
+          detailProject?.status === ProjectStatus.Recruiting) && (
+          <MyButton
+            onClick={handleDelete}
+            variant="outlined"
+            size="sm"
+            color={"red"}
+          >
+            <i className="fa-solid fa-trash-xmark text-[18px]"></i> Xoá dự án
+          </MyButton>
+        )}
+      </div>
       <div className="h-auto">
         <MarkdownView data={detailProject?.description} />
       </div>

@@ -8,6 +8,7 @@ function Projects() {
   return (
     <Routes>
       <Route path="/create" element={<CreateProject />} />
+      <Route path="/update/:id" element={<CreateProject />} />
       <Route path="/detail/:id" element={<DetailProject />} />
       <Route path="/" element={<ListProject />} />
     </Routes>

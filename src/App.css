@@ -66,3 +66,8 @@ input:-moz-autofill:active {
   .w-md-editor-preview {
     background-color: #fff;
   }
+
+  .canvasjs-chart-credit {
+    display: none;
+  }
+    

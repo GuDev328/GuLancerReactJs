@@ -8,6 +8,7 @@ import {
   WarningOutlined,
   BankOutlined,
   DeleteRowOutlined,
+  HomeOutlined,
 } from "@ant-design/icons";
 
 import { Link, useLocation } from "react-router-dom";
@@ -15,6 +16,11 @@ import { Link, useLocation } from "react-router-dom";
 const { Sider } = Layout;
 
 const menuItems = [
+  {
+    label: <Link to={"dashboard"}>Tổng quan</Link>,
+    key: "dashboard",
+    icon: <HomeOutlined />,
+  },
   {
     label: <Link to={"account-management"}>Quản trị tài khoản</Link>,
     key: "account-management",

@@ -118,7 +118,7 @@ export default function ProjectStatusComponent({
             style={{ color: "#ffc107", backgroundColor: "#fff3cd" }}
           >
             <i className="fa-solid mr-1 fa-hourglass-half"></i>
-            Chờ các thành viên bắt đầu
+            Chờ thành viên bắt đầu
           </p>
           {isEmployer && (
             <DotMenuDropdown

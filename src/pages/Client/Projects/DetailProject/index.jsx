@@ -90,9 +90,6 @@ const DetailProject = () => {
       <div className="flex font-bold justify-between items-center text-[21px]">
         <p>{detailProject?.title}</p>
         <div className="leading-5 mt-2">
-          <p className=" text-main">
-            {detailProject ? formatCurrency(detailProject?.salary) : "0"}
-          </p>
           <p className="text-gray-400 text-[14px] font-normal">
             {detailProject?.salaryType === 0
               ? "Trả theo dự án"
@@ -118,8 +115,7 @@ const DetailProject = () => {
             <i className=" fa-solid fa-star" style={{ color: "#FFB800" }}></i>
             <p>{detailProject?.admin_info?.star.$numberDecimal}/5.0</p>
             <p className=" hidden sm:inline-block ml-1 text-[13px] text-gray-500">
-              Với {detailProject?.admin_info?.project_done} dự án đã hoàn
-              thành
+              Với {detailProject?.admin_info?.project_done} dự án đã hoàn thành
             </p>
           </div>
           <p className="text-[13px]" style={{ color: "#31c740" }}>

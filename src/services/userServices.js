@@ -102,6 +102,18 @@ class UserServices {
     );
     return response.data.result;
   }
+  
+  async registrationStats({ year }) {
+    const response = await axiosIns.get("/users/registration-stats", {
+      params: { year },
+    });
+    return response.data;
+  }
+  
+  async overallStats() {
+    const response = await axiosIns.get("/users/overall-stats");
+    return response.data;
+  }
 }
 
 const userServices = new UserServices();

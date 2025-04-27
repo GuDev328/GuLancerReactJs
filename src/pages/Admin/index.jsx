@@ -8,11 +8,13 @@ import Report from "./Report";
 import DetailGroup from "./Report/DetailGroup";
 import DisputePage from "../Both/Dispute";
 import GroupManagement from "./Group";
+import Dashboard from "./Dashboard";
 export default function AdminRootPage() {
   return (
     <div>
       <AdminLayout>
         <Routes>
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/account-management" element={<AccountManagement />} />
           <Route path="/verify-management" element={<VerifyUserManagement />} />
           <Route path="/dispute-management" element={<DisputeManagement />} />

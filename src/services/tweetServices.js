@@ -78,6 +78,13 @@ class TweetServices {
     return response;
   }
 
+  async monthlyStats({year}) {
+    const response = await axiosIns.get("/tweets/monthly-stats", {
+      params: { year },
+    });
+    return response.data;
+  }
+
 }
 
 const tweetServices = new TweetServices();

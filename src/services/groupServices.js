@@ -78,6 +78,11 @@ class GroupServices {
     const response = await axiosIns.get(`groups/list`, { params: data });
     return response.data;
   }
+  
+  async statisticsTopGroups({type}) {
+    const response = await axiosIns.get("groups/stats/top-groups", { params: { type } });
+    return response.data;
+  }
 }
 
 const groupServices = new GroupServices();

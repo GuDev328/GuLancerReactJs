@@ -203,6 +203,25 @@ class ProjectServices {
     const response = await axiosIns.get("/projects/list-project-recruiting" );
     return response.data;
   }
+
+  async statistics() {
+    const response = await axiosIns.get("/projects/statistics");
+    return response.data;
+  }
+  async statisticsByYear({year}) {
+    const response = await axiosIns.get("/projects/statistics-by-year", {
+      params: { year },
+    });
+    return response.data;
+  }
+  async statisticsByTechnology() {
+    const response = await axiosIns.get("/projects/statistics/technologies");
+    return response.data;
+  }
+  async statisticsByField() {
+    const response = await axiosIns.get("/projects/statistics/fields");
+    return response.data;
+  }
 }
 
 const projectServices = new ProjectServices();

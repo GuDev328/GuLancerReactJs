@@ -35,7 +35,7 @@ export default function DetailUserModal({ id, open, onCancel, onConfirm }) {
       onCancel={onCancel}
     >
       {data && data.role !== UserRole.ADMIN && (
-        <div className="w-full h-full bg-white">
+        <div className="w-full  h-[70vh] overflow-y-auto bg-white">
           <div className={`w-full relative `}>
             <Image
               width={"100%"}

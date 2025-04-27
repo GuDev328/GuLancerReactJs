@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import groupServices from "@/services/groupServices";
 import { useQuery } from "@tanstack/react-query";
-import { Avatar, Spin } from "antd";
+import { Avatar, Spin, Input } from "antd";
 import { data } from "jquery";
 
 import { useSelector } from "react-redux";
@@ -14,12 +14,15 @@ import { useNavigate } from "react-router-dom";
 import { Modal } from "antd";
 import { message } from "antd";
 import { showConfirmModal } from "../../../../components/core/MyModal";
+import MyModal from "../../../../components/core/MyModal";
 
 const Group = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
   const { id } = useParams();
   const navigate = useNavigate();
   const [openCreatePostModal, setOpenCreatePostModal] = React.useState(false);
+  const [showReportModal, setShowReportModal] = React.useState(false);
+  const [reportDescription, setReportDescription] = React.useState("");
   const fetchDetailGroup = useQuery({
     queryKey: ["getGroupById", id],
     queryFn: async () => await groupServices.getGroupById(id),
@@ -27,6 +30,19 @@ const Group = () => {
   });
   const detaiGroup = fetchDetailGroup?.data?.result;
   const isAdmin = detaiGroup?.admin_id.includes(userInfo?._id);
+
+  const handleReport = async () => {
+    try {
+      await groupServices.reportGroup(id, reportDescription);
+      message.success("Báo cáo thành công!");
+      setShowReportModal(false);
+      setReportDescription("");
+    } catch (error) {
+      console.error("Có lỗi xảy ra:", error);
+      message.error("Có lỗi xảy ra khi báo cáo!");
+    }
+  };
+
   return (
     <div className="mt-3  w-[98%] ">
       <div className="Banner relative">
@@ -88,7 +104,7 @@ const Group = () => {
                         cộng đồng
                       </div>
                     ),
-                    onClick: () => {},
+                    onClick: () => setShowReportModal(true),
                   },
                 ]}
               />
@@ -145,6 +161,23 @@ const Group = () => {
         open={openCreatePostModal}
         setOpen={setOpenCreatePostModal}
       />
+
+      <MyModal
+        open={showReportModal}
+        title="Báo cáo cộng đồng"
+        onCancel={() => {
+          setShowReportModal(false);
+          setReportDescription("");
+        }}
+        onConfirm={handleReport}
+      >
+        <Input.TextArea
+          rows={4}
+          placeholder="Nhập mô tả báo cáo..."
+          value={reportDescription}
+          onChange={(e) => setReportDescription(e.target.value)}
+        />
+      </MyModal>
     </div>
   );
 };

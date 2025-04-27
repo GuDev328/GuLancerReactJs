@@ -53,6 +53,31 @@ class TweetServices {
     const response = await axiosIns.put(`tweets/reject/${postId}`);
     return response;
   }
+
+  async report(postId, description) {
+    const response = await axiosIns.post(`tweets/report/${postId}`, { description });
+    return response;
+  }
+  async reportToAdmin(postId, description) {
+    const response = await axiosIns.post(`tweets/report-admin/${postId}`, { description });
+    return response;
+  }
+
+  async getReports(data) {
+    const response = await axiosIns.get(`tweets/reports?page=${data.page}&limit=${data.limit}`);
+    return response.data;
+  }
+
+  async rejectReport(postId) {
+    const response = await axiosIns.post(`tweets/reject-report/${postId}`);
+    return response;
+  }
+
+  async approveReport(postId) {
+    const response = await axiosIns.post(`tweets/approve-report/${postId}`);
+    return response;
+  }
+
 }
 
 const tweetServices = new TweetServices();

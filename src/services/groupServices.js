@@ -48,6 +48,36 @@ class GroupServices {
     const response = await axiosIns.delete(`/groups/${id}`);
     return response;
   }
+
+  async report(id) {
+    const response = await axiosIns.post(`/groups/report/${id}`);
+    return response;
+  }
+
+  async reportGroup(groupId, description) {
+    const response = await axiosIns.post(`/groups/report/${groupId}`, { description });
+    return response;
+  }
+
+  async getReports(data) {
+    const response = await axiosIns.get(`groups/reports?page=${data.page}&limit=${data.limit}`);
+    return response.data;
+  }
+
+  async rejectReport(groupId) {
+    const response = await axiosIns.post(`groups/reject-report/${groupId}`);
+    return response;
+  }
+
+  async approveReport(groupId) {
+    const response = await axiosIns.post(`groups/approve-report/${groupId}`);
+    return response;
+  }
+
+  async getAllGroups (data) {
+    const response = await axiosIns.get(`groups/list`, { params: data });
+    return response.data;
+  }
 }
 
 const groupServices = new GroupServices();

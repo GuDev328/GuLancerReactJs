@@ -5,6 +5,9 @@ import {
   GroupOutlined,
   BellOutlined,
   UserOutlined,
+  WarningOutlined,
+  BankOutlined,
+  DeleteRowOutlined,
 } from "@ant-design/icons";
 
 import { Link, useLocation } from "react-router-dom";
@@ -13,7 +16,7 @@ const { Sider } = Layout;
 
 const menuItems = [
   {
-    label: <Link to={"account-management"}>Quản lý tài khoản</Link>,
+    label: <Link to={"account-management"}>Quản trị tài khoản</Link>,
     key: "account-management",
     icon: <UserOutlined />,
   },
@@ -23,9 +26,19 @@ const menuItems = [
     icon: <BoxPlotOutlined />,
   },
   {
-    label: <Link to={"dispute-management"}>Quản lý tranh chấp</Link>,
+    label: <Link to={"dispute-management"}>Quản trị tranh chấp</Link>,
     key: "dispute-management",
-    icon: <BoxPlotOutlined />,
+    icon: <DeleteRowOutlined />,
+  },
+  {
+    label: <Link to={"community-management"}>Quản trị cộng đồng</Link>,
+    key: "community-management",
+    icon: <BankOutlined />,
+  },
+  {
+    label: <Link to={"report-management"}>Quản trị báo cáo</Link>,
+    key: "report-management",
+    icon: <WarningOutlined />,
   },
 ];
 

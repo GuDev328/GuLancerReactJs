@@ -32,11 +32,6 @@ const Comment = ({ comment }) => {
               <Video src={comment.medias[0].url} />
             </div>
           )}
-
-        <div className="mr-2 flex font-bold text-gray-600">
-          <p className="mr-5">Thích</p>
-          <p>Trả lời</p>
-        </div>
       </div>
     </div>
   );

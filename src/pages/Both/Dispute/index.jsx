@@ -225,14 +225,6 @@ function DisputeMainPage() {
   );
 }
 
-function DisputePageLayoutAdmin() {
-  return (
-    <AdminLayout>
-      <DisputeMainPage />
-    </AdminLayout>
-  );
-}
-
 function DisputePageLayoutClient() {
   return (
     <>
@@ -248,7 +240,7 @@ function DisputePageLayoutClient() {
 export default function DisputePage() {
   const userInfo = useSelector((state) => state.user.userInfo);
   return userInfo.role === UserRole.ADMIN ? (
-    <DisputePageLayoutAdmin />
+    <DisputeMainPage />
   ) : (
     <DisputePageLayoutClient />
   );

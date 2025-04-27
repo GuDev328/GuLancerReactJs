@@ -138,7 +138,9 @@ export default function DisputeManagement() {
       key: "action",
       align: "center",
       render: (text, record) => (
-        <div onClick={() => window.open(`/dispute/${record._id}`, "_blank")}>
+        <div
+          onClick={() => window.open(`/admin/dispute/${record._id}`, "_blank")}
+        >
           <Tooltip title="Đi đến trang tranh chấp">
             <i className="fa-duotone text-main text-[20px]  cursor-pointer fa-solid fa-arrows-turn-right"></i>
           </Tooltip>

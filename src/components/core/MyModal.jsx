@@ -24,7 +24,7 @@ const MyModal = ({
       footer={
         noFooter ? null : customFooter ? (
           customFooter
-        ) : (    
+        ) : (
           <>
             <Button2 size="sm" onClick={onCancel}>
               Hủy
@@ -69,6 +69,33 @@ export const showConfirmModal = ({
         </Button2>
         <Button2 className="ml-2 text-white bg-main" size="sm" onClick={onOk}>
           {okText}
+        </Button2>
+      </>
+    ),
+    onOk,
+    onCancel,
+  });
+};
+
+export const showInfoModal = ({
+  title = "Chi tiết",
+  content,
+  onOk,
+  onCancel = null,
+  cancelText = "Đóng",
+}) => {
+  Modal.info({
+    title,
+    content,
+    //icon: null, // Loại bỏ biểu tượng mặc định
+    cancelText,
+    footer: (_, { OkBtn, CancelBtn }) => (
+      <>
+        <Button2
+          size="sm"
+          onClick={onCancel ? onCancel : () => Modal.destroyAll()}
+        >
+          {cancelText}
         </Button2>
       </>
     ),

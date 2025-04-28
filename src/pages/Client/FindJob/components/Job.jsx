@@ -71,7 +71,7 @@ const Job = ({ data }) => {
                 ></i>
                 <p>{data?.user?.star.$numberDecimal}/5.0</p>
                 <p className=" hidden sm:inline-block ml-1 text-[13px] text-gray-500">
-                  Với {data?.user?.project_done} dự án đã hoàn thành
+                  Với {data?.user?.projectsDone} dự án đã hoàn thành
                 </p>
               </div>
               {renderUserVerifyStatus(data?.user?.verified_info?.status)}

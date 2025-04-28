@@ -114,7 +114,10 @@ const UserWall = () => {
             </Button>
           )}
           {!isMyProfile && userInfo?.role === UserRole.EMPLOYER && (
-            <Button onClick={() => setOpenInviteModal(true)} className="bg-main mr-5 text-white">
+            <Button
+              onClick={() => setOpenInviteModal(true)}
+              className="bg-main mr-5 text-white"
+            >
               <i className="far mr-2 text-[18px] fa-bullseye-pointer"></i>
               Thuê ngay
             </Button>
@@ -125,16 +128,18 @@ const UserWall = () => {
             className={`flex flex-col md:flex-row flex-wrap gap-x-3 text-[17px] `}
           >
             <div className="flex  items-center gap-2">
-              <div className="text-xl font-bold">{data?.star.$numberDecimal}</div>
-              <Rate value={data?.star.$numberDecimal} />
+              <div className="text-xl font-bold">
+                {data?.star.$numberDecimal}
+              </div>
+              <Rate allowHalf value={data?.star.$numberDecimal} />
             </div>
             <div className="flex  items-center gap-2">
               <i className="fas fa-tasks-alt text-xl"></i>
-              <div>{data?.project_done} dự án đã hoàn thành</div>
+              <div>{data?.projectsDone} dự án đã hoàn thành</div>
             </div>
             <div className="flex items-center gap-2">
               <i className="fas fa-comment-alt-lines text-xl"></i>
-              <div>123 đánh giá</div>
+              <div>{data?.evaluationCount} đánh giá</div>
             </div>
           </div>
         </div>
@@ -212,15 +217,13 @@ const UserWall = () => {
         ></VerifyModal>
       )}
 
-      {
-        !isMyProfile && (
-          <Invite
-            open={openInviteModal}
-            setOpen={setOpenInviteModal}
-            user_id={id}
-          ></Invite>
-        )
-      }
+      {!isMyProfile && (
+        <Invite
+          open={openInviteModal}
+          setOpen={setOpenInviteModal}
+          user_id={id}
+        ></Invite>
+      )}
     </div>
   );
 };

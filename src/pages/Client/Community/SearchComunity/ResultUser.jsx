@@ -110,10 +110,12 @@ const ResultUser = (props) => {
               </p>
               <div className="flex flex-wrap items-center">
                 <p className="bg-[#ffb800] px-1 rounded-lg text-white">4.9</p>
-                <Rate disabled defaultValue={2} />
-                <p className="ml-1 text-[13px] text-main">120 đánh giá</p>
+                <Rate allowHalf disabled defaultValue={2} />
+                <p className="ml-1 text-[13px] text-main">
+                  {item?.evaluationCount} đánh giá
+                </p>
                 <p className=" ml-1 text-[13px] text-main">
-                  Với 123 dự án đã hoàn thành
+                  Với {item?.projectsDone} dự án đã hoàn thành
                 </p>
               </div>
             </div>

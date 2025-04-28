@@ -79,11 +79,11 @@ export default function DetailUserModal({ id, open, onCancel, onConfirm }) {
               </div>
               <div className="flex  items-center gap-2">
                 <i className="fas fa-tasks-alt text-xl"></i>
-                <div>{data?.project_done} dự án đã hoàn thành</div>
+                <div>{data?.projectsDone} dự án đã hoàn thành</div>
               </div>
               <div className="flex items-center gap-2">
                 <i className="fas fa-comment-alt-lines text-xl"></i>
-                <div>123 đánh giá</div>
+                <div>{data?.evaluationCount} đánh giá</div>
               </div>
             </div>
           </div>

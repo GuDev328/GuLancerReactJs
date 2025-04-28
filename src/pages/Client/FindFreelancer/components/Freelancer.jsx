@@ -24,13 +24,16 @@ const Freelancer = ({ data }) => {
             </p>
 
             <Rate
+              allowHalf
               className="text-[18px]"
               disabled
               value={data?.star.$numberDecimal}
             />
-            <p className="ml-1 text-[13px] text-main">120 đánh giá</p>
+            <p className="ml-1 text-[13px] text-main">
+              {data?.evaluationCount} đánh giá
+            </p>
             <p className="  ml-1 text-[13px] text-main">
-              {data.project_done} dự án đã hoàn thành
+              {data?.projectsDone} dự án đã hoàn thành
             </p>
           </div>
 

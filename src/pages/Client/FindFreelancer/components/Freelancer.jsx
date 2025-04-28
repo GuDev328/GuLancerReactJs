@@ -20,14 +20,14 @@ const Freelancer = ({ data }) => {
           <UserName data={data} />
           <div className="flex items-center">
             <p className="bg-[#ffb800] px-1 text-[15px] rounded-lg text-white">
-              {data.star.$numberDecimal}
+              {Number(data.star.$numberDecimal).toFixed(1)}
             </p>
 
             <Rate
               allowHalf
               className="text-[18px]"
               disabled
-              value={data?.star.$numberDecimal}
+              value={Number(data?.star.$numberDecimal).toFixed(1)}
             />
             <p className="ml-1 text-[13px] text-main">
               {data?.evaluationCount} đánh giá

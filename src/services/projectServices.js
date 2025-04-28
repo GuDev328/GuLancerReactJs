@@ -222,6 +222,11 @@ class ProjectServices {
     const response = await axiosIns.get("/projects/statistics/fields");
     return response.data;
   }
+
+  async evaluate({user_id, project_id, content, star}) {
+    const response = await axiosIns.post(`/projects/evaluate`, { user_id, project_id, content, star });
+    return response;
+  }
 }
 
 const projectServices = new ProjectServices();

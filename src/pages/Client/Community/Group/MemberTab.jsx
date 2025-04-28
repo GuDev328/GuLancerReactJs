@@ -61,8 +61,8 @@ const MemberTab = () => {
             <div className="text-gray-500">@{record.user_info.username}</div>
             <Rate
               style={{ fontSize: 15 }}
-              ha
-              value={record.user_info.star.$numberDecimal}
+              allowHalf
+              value={Number(record.user_info.star.$numberDecimal).toFixed(1)}
             />
           </div>
         </div>

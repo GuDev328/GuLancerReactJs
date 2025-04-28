@@ -129,9 +129,12 @@ const UserWall = () => {
           >
             <div className="flex  items-center gap-2">
               <div className="text-xl font-bold">
-                {data?.star.$numberDecimal}
+                {Number(data?.star.$numberDecimal).toFixed(1)}
               </div>
-              <Rate allowHalf value={data?.star.$numberDecimal} />
+              <Rate
+                allowHalf
+                value={Number(data?.star.$numberDecimal).toFixed(1)}
+              />
             </div>
             <div className="flex  items-center gap-2">
               <i className="fas fa-tasks-alt text-xl"></i>

@@ -206,14 +206,18 @@ const ApplyInviteManagement = ({ projectId }) => {
               </div>
               <div className="flex items-center">
                 <p className="bg-[#ffb800] px-1 text-[14px] rounded-lg text-white">
-                  {selectedApply?.user_info?.star.$numberDecimal}
+                  {Number(
+                    selectedApply?.user_info?.star.$numberDecimal
+                  ).toFixed(1)}
                 </p>
 
                 <Rate
                   allowHalf
                   className="text-[14px]"
                   disabled
-                  defaultValue={selectedApply?.user_info?.star.$numberDecimal}
+                  defaultValue={Number(
+                    selectedApply?.user_info?.star.$numberDecimal
+                  )}
                 />
                 <p className="ml-1 text-[13px] text-main">
                   {selectedApply?.user_info?.evaluationCount} đánh giá

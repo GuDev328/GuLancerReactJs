@@ -229,8 +229,11 @@ export default function MyProgress({ reRender }) {
                     )}
 
                     <div className="font-bold italic">
-                      Đã thanh toán: {formatCurrency(item.salary_unpaid)}/
-                      {formatCurrency(item.salary)}
+                      Đã thanh toán:{" "}
+                      {formatCurrency(
+                        Number(item.salary) - Number(item.salary_unpaid)
+                      )}
+                      /{formatCurrency(item.salary)}
                     </div>
                     {/* {index === myProgress.data.indexCurrentPhase && action} */}
                     {action}

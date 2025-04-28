@@ -47,12 +47,12 @@ export default function EvaluateModal({ open, onCancel, onSubmit, member }) {
           <p className="ml-1 text-[18px] mt-2">{member?.name}</p>
           <div className="flex items-center">
             <p className="bg-[#ffb800] px-1 rounded-lg text-white">
-              {member?.star.$numberDecimal}
+              {Number(member?.star.$numberDecimal).toFixed(1)}
             </p>
             <Rate
               allowHalf
               disabled
-              defaultValue={Number(member?.star.$numberDecimal)}
+              defaultValue={Number(member?.star.$numberDecimal).toFixed(1)}
             />
             <p className="ml-1 text-[13px] text-main">
               {member?.evaluationCount} đánh giá
@@ -66,14 +66,14 @@ export default function EvaluateModal({ open, onCancel, onSubmit, member }) {
       </div>
       <Form form={form} layout="vertical">
         <Form.Item
-          name="rating"
+          name="star"
           label="Đánh giá"
           rules={[{ required: true, message: "Vui lòng chọn đánh giá" }]}
         >
           <Rate allowHalf />
         </Form.Item>
         <Form.Item
-          name="comment"
+          name="content"
           label="Nhận xét"
           rules={[{ required: true, message: "Vui lòng nhập nhận xét" }]}
         >

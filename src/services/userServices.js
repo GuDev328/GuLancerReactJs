@@ -102,16 +102,28 @@ class UserServices {
     );
     return response.data.result;
   }
-  
+
   async registrationStats({ year }) {
     const response = await axiosIns.get("/users/registration-stats", {
       params: { year },
     });
     return response.data;
   }
-  
+
   async overallStats() {
     const response = await axiosIns.get("/users/overall-stats");
+    return response.data;
+  }
+
+  async changePassword(data) {
+    const response = await axiosIns.post("/users/change-password", data);
+    return response;
+  }
+
+  async getUserEvaluate(userId, page, limit) {
+    const response = await axiosIns.get(
+      `/users/get-evaluation/${userId}?page=${page}&limit=${limit}`
+    );
     return response.data;
   }
 }

@@ -17,7 +17,7 @@ import { Modal } from "antd";
 import { message } from "antd";
 import DotMenuDropdown from "./../../../../../components/core/DotMenuDropdown";
 import { useSelector } from "react-redux";
-
+import ShowMoreText from "react-show-more-text";
 const Post = ({
   isAdmin = false,
   post,
@@ -147,13 +147,16 @@ const Post = ({
       </div>
 
       <div className="content-post my-3 text-[16px] px-5 text-justify leading-tight ">
-        <ReadMoreReadLess
-          charLimit={400}
-          readMoreText={<span style={{ color: "#2881E2" }}>Xem thêm</span>}
-          readLessText={<span style={{ color: "#2881E2" }}>Thu gọn</span>}
+        <ShowMoreText
+          lines={3}
+          more="Xem thêm"
+          less="Thu gọn"
+          anchorClass=""
+          expanded={false}
+          width={0}
         >
-          {post?.content}
-        </ReadMoreReadLess>
+          <div style={{ whiteSpace: "pre-line" }}>{post?.content}</div>
+        </ShowMoreText>
       </div>
       <MediaPost post={post} />
       {!isAdmin && (

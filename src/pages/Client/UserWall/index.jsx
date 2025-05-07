@@ -18,13 +18,21 @@ import {
 } from "../../../utils/render";
 import conversationServices from "../../../services/conversationServices";
 import Invite from "./InviteProject";
+import ChangePasswordModal from "./ChangePasswordModal";
+import { useEffect } from "react";
 
 const UserWall = () => {
   const { isMobile } = useSelector((state) => state.screen);
   const { userInfo } = useSelector((state) => state.user);
   const [openVerifyModal, setOpenVerifyModal] = useState(false);
   const [openInviteModal, setOpenInviteModal] = useState(false);
+  const [openChangePasswordModal, setOpenChangePasswordModal] = useState(false);
   const { id } = useParams();
+  const [userEvaluate, setUserEvaluate] = useState([]);
+  const [pageEvaluate, setPageEvaluate] = useState({
+    current: 1,
+    total: 0,
+  });
   const {
     isLoading,
     data: dataUser,
@@ -39,6 +47,22 @@ const UserWall = () => {
   if (userInfo._id === id) {
     isMyProfile = true;
   }
+  const fetchUserEvaluate = async () => {
+    const response = await userServices.getUserEvaluate(
+      id,
+      pageEvaluate.current,
+      5
+    );
+
+    setUserEvaluate((prev) => [...prev, ...response.result.evaluations]);
+    setPageEvaluate({
+      current: response.result.pagination.page,
+      total: response.result.pagination.total_pages,
+    });
+  };
+  useEffect(() => {
+    fetchUserEvaluate();
+  }, [pageEvaluate.current]);
 
   if (isLoading) return <Spin className="w-full h-full" spinning={true}></Spin>;
 
@@ -53,7 +77,7 @@ const UserWall = () => {
   };
 
   return (
-    <div className="w-full h-full bg-white">
+    <div className="w-full h-full bg-white pb-5 mb-2">
       <div className={`w-full relative `}>
         <Image
           width={"100vw"}
@@ -148,7 +172,7 @@ const UserWall = () => {
         </div>
       </div>
       {isMyProfile && (
-        <div className="flex justify-end mr-[20px]">
+        <div className="flex justify-end gap-2 mr-[20px]">
           <Button
             onClick={() => navigate(`/edit-profile/${userInfo._id}`)}
             variant="outlined"
@@ -156,6 +180,15 @@ const UserWall = () => {
             color={"blue"}
           >
             <i className="fad fa-edit text-[18px]"></i> Chỉnh sửa trang cá nhân
+          </Button>
+          <Button
+            onClick={() => setOpenChangePasswordModal(true)}
+            variant="outlined"
+            size="sm"
+            color={"blue"}
+          >
+            <i className="fa-solid fa-key-skeleton text-[18px]"></i> Đổi mật
+            khẩu
           </Button>
         </div>
       )}
@@ -212,6 +245,43 @@ const UserWall = () => {
         <span>{data?.location}</span>
       </div>
       <MarkdownView data={data?.description} />
+      <div className="flex flex-col gap-2 my-2 mx-5">
+        <div className="text-xl font-bold">Các đánh giá</div>
+        {userEvaluate.map((evaluate) => (
+          <div
+            key={evaluate._id}
+            className="border-b border-gray-200 pb-2 bg-blue-gray-50 p-2 rounded-xl"
+          >
+            <div className="flex items-center gap-2">
+              <Avatar src={evaluate.reviewer_info.avatar} />
+              <UserName data={evaluate.reviewer_info} />
+              <Rate value={evaluate.star} allowHalf disabled />
+            </div>
+            <div className="text-[13px] text-main">
+              {evaluate.project_info.title}
+            </div>
+            <p>{evaluate.content}</p>
+          </div>
+        ))}
+        {userEvaluate.length === 0 && (
+          <div className="text-gray-500 text-center my-10">
+            Chưa có đánh giá nào
+          </div>
+        )}
+        {pageEvaluate.total > pageEvaluate.current && (
+          <p
+            className="text-main  cursor-pointer"
+            onClick={() =>
+              setPageEvaluate({
+                ...pageEvaluate,
+                current: pageEvaluate.current + 1,
+              })
+            }
+          >
+            Xem thêm
+          </p>
+        )}
+      </div>
       {isMyProfile && (
         <VerifyModal
           open={openVerifyModal}
@@ -221,12 +291,18 @@ const UserWall = () => {
       )}
 
       {!isMyProfile && (
-        <Invite
-          open={openInviteModal}
-          setOpen={setOpenInviteModal}
-          user_id={id}
-        ></Invite>
+        <>
+          <Invite
+            open={openInviteModal}
+            setOpen={setOpenInviteModal}
+            user_id={id}
+          ></Invite>
+        </>
       )}
+      <ChangePasswordModal
+        open={openChangePasswordModal}
+        setOpen={setOpenChangePasswordModal}
+      ></ChangePasswordModal>
     </div>
   );
 };

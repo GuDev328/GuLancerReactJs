@@ -113,6 +113,9 @@ importers:
       react-router-dom:
         specifier: ^6.22.1
         version: 6.29.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-show-more-text:
+        specifier: ^1.7.1
+        version: 1.7.1(react@18.3.1)
       react-toastify:
         specifier: ^10.0.4
         version: 10.0.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -3552,6 +3555,11 @@ packages:
     engines: {node: '>=14.0.0'}
     peerDependencies:
       react: '>=16.8'
+
+  react-show-more-text@1.7.1:
+    resolution: {integrity: sha512-k+NyTogrBgPVpE84r6AdDLgf60k9cR4F0zlhp3w8Hoquq+UStKjAOatsVYDLwfWD8wqF6smRXohi2rvQZRpQDQ==}
+    peerDependencies:
+      react: 16 - 18.x
 
   react-toastify@10.0.6:
     resolution: {integrity: sha512-yYjp+omCDf9lhZcrZHKbSq7YMuK0zcYkDFTzfRFgTXkTFHZ1ToxwAonzA4JI5CxA91JpjFLmwEsZEgfYfOqI1A==}
@@ -7006,6 +7014,7 @@ snapshots:
       antd: 5.24.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       axios: 1.7.9
       blob-util: 2.0.2
+      chart.js: 4.4.9
       dayjs: 1.11.13
       emoji-picker-react: 4.12.0(react@18.3.1)
       framer-motion: 11.18.2(@emotion/is-prop-valid@1.2.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -7017,6 +7026,7 @@ snapshots:
       marked: 13.0.3
       prop-types: 15.8.1
       react: 18.3.1
+      react-chartjs-2: 5.3.0(chart.js@4.4.9)(react@18.3.1)
       react-dom: 18.3.1(react@18.3.1)
       react-infinite-scroll-component: 6.1.0(react@18.3.1)
       react-read-more-read-less: 1.0.7(react@18.3.1)
@@ -8952,6 +8962,11 @@ snapshots:
   react-router@6.29.0(react@18.3.1):
     dependencies:
       '@remix-run/router': 1.22.0
+      react: 18.3.1
+
+  react-show-more-text@1.7.1(react@18.3.1):
+    dependencies:
+      prop-types: 15.8.1
       react: 18.3.1
 
   react-toastify@10.0.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1):

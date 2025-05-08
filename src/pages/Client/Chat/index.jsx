@@ -8,6 +8,7 @@ import conversationServices from "@/services/conversationServices";
 import ControlSendMess from "@/components/business/ControlSendMess";
 import Gallery from "@/components/business/Gallery";
 import { useSearchParams } from "react-router-dom";
+import userServices from "../../../services/userServices";
 
 export default function Chat() {
   const [receiver, setReceiver] = useState("");
@@ -65,8 +66,15 @@ export default function Chat() {
     }
   }, [receiver]);
 
+  const getReceiver = async () => {
+    const info = await userServices.getDetailUser(userIdChatTo);
+    setAvatarUserCurrent(info?.result?.avatar);
+  };
   useEffect(() => {
-    if (userIdChatTo) setReceiver(userIdChatTo);
+    if (userIdChatTo) {
+      setReceiver(userIdChatTo);
+      getReceiver();
+    }
   }, [userIdChatTo]);
   const fetchFirstMessage = async () => {
     const info = await conversationServices.getConversation(receiver, 20, 1);
@@ -167,7 +175,10 @@ export default function Chat() {
                     {!(message.sender_id === user._id) ? (
                       <div className="w-1/2 flex ">
                         <div className="mr-1">
-                          <Avatar src={avatarUserCurrent} size={40} />
+                          <Avatar
+                            src={avatarUserCurrent || message.re}
+                            size={40}
+                          />
                         </div>
                         <div className="bg-blue-500 flex flex-col text-white block p-2 rounded-md float-start m-1">
                           {message.medias.length > 0 && (

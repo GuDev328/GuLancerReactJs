@@ -8,8 +8,15 @@ import UserName from "@/components/business/UserName";
 import { UserVerifyStatus } from "../../../../constant/user";
 import { renderUserVerifyStatus } from "../../../../utils/render";
 import { formatCurrency } from "@/utils/common";
+import conversationServices from "./../../../../services/conversationServices";
+import { useNavigate } from "react-router-dom";
 const Freelancer = ({ data }) => {
   //const isMobile = useSelector((state) => state.screen.isMobile);
+  const navigate = useNavigate();
+  const handleToChat = async () => {
+    await conversationServices.addNewConversation(data._id);
+    navigate("/chat?to=" + data._id);
+  };
   return (
     <div className="relative mb-2 flex justify-between bg-white w-[100%] rounded-3xl md:pb-10 xl:pb-5 p-5">
       <div className="flex xl:w-[45%]">
@@ -52,18 +59,16 @@ const Freelancer = ({ data }) => {
         <MarkdownView isPart={true} data={data.description} />
       </div>
       <div className=" hidden xl:flex w-[150px]  flex-col items-end">
-        <Button size="sm" className="bg-main">
+        <Button
+          size="sm"
+          className="bg-main"
+          onClick={() => handleToChat(data._id)}
+        >
           <i className="text-[18px] mr-1 far fa-comment-alt-lines"></i>
           Liên hệ ngay
         </Button>
         <p className="text-gray-600">{formatCurrency(data.salary)}/ giờ</p>
       </div>
-      <Button
-        size="sm"
-        className="bg-main absolute xl:hidden  bottom-2 right-4 "
-      >
-        Xem chi tiết
-      </Button>
     </div>
   );
 };

@@ -3,11 +3,13 @@ import conversationServices from "@/services/conversationServices";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { formatTimeVi } from "../../../../utils/common";
-
+import { useNavigate } from "react-router-dom";
 const ListChatUser = ({ receiver, setReceiver, setAvatarUserCurrent }) => {
   const [chatUsers, setChatUsers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const userId = useSelector((state) => state.user.userInfo._id);
+
   const fetchChatUsers = async () => {
     setLoading(true);
     const response = await conversationServices.getChatUsers();
@@ -27,20 +29,17 @@ const ListChatUser = ({ receiver, setReceiver, setAvatarUserCurrent }) => {
       <div className="text-xl font-bold">Đoạn chat</div>
       <div className="flex flex-col">
         {chatUsers.map((user) => {
-          console.log(userId);
           const receiver_id =
             user.user_id_1 === userId ? user.user_id_2 : user.user_id_1;
           const receiver_info =
-            user.user_id_1 === userId
-              ? user.user_2_info
-              : user.user_1_info;
-          console.log(receiver_id, receiver_info);
+            user.user_id_1 === userId ? user.user_2_info : user.user_1_info;
           return (
             <div
               key={user._id}
               onClick={() => {
                 setReceiver(receiver_id);
                 setAvatarUserCurrent(receiver_info.avatar);
+                navigate(`/chat`);
               }}
               className={
                 (receiver === receiver_id
@@ -71,7 +70,7 @@ const ListChatUser = ({ receiver, setReceiver, setAvatarUserCurrent }) => {
                     {formatTimeVi(user.last_message.time)}
                   </p>
 
-                  <p className="absolute bottom-0 text-[#333] right-1 text-[12px]">
+                  <p className="absolute bottom-0 max-w-[50%] text-ellipsis text-nowrap overflow-hidden text-[#333] right-1 text-[12px]">
                     {user.last_message.message}
                   </p>
                 </>

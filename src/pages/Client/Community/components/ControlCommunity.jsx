@@ -25,6 +25,11 @@ function ControlCommunity() {
     navigateTo(`/community/search/${keySeachGroup}`);
   };
 
+  const haveAdmin = getGroups.data?.result?.some((group) => group.isAdmin);
+  const haveJoined = getGroups.data?.result?.some(
+    (group) => !group.isAdmin && !group.isPending
+  );
+
   return (
     <>
       <ToastContainer stacked />
@@ -109,25 +114,35 @@ function ControlCommunity() {
             <p className="text-[23px]  font-bold">Cộng đồng đã tham gia</p>
           </div>
           <Spin spinning={getGroups.isLoading} />
-          {getGroups.data?.result?.map((group) => {
-            if (!group.isAdmin && !group.isPending) {
-              return (
-                <div
-                  key={group._id}
-                  onClick={() => navigateTo(`/community/${group._id}`)}
-                  className="w-[90%] m-2 mt-0 rounded-md h-12 py-2 bg-[#F0F2F5] flex items-center"
-                >
-                  <Avatar
-                    src={group.cover_photo}
-                    className=" mr-3 w-[45px] h-[45px]"
-                    alt="avatar"
-                    variant="rounded"
-                  />
-                  <p className="font-medium">{group.name}</p>
-                </div>
-              );
-            }
-          })}
+          {haveJoined ? (
+            <>
+              {getGroups.data?.result?.map((group) => {
+                if (!group.isAdmin && !group.isPending) {
+                  return (
+                    <div
+                      key={group._id}
+                      onClick={() => navigateTo(`/community/${group._id}`)}
+                      className="w-[90%] m-2 mt-0 rounded-md h-12 py-2 bg-[#F0F2F5] flex items-center"
+                    >
+                      <Avatar
+                        src={group.cover_photo}
+                        className=" mr-3 w-[45px] h-[45px]"
+                        alt="avatar"
+                        variant="rounded"
+                      />
+                      <p className="font-medium">{group.name}</p>
+                    </div>
+                  );
+                }
+              })}
+            </>
+          ) : (
+            <div className="flex justify-center items-center h-full">
+              <p className=" text-gray-600 mb-5">
+                Hãy tham gia cộng đồng để kết nối{" "}
+              </p>
+            </div>
+          )}
         </div>
       </div>
       <CreateGroupModal

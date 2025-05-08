@@ -16,6 +16,7 @@ import dayjs from "dayjs";
 import { message } from "antd";
 import { useDispatch } from "react-redux";
 import { setUserInfo } from "@/stores/slice/user.slice";
+import { InputNumber } from "antd";
 const UserWall = () => {
   const { isMobile } = useSelector((state) => state.screen);
   const { userInfo } = useSelector((state) => state.user);
@@ -31,6 +32,7 @@ const UserWall = () => {
     const dataForm = form.getFieldsValue();
     const data = {
       ...dataForm,
+      salary: dataForm.salary ? Number(dataForm.salary) : 0,
       cover_photo: coverPhoto,
       avatar: avatar,
     };
@@ -144,7 +146,7 @@ const UserWall = () => {
             </Form.Item>
             {userInfo?.role === 0 && (
               <Form.Item name="salary" label="Lương">
-                <Input />
+                <InputNumber />
               </Form.Item>
             )}
             {userInfo?.role === 0 && (

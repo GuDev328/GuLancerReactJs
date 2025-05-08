@@ -202,11 +202,6 @@ function Header() {
           </div>
         </div>
         <div className="right-nav flex justify-between items-center">
-          <div className="mr-2">
-            <Badge content="5">
-              <i className="nav-icon fa-solid fa-bell"></i>
-            </Badge>
-          </div>
           {userInfo && (
             <div className="cursor-pointer" onClick={() => navigate("/chat")}>
               <i className="nav-icon fa-solid fa-comments-alt"></i>

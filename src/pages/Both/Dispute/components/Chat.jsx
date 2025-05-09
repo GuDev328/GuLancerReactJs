@@ -85,7 +85,7 @@ export default function Chat() {
       receiver_id: dispute_id,
       content: value,
       medias: medias,
-      sender_info: [user],
+      sender_info: user,
     });
   };
 
@@ -137,10 +137,7 @@ export default function Chat() {
                   {!(message.sender_id === user._id) ? (
                     <div className="w-1/2 flex ">
                       <div className="mr-1">
-                        <Avatar
-                          src={message?.sender_info?.avatar}
-                          size={40}
-                        />
+                        <Avatar src={message?.sender_info?.avatar} size={40} />
                       </div>
 
                       <div>

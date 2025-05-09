@@ -65,7 +65,7 @@ export default function Chat({ projectId }) {
       window.location.href = "/login";
     }
   }, []);
-
+  console.log(messages);
   const fetchFirstMessage = async () => {
     const info = await conversationServices.getProjectConversation(
       receiver,
@@ -87,7 +87,7 @@ export default function Chat({ projectId }) {
       receiver_id: receiver,
       content: value,
       medias: medias,
-      sender_info: [user],
+      sender_info: user,
     });
   };
 
@@ -139,10 +139,7 @@ export default function Chat({ projectId }) {
                   {!(message.sender_id === user._id) ? (
                     <div className="w-1/2 flex ">
                       <div className="mr-1">
-                        <Avatar
-                          src={message?.sender_info?.avatar}
-                          size={40}
-                        />
+                        <Avatar src={message?.sender_info?.avatar} size={40} />
                       </div>
                       <div>
                         <div className="text-sm text-blue-gray-500">

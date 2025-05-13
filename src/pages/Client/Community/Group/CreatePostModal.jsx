@@ -20,7 +20,7 @@ import { TweetType } from "@/constant/tweet";
 import tweetServices from "@/services/tweetServices";
 import mediaServices from "@/services/mediaServices";
 
-const CreatePostModal = ({ open, setOpen, groupId, groupName }) => {
+const CreatePostModal = ({ open, setOpen, groupId, groupName, setPosts }) => {
   const userInfo = useSelector((state) => state.user.userInfo);
   const handleCancel = () => {
     setContent("");
@@ -132,6 +132,20 @@ const CreatePostModal = ({ open, setOpen, groupId, groupName }) => {
     const create = await tweetServices.createTweet(data);
     if (create && create.status === 200) {
       handleCancel();
+      if (create.data.result) {
+        const info = await tweetServices.getPostsByGroup({
+          group_id: groupId,
+          page: 1,
+          limit: 10,
+        });
+        const myPost = info.result.find(
+          (item) => item.user._id === userInfo._id
+        );
+        if (myPost) {
+          setPosts((pre) => [myPost, ...pre]);
+        }
+      }
+
       message.success(create.data.message);
     }
   };
@@ -275,6 +289,7 @@ CreatePostModal.propTypes = {
   setOpen: PropTypes.func.isRequired,
   groupId: PropTypes.string.isRequired,
   groupName: PropTypes.string.isRequired,
+  setPosts: PropTypes.func.isRequired,
 };
 
 export default CreatePostModal;

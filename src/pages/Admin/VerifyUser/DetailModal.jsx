@@ -13,6 +13,7 @@ import {
   renderUserVerifyStatus,
 } from "../../../utils/render";
 import { toast } from "react-toastify";
+import { message } from "antd";
 
 export default function DetailModal({ id, open, onCancel, onConfirm }) {
   const isMobile = useMediaQuery({ maxWidth: 769 });
@@ -28,13 +29,13 @@ export default function DetailModal({ id, open, onCancel, onConfirm }) {
 
   const handleReject = async () => {
     await userServices.rejectVerify(id);
-    toast.success("Từ chối xác thực thành công");
+    message.success("Từ chối xác thực thành công");
     onConfirm();
   };
 
   const handleApprove = async () => {
     await userServices.approveVerify(id);
-    toast.success("Phê duyệt xác thực thành công");
+    message.success("Phê duyệt xác thực thành công");
     onConfirm();
   };
 

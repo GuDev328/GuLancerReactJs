@@ -84,10 +84,10 @@ const Post = ({
             onClick: () => {
               showConfirmModal({
                 title: "Xác nhận",
-                content: "Bạn có chắc chắn muốn từ chối bài viết này?",
+                content: "Bạn có chắc chắn muốn xoá bài viết này?",
                 onOk: async () => {
                   const res = await tweetServices.reject(post._id);
-                  message.success(res.data.message);
+                  message.success("Xoá bài viết thành công");
                   if (res) {
                     setDisplay(false);
                     Modal.destroyAll();

@@ -15,9 +15,11 @@ import { Modal } from "antd";
 import { message } from "antd";
 import { showConfirmModal } from "../../../../components/core/MyModal";
 import MyModal from "../../../../components/core/MyModal";
+import { useState } from "react";
 
 const Group = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
+  const [posts, setPosts] = useState([]);
   const { id } = useParams();
   const navigate = useNavigate();
   const [openCreatePostModal, setOpenCreatePostModal] = React.useState(false);
@@ -126,7 +128,7 @@ const Group = () => {
             </div>
           </div>
 
-          <PostsGroup group_id={id} />
+          <PostsGroup group_id={id} posts={posts} setPosts={setPosts} />
         </div>
         <div className="rounded-lg p-3 mr-7 hidden lg:block bg-white lg:w-[30%]">
           <p className="font-bold text-[19px] mb-2">Giới thiệu</p>
@@ -160,6 +162,7 @@ const Group = () => {
         groupName={detaiGroup?.name}
         open={openCreatePostModal}
         setOpen={setOpenCreatePostModal}
+        setPosts={setPosts}
       />
 
       <MyModal

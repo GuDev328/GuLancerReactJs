@@ -8,9 +8,10 @@ import projectServices from "@/services/projectServices";
 import { toast } from "react-toastify";
 import { Select } from "antd";
 import { useQuery } from "@tanstack/react-query";
+import { message } from "antd";
 
 const { TextArea } = Input;
- 
+
 const Invite = ({ open, setOpen, user_id }) => {
   const [salaryType, setSalaryType] = useState(0);
   const [timeType, setTimeType] = useState(0);
@@ -18,7 +19,8 @@ const Invite = ({ open, setOpen, user_id }) => {
 
   const listProjectRecruiting = useQuery({
     queryKey: ["getProjectRecruiting"],
-    queryFn: async () => await projectServices.getListProjectRecruitingController(),
+    queryFn: async () =>
+      await projectServices.getListProjectRecruitingController(),
   });
   const dataProjectRecruiting = listProjectRecruiting.data?.result;
   const handleConfirm = async () => {
@@ -36,11 +38,11 @@ const Invite = ({ open, setOpen, user_id }) => {
     };
     const res = await projectServices.applyProject(data);
     if (res.status === 200) {
-      toast.success("Ứng tuyển thành công");
+      message.success("Ứng tuyển thành công");
       form.resetFields();
       setOpen(false);
     } else {
-      toast.error("Ứng tuyển thất bại");
+      message.error("Ứng tuyển thất bại");
     }
   };
   return (
@@ -51,8 +53,8 @@ const Invite = ({ open, setOpen, user_id }) => {
       onCancel={() => setOpen(false)}
     >
       <Form form={form}>
-      <Form.Item  name={"project_id"} required label="Dự án">
-          <Select          
+        <Form.Item name={"project_id"} required label="Dự án">
+          <Select
             placeholder="Chọn dự án"
             options={dataProjectRecruiting?.map((item) => ({
               value: item._id,

@@ -23,6 +23,7 @@ import { DisputeResolveAction } from "../../../../constant/project";
 import { Radio } from "antd";
 import projectServices from "../../../../services/projectServices";
 import { useParams } from "react-router-dom";
+import { Flex } from "antd";
 
 const percentAmounts = [
   { value: 25, label: "25% số tiền" },
@@ -92,15 +93,18 @@ const ResolveModal = ({ open, setOpen, type, amountTotal = 0 }) => {
     switch (type) {
       case DisputeResolveAction.PayAll:
         await handlePayAll(description);
+        setLoading(false);
         break;
       case DisputeResolveAction.PayPart:
         await handlePayPart(description, Number(amount));
+        setLoading(false);
         break;
       case DisputeResolveAction.Continue:
         await handleNotPay(description);
+        setLoading(false);
         break;
     }
-    setLoading(false);
+
     handleCancel();
   };
 
@@ -127,7 +131,7 @@ const ResolveModal = ({ open, setOpen, type, amountTotal = 0 }) => {
           : "Tiếp tục công việc mà chưa thanh toán"
       }
       footer={
-        <>
+        <Flex justify="end">
           <Button2 size="sm" onClick={handleCancel}>
             Hủy
           </Button2>
@@ -139,7 +143,7 @@ const ResolveModal = ({ open, setOpen, type, amountTotal = 0 }) => {
           >
             Xác nhận
           </Button2>
-        </>
+        </Flex>
       }
     >
       <Form form={form}>

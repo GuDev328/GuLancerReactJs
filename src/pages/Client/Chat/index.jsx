@@ -131,7 +131,7 @@ export default function Chat() {
       >
         <div
           style={{ height: "calc(100vh - 60px)" }}
-          className="flex bg-white p-3 overflow-y-scroll flex-col border-r-2 border-gray-300 w-1/5 h-screen"
+          className="flex bg-white p-3 overflow-y-scroll flex-col border-r-2 border-gray-300 lg:w-1/5  h-screen"
         >
           <ListChatUser
             setAvatarUserCurrent={setAvatarUserCurrent}

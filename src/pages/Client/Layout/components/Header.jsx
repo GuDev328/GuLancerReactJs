@@ -47,6 +47,7 @@ function Header() {
         JSON.parse(localStorage.getItem("user"));
       if (userInfoo && userInfoo.role === 0) navigate("/find-jobs");
       if (userInfoo && userInfoo.role === 1) navigate("/find-freelancers");
+      if (userInfoo && userInfoo.role === 3) navigate("/admin/dashboard");
     }
   }, []);
 

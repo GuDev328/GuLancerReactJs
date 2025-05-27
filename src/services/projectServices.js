@@ -52,7 +52,7 @@ class ProjectServices {
     return response;
   }
 
-  async editApplyProject(data){
+  async editApplyProject(data) {
     const response = await axiosIns.post("/projects/edit-apply-invite", data);
     return response;
   }
@@ -165,7 +165,7 @@ class ProjectServices {
   }
 
   async cancelDispute(dispute_id) {
-    const response = await axiosIns.put(`/disputes/${dispute_id}/cancel`, );
+    const response = await axiosIns.put(`/disputes/${dispute_id}/cancel`);
     return response;
   }
 
@@ -188,19 +188,24 @@ class ProjectServices {
       `/disputes/${dispute_id}/not-pay`,
       data
     );
+    return response;
   }
 
-  async getListApply({page, limit}) {
-    const response = await axiosIns.get("/projects/list-apply" + `?page=${page}&limit=${limit}`);
+  async getListApply({ page, limit }) {
+    const response = await axiosIns.get(
+      "/projects/list-apply" + `?page=${page}&limit=${limit}`
+    );
     return response.data;
   }
-  async getListInvite({page, limit}) {
-    const response = await axiosIns.get("/projects/list-invite" + `?page=${page}&limit=${limit}`);
+  async getListInvite({ page, limit }) {
+    const response = await axiosIns.get(
+      "/projects/list-invite" + `?page=${page}&limit=${limit}`
+    );
     return response.data;
   }
 
   async getListProjectRecruitingController() {
-    const response = await axiosIns.get("/projects/list-project-recruiting" );
+    const response = await axiosIns.get("/projects/list-project-recruiting");
     return response.data;
   }
 
@@ -208,7 +213,7 @@ class ProjectServices {
     const response = await axiosIns.get("/projects/statistics");
     return response.data;
   }
-  async statisticsByYear({year}) {
+  async statisticsByYear({ year }) {
     const response = await axiosIns.get("/projects/statistics-by-year", {
       params: { year },
     });
@@ -223,8 +228,13 @@ class ProjectServices {
     return response.data;
   }
 
-  async evaluate({user_id, project_id, content, star}) {
-    const response = await axiosIns.post(`/projects/evaluate`, { user_id, project_id, content, star });
+  async evaluate({ user_id, project_id, content, star }) {
+    const response = await axiosIns.post(`/projects/evaluate`, {
+      user_id,
+      project_id,
+      content,
+      star,
+    });
     return response;
   }
 }

@@ -17,6 +17,7 @@ const ListChatUser = ({ receiver, setReceiver, setAvatarUserCurrent }) => {
     setLoading(false);
   };
   useEffect(() => {
+    fetchChatUsers();
     const itvId = setInterval(() => {
       fetchChatUsers();
     }, 2000);
@@ -58,14 +59,14 @@ const ListChatUser = ({ receiver, setReceiver, setAvatarUserCurrent }) => {
                   className={
                     (receiver === receiver_id
                       ? "text-white font-bold"
-                      : "text-black") + " hidden md:block ml-2"
+                      : "text-black") + " hidden lg:block ml-2"
                   }
                 >
                   {receiver_info.name}
                 </p>
               </div>
               {receiver !== receiver_id && (
-                <>
+                <div className="hidden lg:block">
                   <p className="absolute top-1 text-[#333] right-1 text-[12px]">
                     {formatTimeVi(user.last_message.time)}
                   </p>
@@ -73,7 +74,7 @@ const ListChatUser = ({ receiver, setReceiver, setAvatarUserCurrent }) => {
                   <p className="absolute bottom-0 max-w-[50%] text-ellipsis text-nowrap overflow-hidden text-[#333] right-1 text-[12px]">
                     {user.last_message.message}
                   </p>
-                </>
+                </div>
               )}
             </div>
           );

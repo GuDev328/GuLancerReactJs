@@ -25,6 +25,7 @@ const ControlComment = ({ post, setListComment }) => {
       socket.emit("joinRoomComment", post._id);
       socket.on("commentUpdated", (comment) => {
         post.comment++;
+        console.log("comment:", comment);
         setListComment((pre) => [comment, ...pre]);
       });
       socket.on("disconnect", () => {
@@ -78,7 +79,7 @@ const ControlComment = ({ post, setListComment }) => {
     if (create && create.status === 200) {
       setTextComment("");
       setFileList([]);
-      socket.emit("newComment", post._id, { ...data, user: [userInfo] });
+      socket.emit("newComment", post._id, { ...data, user: userInfo });
     }
   };
 

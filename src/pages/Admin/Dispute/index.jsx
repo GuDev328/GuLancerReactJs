@@ -70,7 +70,7 @@ export default function DisputeManagement() {
           <div className="flex items-center gap-2">
             <div>
               <Avatar
-                size={50}
+                size={40}
                 src={reporter_info.avatar}
                 className="rounded-full"
               />
@@ -90,7 +90,7 @@ export default function DisputeManagement() {
           <div className="flex items-center gap-2">
             <div>
               <Avatar
-                size={50}
+                size={40}
                 src={freelancer_info.avatar}
                 className="rounded-full"
               />
@@ -110,7 +110,7 @@ export default function DisputeManagement() {
           <div className="flex items-center gap-2">
             <div>
               <Avatar
-                size={50}
+                size={40}
                 src={employer_info.avatar}
                 className="rounded-full"
               />

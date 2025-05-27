@@ -59,7 +59,7 @@ const PostsGroup = ({ group_id, posts, setPosts }) => {
       <div id="scrollableDiv" className="w-full no-scrollbar">
         <InfiniteScroll
           className="w-full flex flex-col items-center overflow-hidden no-scrollbar"
-          dataLength={posts.length}
+          dataLength={posts?.length}
           next={fetchMoreMessages}
           hasMore={pageInfo.page < pageInfo.totalPages}
           loader={<Spin spinning={true} />}

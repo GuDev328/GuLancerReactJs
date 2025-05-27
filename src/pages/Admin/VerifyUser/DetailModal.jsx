@@ -3,16 +3,12 @@ import MyModal from "../../../components/core/MyModal";
 import PropTypes from "prop-types";
 import { useMediaQuery } from "react-responsive";
 import userServices from "../../../services/userServices";
-import { Col, Image, Rate, Row } from "antd";
+import { Col, Image, Row } from "antd";
 import UserName from "@/components/business/UserName";
 import dayjs from "dayjs";
 import Video from "./../../../components/utils/Media/Video";
 import MyButton from "./../../../components/core/MyButton";
-import {
-  renderJSXRoleUser,
-  renderUserVerifyStatus,
-} from "../../../utils/render";
-import { toast } from "react-toastify";
+import { renderJSXRoleUser } from "../../../utils/render";
 import { message } from "antd";
 
 export default function DetailModal({ id, open, onCancel, onConfirm }) {

@@ -21,21 +21,28 @@ const Members = () => {
     queryFn: () => projectServices.getDetailProject(id || projectId),
   });
 
-  console.log(getDetailProject.data);
+  console.log(getDetailProject.data.result[0].status);
 
   if (isLoading) return <Spin spinning={true} className="w-full h-full" />;
   return (
     <>
       <div>
         <div className="text-[17px] font-bold">Chủ dự án: </div>
-        <Member member={getDetailProject.data.result[0].admin_info} />
+        <Member
+          member={getDetailProject.data.result[0].admin_info}
+          projectStatus={getDetailProject.data.result[0].status}
+        />
       </div>
       <div>
         <div className="text-[17px] font-bold">Thành viên dự án</div>
         <div className="flex flex-wrap">
           {data.result &&
             data.result.map((member) => (
-              <Member key={member?._id} member={member} />
+              <Member
+                key={member?._id}
+                member={member}
+                projectStatus={getDetailProject.data.result[0].status}
+              />
             ))}
           {data.result.length === 0 && (
             <p className="text-center w-full py-[100px] text-gray-500">

@@ -9,11 +9,19 @@ import { toast } from "react-toastify";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useEffect } from "react";
+import { message } from "antd";
 
 const { TextArea } = Input;
- 
-const Apply = ({ open, setOpen, projectId, applyId, isViewMode, refetchList }) => {
-  const [salaryType, setSalaryType] = useState( applyId ? 1 : 0);
+
+const Apply = ({
+  open,
+  setOpen,
+  projectId,
+  applyId,
+  isViewMode,
+  refetchList,
+}) => {
+  const [salaryType, setSalaryType] = useState(applyId ? 1 : 0);
   const [timeType, setTimeType] = useState(applyId ? 1 : 0);
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
@@ -24,26 +32,27 @@ const Apply = ({ open, setOpen, projectId, applyId, isViewMode, refetchList }) =
     queryKey: ["apply", applyId],
     queryFn: () => projectServices.getDetailApply(applyId),
     enabled: !!applyId,
-
   });
 
-  useEffect(()=>{
-    if(applyId){
+  useEffect(() => {
+    if (applyId) {
       setSalaryType(1);
       setTimeType(1);
     }
     form.setFieldsValue({
       content: detailApplyInvite?.content,
       salary: detailApplyInvite?.salary,
-      time_to_complete: detailApplyInvite?.time_to_complete  ? dayjs(detailApplyInvite?.time_to_complete) : null,
+      time_to_complete: detailApplyInvite?.time_to_complete
+        ? dayjs(detailApplyInvite?.time_to_complete)
+        : null,
     });
-  }, [detailApplyInvite])
-  
+  }, [detailApplyInvite]);
+
   const handleConfirm = async () => {
     await form.validateFields();
     const dataForm = form.getFieldsValue();
     let res;
-    if(applyId) {
+    if (applyId) {
       const dataUpdate = {
         apply_invite_id: applyId,
         content: dataForm.content,
@@ -66,16 +75,16 @@ const Apply = ({ open, setOpen, projectId, applyId, isViewMode, refetchList }) =
       res = await projectServices.applyProject(dataCreate);
     }
     if (res.status === 200) {
-      toast.success( applyId? "Cập nhật thành công": "Ứng tuyển thành công");
+      message.success(applyId ? "Cập nhật thành công" : "Ứng tuyển thành công");
       form.resetFields();
       setOpen(false);
       refetchList();
       refetch();
     } else {
-      toast.error(applyId? "Cập nhật thất bại": "Ứng tuyển thất bại");
+      message.error(applyId ? "Cập nhật thất bại" : "Ứng tuyển thất bại");
     }
   };
-  
+
   return (
     <MyModal
       title="Ứng tuyển dự án"
@@ -86,34 +95,40 @@ const Apply = ({ open, setOpen, projectId, applyId, isViewMode, refetchList }) =
       onCancel={() => setOpen(false)}
       destroyOnClose
     >
-      <Form   labelAlign="left"
-         labelCol={{ span: 6 }}
-         wrapperCol={{ span: 20 }}  form={form} disabled={isViewMode} >
+      <Form
+        labelAlign="left"
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 20 }}
+        form={form}
+        disabled={isViewMode}
+      >
         <Form.Item name={"content"} label="Lời chào">
           <TextArea
             autoSize={{ minRows: 6 }}
             placeholder="Nhập lời chào ứng tuyển"
           ></TextArea>
         </Form.Item>
-        {!applyId && <div className="flex gap-2 mb-2">
-          <p>Mức lương:</p>
-          <Button2
-            onClick={() => setSalaryType(0)}
-            className={salaryType === 0 ? "bg-blue-500" : "bg-gray-500"}
-            size="sm"
-            disabled={isViewMode}
-          >
-            Theo mô tả
-          </Button2>
-          <Button2
-            className={salaryType === 1 ? "bg-blue-500" : "bg-gray-500"}
-            size="sm"
-            disabled={isViewMode}
-            onClick={() => setSalaryType(1)}
-          >
-            Đề xuất
-          </Button2>
-        </div>} 
+        {!applyId && (
+          <div className="flex gap-2 mb-2">
+            <p>Mức lương:</p>
+            <Button2
+              onClick={() => setSalaryType(0)}
+              className={salaryType === 0 ? "bg-blue-500" : "bg-gray-500"}
+              size="sm"
+              disabled={isViewMode}
+            >
+              Theo mô tả
+            </Button2>
+            <Button2
+              className={salaryType === 1 ? "bg-blue-500" : "bg-gray-500"}
+              size="sm"
+              disabled={isViewMode}
+              onClick={() => setSalaryType(1)}
+            >
+              Đề xuất
+            </Button2>
+          </div>
+        )}
         {salaryType === 1 && (
           <Form.Item
             required
@@ -129,35 +144,34 @@ const Apply = ({ open, setOpen, projectId, applyId, isViewMode, refetchList }) =
             <InputNumber
               style={{ width: "100%" }}
               placeholder="Nhập mức lương đề xuất"
-
               suffix="VNĐ"
             ></InputNumber>
           </Form.Item>
         )}
-        {!applyId  && <div className="flex gap-2 mb-2">
-          <p>Thời gian hoàn thành:</p>
-          <Button2
-           
-            onClick={() => setTimeType(0)}
-            className={timeType === 0 ? "bg-blue-500" : "bg-gray-500"}
-            size="sm"
-            disabled={isViewMode}
-          >
-            Theo mô tả
-          </Button2>
-          <Button2
-            className={timeType === 1 ? "bg-blue-500" : "bg-gray-500"}
-            size="sm"
-            disabled={isViewMode}
-            onClick={() => setTimeType(1)}
-          >
-            Đề xuất
-          </Button2>
-        </div>}
+        {!applyId && (
+          <div className="flex gap-2 mb-2">
+            <p>Thời gian hoàn thành:</p>
+            <Button2
+              onClick={() => setTimeType(0)}
+              className={timeType === 0 ? "bg-blue-500" : "bg-gray-500"}
+              size="sm"
+              disabled={isViewMode}
+            >
+              Theo mô tả
+            </Button2>
+            <Button2
+              className={timeType === 1 ? "bg-blue-500" : "bg-gray-500"}
+              size="sm"
+              disabled={isViewMode}
+              onClick={() => setTimeType(1)}
+            >
+              Đề xuất
+            </Button2>
+          </div>
+        )}
         {timeType === 1 && (
           <Form.Item
             required
-            
             rules={[
               {
                 required: true,

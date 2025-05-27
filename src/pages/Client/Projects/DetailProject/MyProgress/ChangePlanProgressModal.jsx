@@ -79,7 +79,7 @@ export default function ChangePlanProgressModal({
     const res = await projectServices.editMyProgress(formatData);
     console.log(res);
     if (res.status === 200) {
-      toast.success("Cập nhật thành công");
+      message.success("Cập nhật thành công");
       onConfirm();
       form.resetFields();
     }

@@ -72,7 +72,6 @@ export default function Dashboard() {
       console.error("Error fetching project new stats:", error);
     }
   };
-  console.log(projectNewStats);
 
   // Fetch user overall statistics
   const fetchUserStats = async () => {

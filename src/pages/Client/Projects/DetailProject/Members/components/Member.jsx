@@ -8,7 +8,8 @@ import { useParams } from "react-router-dom";
 import { message } from "antd";
 import { useSelector } from "react-redux";
 import { useQueryClient } from "@tanstack/react-query";
-const Member = ({ member }) => {
+import { ProjectStatus } from "../../../../../../constant/project";
+const Member = ({ member, projectStatus }) => {
   const [open, setOpen] = useState(false);
   const { id } = useParams();
   const userInfo = useSelector((state) => state.user.userInfo);
@@ -54,16 +55,18 @@ const Member = ({ member }) => {
             {renderUserVerifyStatus(member?.verified_info.status)}
           </div>
         </div>
-        {userInfo._id !== member._id && id && (
-          <div
-            className="absolute top-2 cursor-pointer right-2"
-            onClick={() => setOpen(true)}
-          >
-            <Tooltip title="Viết đánh giá">
-              <i className="text-[25px] fa-solid fa-comment-pen"></i>
-            </Tooltip>
-          </div>
-        )}
+        {userInfo._id !== member._id &&
+          id &&
+          projectStatus === ProjectStatus.Complete && (
+            <div
+              className="absolute top-2 cursor-pointer right-2"
+              onClick={() => setOpen(true)}
+            >
+              <Tooltip title="Viết đánh giá">
+                <i className="text-[25px] fa-solid fa-comment-pen"></i>
+              </Tooltip>
+            </div>
+          )}
       </div>
       <EvaluateModal
         member={member}
@@ -77,6 +80,7 @@ const Member = ({ member }) => {
 
 Member.propTypes = {
   member: PropTypes.object.isRequired,
+  projectStatus: PropTypes.number,
 };
 
 export default Member;

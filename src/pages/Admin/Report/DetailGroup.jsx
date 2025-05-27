@@ -10,14 +10,12 @@ import { useNavigate } from "react-router-dom";
 import { Modal } from "antd";
 import { message } from "antd";
 import PostsGroup from "../../Client/Community/Group/GroupPosts";
+import { useState } from "react";
 
 const DetailGroup = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
   const { id } = useParams();
-  const navigate = useNavigate();
-  const [openCreatePostModal, setOpenCreatePostModal] = React.useState(false);
-  const [showReportModal, setShowReportModal] = React.useState(false);
-  const [reportDescription, setReportDescription] = React.useState("");
+  const [posts, setPosts] = useState([]);
   const fetchDetailGroup = useQuery({
     queryKey: ["getGroupById", id],
     queryFn: async () => await groupServices.getGroupById(id),
@@ -51,7 +49,7 @@ const DetailGroup = () => {
       </div>
       <div className="flex mt-3 items-start justify-between">
         <div className="w-full lg:w-[65%]">
-          <PostsGroup group_id={id} />
+          <PostsGroup group_id={id} posts={posts} setPosts={setPosts} />
         </div>
         <div className="rounded-lg p-3 mr-7 hidden lg:block bg-white lg:w-[30%]">
           <p className="font-bold text-[19px] mb-2">Giới thiệu</p>

@@ -55,7 +55,7 @@ export default function MyProgress({ reRender }) {
         const data = {
           project_id: id,
           freelancer_id: userInfo._id,
-          employer_id: myProgress.data.project_info.admin_id,
+          employer_id: myProgress.data.project_info[0].admin_id,
         };
         const res = await projectServices.createDispute(data);
         console.log(res);
@@ -94,7 +94,7 @@ export default function MyProgress({ reRender }) {
               Thoả thuận với {myProgress.data.number_of_milestone} lần thanh
               toán tiền
             </div>
-            {myProgress.data.project_info.status ===
+            {myProgress.data.project_info[0].status ===
               ProjectStatus.Recruiting && (
               <MyButton
                 onClick={() => setOpenModalChageProgress(true)}
@@ -118,7 +118,9 @@ export default function MyProgress({ reRender }) {
                     <i className="fa-solid fa-hourglass-start text-gray-500"></i>
                   );
                   statusText = "Chưa sẵn sàng";
-                  action = (
+                  action = (index === 0 ||
+                    myProgress.data.milestone_info[index - 1].status ===
+                      "COMPLETE") && (
                     <div
                       onClick={handleReadyPhase}
                       className="text-main underline cursor-pointer"
@@ -139,6 +141,16 @@ export default function MyProgress({ reRender }) {
                       Báo cáo hoàn thành
                     </div>
                   );
+                  actionOther = item.dispute_id ? (
+                    <div
+                      onClick={() =>
+                        window.open(`/dispute/${item.dispute_id}`, "_blank")
+                      }
+                      className="text-main underline cursor-pointer"
+                    >
+                      Đi đến tranh chấp
+                    </div>
+                  ) : null;
                   break;
                 case "PAYING":
                   color = "orange";
@@ -154,6 +166,16 @@ export default function MyProgress({ reRender }) {
                       Báo cáo tranh chấp
                     </div>
                   );
+                  actionOther = item.dispute_id ? (
+                    <div
+                      onClick={() =>
+                        window.open(`/dispute/${item.dispute_id}`, "_blank")
+                      }
+                      className="text-main underline cursor-pointer"
+                    >
+                      Đi đến tranh chấp
+                    </div>
+                  ) : null;
                   break;
                 case "COMPLETE":
                   color = "green";
@@ -161,6 +183,16 @@ export default function MyProgress({ reRender }) {
                     <i className="fa-solid fa-check-circle text-green-500"></i>
                   );
                   statusText = "Hoàn thành";
+                  actionOther = item.dispute_id ? (
+                    <div
+                      onClick={() =>
+                        window.open(`/dispute/${item.dispute_id}`, "_blank")
+                      }
+                      className="text-main underline cursor-pointer"
+                    >
+                      Đi đến tranh chấp
+                    </div>
+                  ) : null;
                   break;
                 case "DISPUTED":
                   color = "red";

@@ -79,7 +79,7 @@ const ResultUser = (props) => {
       );
     }
   };
-
+  const navigate = useNavigate();
   return (
     <div className="flex gap-1 flex-wrap">
       {data.resultUser.map((item) => (
@@ -95,7 +95,10 @@ const ResultUser = (props) => {
               shape="square"
             />
             <div>
-              <p className="font-medium">
+              <p
+                className="font-medium"
+                onClick={() => navigate(`/profile/${item._id}`)}
+              >
                 {item.name}{" "}
                 <span className="text-[12px] text-[#333]">
                   @{item.username}
@@ -109,8 +112,10 @@ const ResultUser = (props) => {
                 )}
               </p>
               <div className="flex flex-wrap items-center">
-                <p className="bg-[#ffb800] px-1 rounded-lg text-white">4.9</p>
-                <Rate allowHalf disabled defaultValue={2} />
+                <p className="bg-[#ffb800] px-1 rounded-lg text-white">
+                  {Number(item?.star.$numberDecimal).toFixed(1)}
+                </p>
+                <Rate allowHalf disabled value={item?.star.$numberDecimal} />
                 <p className="ml-1 text-[13px] text-main">
                   {item?.evaluationCount} đánh giá
                 </p>

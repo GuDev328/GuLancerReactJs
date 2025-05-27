@@ -28,6 +28,11 @@ axiosIns.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     console.log(error);
+
+    if (originalRequest.url === "/users/refresh-token") {
+      return Promise.reject(error);
+    }
+
     if (error.response?.data.message !== "jwt expired") {
       message.error(error.response?.data.message);
     } else {
@@ -55,6 +60,7 @@ export const refreshTokenFunc = async () => {
     localStorage.setItem("accessToken", "");
     localStorage.setItem("refreshToken", "");
     window.location.href = "/login?jwt=out";
+    isRefreshingToken = false;
     console.log(error);
     return null;
   }

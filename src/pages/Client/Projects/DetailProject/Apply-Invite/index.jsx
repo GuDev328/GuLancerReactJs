@@ -7,6 +7,7 @@ import MyModal, { showConfirmModal } from "@/components/core/MyModal";
 import { formatCurrency } from "@/utils/common";
 import { toast } from "react-toastify";
 import Apply from "./../../../ViewProject/components/Apply";
+import { message } from "antd";
 
 const ApplyInviteManagement = ({ projectId }) => {
   const [open, setOpen] = useState(false);
@@ -35,11 +36,11 @@ const ApplyInviteManagement = ({ projectId }) => {
         const response = await projectServices.acceptApplyInvite(id);
         console.log(response);
         if (response.status === 200) {
-          toast.success("Chấp nhận ứng tuyển thành công");
+          message.success("Chấp nhận ứng tuyển thành công");
           Modal.destroyAll();
           data.refetch();
         } else {
-          toast.error("Chấp nhận ứng tuyển thất bại");
+          message.error("Chấp nhận ứng tuyển thất bại");
         }
       },
     });
@@ -52,11 +53,11 @@ const ApplyInviteManagement = ({ projectId }) => {
         const response = await projectServices.rejectApplyInvite(id);
         console.log(response);
         if (response.status === 200) {
-          toast.success("Từ chối ứng tuyển thành công");
+          message.success("Từ chối ứng tuyển thành công");
           Modal.destroyAll();
           data.refetch();
         } else {
-          toast.error("Từ chối ứng tuyển thất bại");
+          message.error("Từ chối ứng tuyển thất bại");
         }
       },
     });

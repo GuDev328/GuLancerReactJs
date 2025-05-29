@@ -19,7 +19,7 @@ export default function Resolve() {
     queryKey: ["dispute", dispute_id],
     queryFn: () => projectServices.getDispute(dispute_id),
   });
-
+  console.log(disputeInfo.data);
   const userInfo = useSelector((state) => state.user.userInfo);
   const { isDisputeCanceled } = useContext(StatusDisputeContext);
   const handleOpen = (type) => {
@@ -51,13 +51,20 @@ export default function Resolve() {
       {userInfo?.role === UserRole.ADMIN && !isDisputeCanceled && (
         <div>
           <div>
-            Giai đoạn: {4}/ {5}
+            Giai đoạn: {disputeInfo?.data?.milestone_info?.countMilestone}
           </div>
           <div>
-            Số tiền đã nhận: {formatCurrency(100000)}/{" "}
-            {formatCurrency(10000000)}
+            Số tiền đã nhận:{" "}
+            {formatCurrency(
+              disputeInfo?.data?.milestone_info?.salary -
+                disputeInfo?.data?.milestone_info?.salary_unpaid
+            )}
+            / {formatCurrency(disputeInfo?.data?.milestone_info?.salary)}
           </div>
-          <div>Số tiền tranh chấp: {formatCurrency(100000)}</div>
+          <div>
+            Số tiền tranh chấp:{" "}
+            {formatCurrency(disputeInfo?.data?.milestone_info?.salary_unpaid)}
+          </div>
           <div>Hướng giải quyết:</div>
           <Flex gap={10}>
             <MyButton onClick={() => handleOpen(DisputeResolveAction.PayAll)}>
@@ -74,7 +81,7 @@ export default function Resolve() {
             </MyButton>
           </Flex>
           <ResolveModal
-            amountTotal={100000}
+            amountTotal={disputeInfo?.data?.milestone_info?.salary_unpaid}
             open={open}
             setOpen={setOpen}
             type={type}

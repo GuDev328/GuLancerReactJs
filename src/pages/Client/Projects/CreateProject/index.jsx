@@ -149,7 +149,7 @@ const CreateProject = () => {
                 },
               ]}
               name="endDate"
-              label="Ngày dự kiến bắt đầu"
+              label="Dự kiến kết thúc"
               required
             >
               <MyDatePicker />

@@ -94,7 +94,7 @@ const DrawerTask = ({ open, onClose, id, setReRender }) => {
             <a>Chuyển trạng thái</a>
           </Popover>
         </Flex>
-        <Space className="m-3">{data?.description}</Space>
+        <Space className="m-3 whitespace-pre-wrap">{data?.description}</Space>
       </Drawer>
       <ModalCUTask
         setReRender={setReRenderDetail}

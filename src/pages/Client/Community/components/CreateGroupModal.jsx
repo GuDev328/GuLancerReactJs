@@ -17,6 +17,7 @@ import groupServices from "@/services/groupServices";
 import { Button as Button2 } from "@material-tailwind/react";
 
 import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { Flex } from "antd";
 
 const CreateGroupModal = ({ open, setOpen }) => {
   const [form] = Form.useForm();
@@ -71,7 +72,7 @@ const CreateGroupModal = ({ open, setOpen }) => {
       onClose={handleCancel}
       title="Tạo mới cộng đồng"
       footer={
-        <>
+        <Flex justify="end">
           <Button2 size="sm" onClick={handleCancel}>
             Hủy
           </Button2>
@@ -83,7 +84,7 @@ const CreateGroupModal = ({ open, setOpen }) => {
           >
             Tạo
           </Button2>
-        </>
+        </Flex>
       }
     >
       <Form form={form} labelCol={{ span: 3 }}>

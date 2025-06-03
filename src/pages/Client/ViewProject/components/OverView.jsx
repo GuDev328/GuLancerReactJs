@@ -8,9 +8,11 @@ import { useSelector } from "react-redux";
 import Apply from "./Apply";
 import { formatDate } from "./../../../../utils/common";
 import { renderUserVerifyStatus } from "../../../../utils/render";
+import { UserRole } from "../../../../constant/user";
 const OverviewProject = ({ detailProject }) => {
   const isMobile = useSelector((state) => state.screen.isMobile);
   const [open, setOpen] = useState(false);
+  const userInfo = useSelector((state) => state.user.userInfo);
   return (
     <div className="text-[15px] bg-white px-4 m-3 rounded-md">
       <div className="flex flex-wrap font-bold justify-between items-center text-[21px]">
@@ -32,13 +34,15 @@ const OverviewProject = ({ detailProject }) => {
         <div className="font-bold text-gray-600 ml-1">
           Hạn ứng tuyển: {formatDate(detailProject?.recruitmentInfo?.deadline)}
         </div>
-        <Button
-          onClick={() => setOpen(true)}
-          className="bg-main"
-          size={isMobile ? "sm" : "md"}
-        >
-          Ứng tuyển ngay
-        </Button>
+        {userInfo?.role === UserRole.FREELANCER && (
+          <Button
+            onClick={() => setOpen(true)}
+            className="bg-main"
+            size={isMobile ? "sm" : "md"}
+          >
+            Ứng tuyển ngay
+          </Button>
+        )}
       </div>
       <div className="flex items-center ">
         <div className="font-bold mx-1 flex-shrink-0">Chủ đầu tư: </div>

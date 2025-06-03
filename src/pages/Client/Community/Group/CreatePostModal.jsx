@@ -19,9 +19,11 @@ import { PlusOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import { TweetType } from "@/constant/tweet";
 import tweetServices from "@/services/tweetServices";
 import mediaServices from "@/services/mediaServices";
+import { Flex } from "antd";
 
 const CreatePostModal = ({ open, setOpen, groupId, groupName, setPosts }) => {
   const userInfo = useSelector((state) => state.user.userInfo);
+  const [loading, setLoading] = useState(false);
   const handleCancel = () => {
     setContent("");
     setMediaList([]);
@@ -84,10 +86,13 @@ const CreatePostModal = ({ open, setOpen, groupId, groupName, setPosts }) => {
   };
 
   const handleCreate = async () => {
-    if (!content) {
-      message.error("Vui lòng nhập nội dung bài viết!");
-      return;
-    }
+    if (loading) return;
+    setLoading(true);
+
+    // if (!content) {
+    //   message.error("Vui lòng nhập nội dung bài viết!");
+    //   return;
+    // }
     const data = {
       group_id: groupId,
       content,
@@ -145,7 +150,7 @@ const CreatePostModal = ({ open, setOpen, groupId, groupName, setPosts }) => {
           setPosts((pre) => [myPost, ...pre]);
         }
       }
-
+      setLoading(false);
       message.success(create.data.message);
     }
   };
@@ -160,19 +165,19 @@ const CreatePostModal = ({ open, setOpen, groupId, groupName, setPosts }) => {
       title={<p className="text-center">Tạo bài viết mới</p>}
       centered
       footer={
-        <>
+        <Flex justify="end">
           <Button2 size="sm" onClick={handleCancel}>
             Hủy
           </Button2>
           <Button2
-            //loading={loading}
+            loading={loading}
             className="ml-2 text-white bg-main"
             size="sm"
             onClick={handleCreate}
           >
             Tạo
           </Button2>
-        </>
+        </Flex>
       }
     >
       <div className="px-3">
